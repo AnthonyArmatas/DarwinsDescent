@@ -21,7 +21,7 @@
 
 # Visual Studio cache directory
 .vs/
-.Library/
+DarwinsDecent/Library/
 
 # Gradle cache directory
 .gradle/
