@@ -33,6 +33,8 @@ namespace DarwinsDecent
         private float jumpTimeCounter;
         public float jumpTime;
 
+        public bool attacking;
+
         public float cameraHorizontalFacingOffset;
         public float cameraHorizontalSpeedOffset;
         public float cameraVerticalInputOffset;
@@ -45,6 +47,7 @@ namespace DarwinsDecent
         protected CharacterController2D characterController2D;
         protected Animator animator;
         protected BoxCollider2D bCollider;
+        protected BoxCollider2D MeleeAtkBCollider;
         protected Vector2 moveVector;
         protected Vector2 moveVelocity;
         protected float m_TanHurtJumpAngle;
@@ -60,18 +63,18 @@ namespace DarwinsDecent
 
         protected bool inPause = false;
 
-        protected readonly int m_HashHorizontalSpeedPara = Animator.StringToHash("HorizontalSpeed");
-        protected readonly int m_HashVerticalSpeedPara = Animator.StringToHash("VerticalSpeed");
-        protected readonly int m_HashGroundedPara = Animator.StringToHash("Grounded");
-        protected readonly int m_HashCrouchingPara = Animator.StringToHash("Crouching");
-        protected readonly int m_HashPushingPara = Animator.StringToHash("Pushing");
-        protected readonly int m_HashTimeoutPara = Animator.StringToHash("Timeout");
-        protected readonly int m_HashRespawnPara = Animator.StringToHash("Respawn");
-        protected readonly int m_HashDeadPara = Animator.StringToHash("Dead");
-        protected readonly int m_HashHurtPara = Animator.StringToHash("Hurt");
-        protected readonly int m_HashForcedRespawnPara = Animator.StringToHash("ForcedRespawn");
-        protected readonly int m_HashMeleeAttackPara = Animator.StringToHash("MeleeAttack");
-        protected readonly int m_HashHoldingGunPara = Animator.StringToHash("HoldingGun");
+        protected readonly int HashHorizontalSpeedPara = Animator.StringToHash("HorizontalSpeed");
+        protected readonly int HashVerticalSpeedPara = Animator.StringToHash("VerticalSpeed");
+        protected readonly int HashGroundedPara = Animator.StringToHash("Grounded");
+        protected readonly int HashCrouchingPara = Animator.StringToHash("Crouching");
+        protected readonly int HashPushingPara = Animator.StringToHash("Pushing");
+        protected readonly int HashTimeoutPara = Animator.StringToHash("Timeout");
+        protected readonly int HashRespawnPara = Animator.StringToHash("Respawn");
+        protected readonly int HashDeadPara = Animator.StringToHash("Dead");
+        protected readonly int HashHurtPara = Animator.StringToHash("Hurt");
+        protected readonly int HashForcedRespawnPara = Animator.StringToHash("ForcedRespawn");
+        protected readonly int HashMeleeAttackPara = Animator.StringToHash("MeleeAttack");
+        protected readonly int HashHoldingGunPara = Animator.StringToHash("HoldingGun");
 
         //used in non alloc version of physic function
         protected ContactPoint2D[] m_ContactsBuffer = new ContactPoint2D[16];
@@ -92,6 +95,7 @@ namespace DarwinsDecent
             characterController2D = GetComponent<CharacterController2D>();
             animator = GetComponent<Animator>();
             bCollider = GetComponent<BoxCollider2D>();
+            MeleeAtkBCollider = transform.Find("MeleeHitBox").GetComponent<BoxCollider2D>();
         }
 
 
@@ -156,6 +160,8 @@ namespace DarwinsDecent
 
             IsJumping();
 
+            IsAttacking();
+
             // Maybe Add to both Updates
             UpdateFacing();
         }
@@ -165,8 +171,8 @@ namespace DarwinsDecent
             //characterController2D.Move(moveVector * Time.deltaTime);
             MoveAround();
             moveVector = characterController2D.Rigidbody2D.velocity;
-            animator.SetFloat(m_HashHorizontalSpeedPara, moveVector.x);
-            animator.SetFloat(m_HashVerticalSpeedPara, moveVector.y);
+            animator.SetFloat(HashHorizontalSpeedPara, moveVector.x);
+            animator.SetFloat(HashVerticalSpeedPara, moveVector.y);
 
             // Maybe Add to both Updates
             CheckForGrounded();
@@ -241,7 +247,7 @@ namespace DarwinsDecent
             }
             else if(characterController2D.Rigidbody2D.velocity.y < 0)
             {
-                characterController2D.Rigidbody2D.gravityScale = 2f;
+                characterController2D.Rigidbody2D.gravityScale = 3f;
             }
 
 
@@ -265,7 +271,21 @@ namespace DarwinsDecent
         }
         #endregion
 
+        public void IsAttacking()
+        {
+            if (PlayerInput.Instance.MeleeAttack.Down)
+            {
+                attacking = true;
+
+                // Setting this true here so that the damager can check if the trigger collision happens while MeleeAttack is active, and when the animation state exits, it sets it to false.
+                // This allows every frame of the animation to be register the hits. A different method should be used for specific frames of animation that the damage should be dealt (Or different Dmg).
+                animator.SetBool(HashMeleeAttackPara,true);
+                // animator.SetTrigger(HashMeleeAttackPara) also worked
+            }
+        }
+
         #region Facing
+        // Should add to a common function script.
         public void UpdateFacing()
         {
             bool faceLeft = PlayerInput.Instance.Horizontal.Value < 0f;
@@ -274,10 +294,12 @@ namespace DarwinsDecent
             if (faceLeft)
             {
                 spriteRenderer.flipX = !spriteOriginallyFacesLeft;
+                MeleeAtkBCollider.transform.localScale = new Vector3(-1, 1);
             }
             else if (faceRight)
             {
                 spriteRenderer.flipX = spriteOriginallyFacesLeft;
+                MeleeAtkBCollider.transform.localScale = new Vector3(1, 1);
             }
         }
 
@@ -302,7 +324,7 @@ namespace DarwinsDecent
         #region Grounded
         public bool CheckForGrounded()
         {
-            bool wasGrounded = animator.GetBool(m_HashGroundedPara);
+            bool wasGrounded = animator.GetBool(HashGroundedPara);
             bool grounded = characterController2D.IsGrounded;
 
             if (grounded)
@@ -313,7 +335,7 @@ namespace DarwinsDecent
                 }
             }
 
-            animator.SetBool(m_HashGroundedPara, grounded);
+            animator.SetBool(HashGroundedPara, grounded);
 
             return grounded;
         }
@@ -343,7 +365,7 @@ namespace DarwinsDecent
 
         public void CheckForCrouching()
         {
-            animator.SetBool(m_HashCrouchingPara, PlayerInput.Instance.Vertical.Value < 0f);
+            animator.SetBool(HashCrouchingPara, PlayerInput.Instance.Vertical.Value < 0f);
         }
 
         protected IEnumerator Flicker()
@@ -374,31 +396,31 @@ namespace DarwinsDecent
 
         public void OnHurt(Damager damager, Damageable damageable)
         {
-            //if the player don't have control, we shouldn't be able to be hurt as this wouldn't be fair
-            if (!PlayerInput.Instance.HaveControl)
-                return;
+            ////if the player don't have control, we shouldn't be able to be hurt as this wouldn't be fair
+            //if (!PlayerInput.Instance.HaveControl)
+            //    return;
 
-            UpdateFacing(damageable.GetDamageDirection().x > 0f);
-            damageable.EnableInvulnerability();
+            //UpdateFacing(damageable.GetDamageDirection().x > 0f);
+            //damageable.EnableInvulnerability();
 
-            animator.SetTrigger(m_HashHurtPara);
+            //animator.SetTrigger(HashHurtPara);
 
-            //we only force respawn if helath > 0, otherwise both forceRespawn & Death trigger are set in the animator, messing with each other.
-            if (damageable.CurrentHealth > 0 && damager.forceRespawn)
-                animator.SetTrigger(m_HashForcedRespawnPara);
+            ////we only force respawn if health > 0, otherwise both forceRespawn & Death trigger are set in the animator, messing with each other.
+            //if (damageable.CurrentHealth > 0 && damager.forceRespawn)
+            //    animator.SetTrigger(HashForcedRespawnPara);
 
-            animator.SetBool(m_HashGroundedPara, false);
+            //animator.SetBool(HashGroundedPara, false);
 
-            //if the health is < 0, mean die callback will take care of respawn
-            if (damager.forceRespawn && damageable.CurrentHealth > 0)
-            {
-                StartCoroutine(DieRespawnCoroutine(false, true));
-            }
+            ////if the health is < 0, mean die callback will take care of respawn
+            //if (damager.forceRespawn && damageable.CurrentHealth > 0)
+            //{
+            //    StartCoroutine(DieRespawnCoroutine(false, true));
+            //}
         }
 
         public void OnDie()
         {
-            animator.SetTrigger(m_HashDeadPara);
+            animator.SetTrigger(HashDeadPara);
 
             StartCoroutine(DieRespawnCoroutine(true, false));
         }

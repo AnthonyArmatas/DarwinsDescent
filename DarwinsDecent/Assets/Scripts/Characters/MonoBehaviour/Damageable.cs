@@ -22,30 +22,34 @@ namespace DarwinsDecent
         public bool invulnerableAfterDamage = true;
         public float invulnerabilityDuration = 3f;
         public bool disableOnDeath = false;
-        [Tooltip("An offset from the obejct position used to set from where the distance to the damager is computed")]
+        [Tooltip("An offset from the object position used to set from where the distance to the damager is computed")]
         public Vector2 centreOffset = new Vector2(0f, 1f);
         public HealthEvent OnHealthSet;
         public DamageEvent OnTakeDamage;
         public DamageEvent OnDie;
         public HealEvent OnGainHealth;
+
+        //public delegate void TakeDamage();
+        //public event TakeDamage Damaged;
+
         [HideInInspector]
         //public DataSettings dataSettings;
 
-        protected bool m_Invulnerable;
-        protected float m_InulnerabilityTimer;
-        protected int m_CurrentHealth;
-        protected Vector2 m_DamageDirection;
-        protected bool m_ResetHealthOnSceneReload;
+        protected bool Invulnerable;
+        protected float InulnerabilityTimer;
+        protected int CurHealth;
+        protected Vector2 DamageDirection;
+        protected bool ResetHealthOnSceneReload;
 
         public int CurrentHealth
         {
-            get { return m_CurrentHealth; }
+            get { return CurHealth; }
         }
 
         void OnEnable()
         {
             //PersistentDataManager.RegisterPersister(this);
-            m_CurrentHealth = startingHealth;
+            CurHealth = startingHealth;
 
             OnHealthSet.Invoke(this);
 
@@ -59,55 +63,57 @@ namespace DarwinsDecent
 
         void Update()
         {
-            if (m_Invulnerable)
+            if (Invulnerable)
             {
-                m_InulnerabilityTimer -= Time.deltaTime;
+                InulnerabilityTimer -= Time.deltaTime;
 
-                if (m_InulnerabilityTimer <= 0f)
+                if (InulnerabilityTimer <= 0f)
                 {
-                    m_Invulnerable = false;
+                    Invulnerable = false;
                 }
             }
         }
 
         public void EnableInvulnerability(bool ignoreTimer = false)
         {
-            m_Invulnerable = true;
-            //technically don't ignore timer, just set it to an insanly big number. Allow to avoid to add more test & special case.
-            m_InulnerabilityTimer = ignoreTimer ? float.MaxValue : invulnerabilityDuration;
+            Invulnerable = true;
+            //technically don't ignore timer, just set it to an insanely big number. Allow to avoid to add more test & special case.
+            InulnerabilityTimer = ignoreTimer ? float.MaxValue : invulnerabilityDuration;
         }
 
         public void DisableInvulnerability()
         {
-            m_Invulnerable = false;
+            Invulnerable = false;
         }
 
         public Vector2 GetDamageDirection()
         {
-            return m_DamageDirection;
+            return DamageDirection;
         }
 
         public void TakeDamage(Damager damager, bool ignoreInvincible = false)
         {
-            if ((m_Invulnerable && !ignoreInvincible) || m_CurrentHealth <= 0)
+            if ((Invulnerable && !ignoreInvincible) || CurHealth <= 0)
                 return;
 
             //we can reach that point if the damager was one that was ignoring invincible state.
             //We still want the callback that we were hit, but not the damage to be removed from health.
-            if (!m_Invulnerable)
+            if (!Invulnerable)
             {
-                m_CurrentHealth -= damager.damage;
-                OnHealthSet.Invoke(this);
+                CurHealth -= damager.damage;
+                //OnHealthSet.Invoke(this);
             }
 
-            m_DamageDirection = transform.position + (Vector3)centreOffset - damager.transform.position;
+            DamageDirection = transform.position + (Vector3)centreOffset - damager.transform.position;
 
+            // this should call OnHurt, do that instead of invoke
             OnTakeDamage.Invoke(damager, this);
 
-            if (m_CurrentHealth <= 0)
+            if (CurHealth <= 0)
             {
+                // this should call on die. See if the game object can get the owner of the scripts game object to make that call or if the gui is needed and then some form of invoke is appropriate.
                 OnDie.Invoke(damager, this);
-                m_ResetHealthOnSceneReload = true;
+                ResetHealthOnSceneReload = true;
                 EnableInvulnerability();
                 if (disableOnDeath) gameObject.SetActive(false);
             }
@@ -115,10 +121,10 @@ namespace DarwinsDecent
 
         public void GainHealth(int amount)
         {
-            m_CurrentHealth += amount;
+            CurHealth += amount;
 
-            if (m_CurrentHealth > startingHealth)
-                m_CurrentHealth = startingHealth;
+            if (CurHealth > startingHealth)
+                CurHealth = startingHealth;
 
             OnHealthSet.Invoke(this);
 
@@ -127,12 +133,12 @@ namespace DarwinsDecent
 
         public void SetHealth(int amount)
         {
-            m_CurrentHealth = amount;
+            CurHealth = amount;
 
-            if (m_CurrentHealth <= 0)
+            if (CurHealth <= 0)
             {
                 OnDie.Invoke(null, this);
-                m_ResetHealthOnSceneReload = true;
+                ResetHealthOnSceneReload = true;
                 EnableInvulnerability();
                 if (disableOnDeath) gameObject.SetActive(false);
             }
@@ -153,13 +159,13 @@ namespace DarwinsDecent
 
         //public Data SaveData()
         //{
-        //    return new Data<int, bool>(CurrentHealth, m_ResetHealthOnSceneReload);
+        //    return new Data<int, bool>(CurrentHealth, ResetHealthOnSceneReload);
         //}
 
         //public void LoadData(Data data)
         //{
         //    Data<int, bool> healthData = (Data<int, bool>)data;
-        //    m_CurrentHealth = healthData.value1 ? startingHealth : healthData.value0;
+        //    CurHealth = healthData.value1 ? startingHealth : healthData.value0;
         //    OnHealthSet.Invoke(this);
         //}
     }
