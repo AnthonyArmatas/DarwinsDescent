@@ -1,2 +1,2 @@
-# DarwinsDecent
-Repo for Darwin's Decent a Metroidvania inspired game by Carapace Computing.
+# DarwinsDescent
+Repo for Darwin's Descent a Metroidvania inspired game by Carapace Computing.
