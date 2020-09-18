@@ -20,6 +20,7 @@ namespace DarwinsDescent
         public Damageable damageable;
         public Damager meleeDamager;
         public Transform cameraFollowTarget;
+        public HealthDisplay healthDisplay;
 
         public float maxSpeed = 10f;
 
@@ -101,6 +102,9 @@ namespace DarwinsDescent
 
         void Start()
         {
+            damageable = new Damageable();
+            healthDisplay = new HealthDisplay();
+
             hurtJumpAngle = Mathf.Clamp(hurtJumpAngle, k_MinHurtJumpAngle, k_MaxHurtJumpAngle);
             m_TanHurtJumpAngle = Mathf.Tan(Mathf.Deg2Rad * hurtJumpAngle);
             m_FlickeringWait = new WaitForSeconds(flickeringDuration);
@@ -139,6 +143,9 @@ namespace DarwinsDescent
 
         void Update()
         {
+            
+            healthDisplay.health = damageable.CurrentHealth;
+
             if (PlayerInput.Instance.Pause.Down)
             {
                 if (!inPause)
