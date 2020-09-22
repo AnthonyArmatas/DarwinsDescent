@@ -257,6 +257,7 @@ F:\Workshop\DarwinsDecentRepo\DarwinsDescent\Temp\bin\Debug\UnityEngine.VideoMod
 F:\Workshop\DarwinsDecentRepo\DarwinsDescent\Temp\bin\Debug\UnityEngine.VirtualTexturingModule.xml
 F:\Workshop\DarwinsDecentRepo\DarwinsDescent\Temp\bin\Debug\UnityEngine.WindModule.xml
 F:\Workshop\DarwinsDecentRepo\DarwinsDescent\Temp\bin\Debug\UnityEngine.XRModule.xml
+F:\Workshop\DarwinsDecentRepo\DarwinsDescent\obj\Debug\AstarPathfindingProject.csprojAssemblyReference.cache
 F:\Workshop\DarwinsDecentRepo\DarwinsDescent\obj\Debug\AstarPathfindingProject.csproj.CoreCompileInputs.cache
 F:\Workshop\DarwinsDecentRepo\DarwinsDescent\obj\Debug\AstarPathfindingProject.csproj.CopyComplete
 F:\Workshop\DarwinsDecentRepo\DarwinsDescent\obj\Debug\AstarPathfindingProject.dll

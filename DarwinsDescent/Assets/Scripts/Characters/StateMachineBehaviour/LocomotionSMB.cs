@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DarwinsDescent
 {
-    public class LocomotionSMB : SceneLinkedSMB<PlayerCharacter>
+    public class LocomotionSMB : SceneLinkedSMB<OutDated_PlayerCharacter>
     {
         // OnSLStateEnter is called when a transition starts and the state machine starts to evaluate this state
         public override void OnSLStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
