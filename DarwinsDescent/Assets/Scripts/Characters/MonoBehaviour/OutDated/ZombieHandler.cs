@@ -14,9 +14,9 @@ public class ZombieHandler : MonoBehaviour
     public Animator animator;
     public AIPath aIPath;
     protected Rigidbody2D Rigidbody2D;
-    protected readonly int HashDeadPara = Animator.StringToHash("Dead");
-    protected readonly int HashHurtPara = Animator.StringToHash("Hurt");
-    protected readonly int HashHorizontalSpeedPara = Animator.StringToHash("HorizontalSpeed");
+    protected readonly int DeadParaHash = Animator.StringToHash("Dead");
+    protected readonly int HurtParaHash = Animator.StringToHash("Hurt");
+    protected readonly int HorizontalSpeedParaHash = Animator.StringToHash("HorizontalSpeed");
 
 
     void Start()
@@ -31,7 +31,7 @@ public class ZombieHandler : MonoBehaviour
 
     void FixedUpdate()
     {
-        animator.SetFloat(HashHorizontalSpeedPara, aIPath.desiredVelocity.x);
+        animator.SetFloat(HorizontalSpeedParaHash, aIPath.desiredVelocity.x);
     }
 
     public void UpdateFacing()
@@ -69,11 +69,11 @@ public class ZombieHandler : MonoBehaviour
         UpdateFacing(damageable.GetDamageDirection().x > 0f);
         //damageable.EnableInvulnerability();
 
-        animator.SetTrigger(HashHurtPara);
+        animator.SetTrigger(HurtParaHash);
     }
 
     public void OnDie()
     {
-        animator.SetTrigger(HashDeadPara);
+        animator.SetTrigger(DeadParaHash);
     }
 }

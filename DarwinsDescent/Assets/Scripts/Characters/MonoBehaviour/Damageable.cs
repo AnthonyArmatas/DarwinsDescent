@@ -6,63 +6,71 @@ namespace DarwinsDescent
 {
     public class Damageable : MonoBehaviour
     {
-        [Serializable]
-        public class HealthEvent : UnityEvent<Damageable>
-        { }
+        #region CopyPasteRegion
+        #endregion
 
-        [Serializable]
-        public class DamageEvent : UnityEvent<Damager, Damageable>
-        { }
+        #region CommentedOut
+        //[Serializable]
+        //public class HealthEvent : UnityEvent<Damageable>
+        //{ }
 
-        [Serializable]
-        public class HealEvent : UnityEvent<int, Damageable>
-        { }
+        //[Serializable]
+        //public class DamageEvent : UnityEvent<Damager, Damageable>
+        //{ }
 
-        public int startingHealth = 5;
-        public bool invulnerableAfterDamage = true;
-        public float invulnerabilityDuration = 3f;
-        public bool disableOnDeath = false;
-        [Tooltip("An offset from the object position used to set from where the distance to the damager is computed")]
-        public Vector2 centreOffset = new Vector2(0f, 1f);
-        public HealthEvent OnHealthSet;
-        public DamageEvent OnTakeDamage;
-        public DamageEvent OnDie;
-        public HealEvent OnGainHealth;
+        //[Serializable]
+        //public class HealEvent : UnityEvent<int, Damageable>
+        //{ }
+        //public HealthEvent OnHealthSet;
+        //public DamageEvent OnTakeDamage;
+        //public DamageEvent OnDie;
+        //public HealEvent OnGainHealth;
 
         //public delegate void TakeDamage();
         //public event TakeDamage Damaged;
 
-        [HideInInspector]
+        //[HideInInspector]
         //public DataSettings dataSettings;
+
+        #endregion
+
+
+        
+        public bool invulnerableAfterDamage = true;
+        public float invulnerabilityDuration = 3f;
+        public bool disableOnDeath = false;
+        public int CurHealth;
+        // Figure out if this actually works.
+        [Tooltip("An offset from the object position used to set from where the distance to the damager is computed")]
+        public Vector2 centreOffset = new Vector2(0f, 1f);
+        public Actor actor;
 
         protected bool Invulnerable;
         protected float InulnerabilityTimer;
-        protected int CurHealth;
         protected Vector2 DamageDirection;
         protected bool ResetHealthOnSceneReload;
+        protected int startingHealth;
 
         public int CurrentHealth
         {
             get { return CurHealth; }
         }
 
-        void OnEnable()
+        void Start()
         {
-            //PersistentDataManager.RegisterPersister(this);
+            startingHealth = actor.health;
             CurHealth = startingHealth;
 
-            OnHealthSet.Invoke(this);
-
+            //OnHealthSet.Invoke(this);
             DisableInvulnerability();
         }
 
-        void OnDisable()
-        {
-            //PersistentDataManager.UnregisterPersister(this);
-        }
 
         void Update()
         {
+            // TODO: There is something funky about this (Maybe). Starting health is taken from Actor script in start, 
+            // and it is updated in update. Maybe find a way to have a single place that the health can be dealt with. This feels like it breaks the SRP
+            actor.health = CurHealth;
             if (Invulnerable)
             {
                 InulnerabilityTimer -= Time.deltaTime;
@@ -107,16 +115,13 @@ namespace DarwinsDescent
             DamageDirection = transform.position + (Vector3)centreOffset - damager.transform.position;
 
             // this should call OnHurt, do that instead of invoke
-            OnTakeDamage.Invoke(damager, this);
+            //OnTakeDamage.Invoke(damager, this);
 
             if (CurHealth <= 0)
             {
-                // this should call on die. See if the game object can get the owner of the scripts game object to make that call or if the gui is needed and then some form of invoke is appropriate.
-                OnDie.Invoke(damager, this);
-                ResetHealthOnSceneReload = true;
-                EnableInvulnerability();
-                if (disableOnDeath) gameObject.SetActive(false);
+                actor.animator.SetBool(actor.DeadParaHash, true);
             }
+            actor.animator.SetTrigger(actor.HurtParaHash);
         }
 
         public void GainHealth(int amount)
@@ -126,9 +131,9 @@ namespace DarwinsDescent
             if (CurHealth > startingHealth)
                 CurHealth = startingHealth;
 
-            OnHealthSet.Invoke(this);
+            //OnHealthSet.Invoke(this);
 
-            OnGainHealth.Invoke(amount, this);
+            //OnGainHealth.Invoke(amount, this);
         }
 
         public void SetHealth(int amount)
@@ -137,37 +142,14 @@ namespace DarwinsDescent
 
             if (CurHealth <= 0)
             {
-                OnDie.Invoke(null, this);
+                //OnDie.Invoke(null, this);
                 ResetHealthOnSceneReload = true;
                 EnableInvulnerability();
                 if (disableOnDeath) gameObject.SetActive(false);
             }
 
-            OnHealthSet.Invoke(this);
+            //OnHealthSet.Invoke(this);
         }
-
-        //public DataSettings GetDataSettings()
-        //{
-        //    return dataSettings;
-        //}
-
-        //public void SetDataSettings(string dataTag, DataSettings.PersistenceType persistenceType)
-        //{
-        //    dataSettings.dataTag = dataTag;
-        //    dataSettings.persistenceType = persistenceType;
-        //}
-
-        //public Data SaveData()
-        //{
-        //    return new Data<int, bool>(CurrentHealth, ResetHealthOnSceneReload);
-        //}
-
-        //public void LoadData(Data data)
-        //{
-        //    Data<int, bool> healthData = (Data<int, bool>)data;
-        //    CurHealth = healthData.value1 ? startingHealth : healthData.value0;
-        //    OnHealthSet.Invoke(this);
-        //}
     }
 
 }

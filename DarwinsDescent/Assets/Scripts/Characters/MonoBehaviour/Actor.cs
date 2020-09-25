@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace DarwinsDescent
 {
-    [RequireComponent(typeof(Animator))]
     public class Actor : MonoBehaviour
     {
         #region CopyPasteRegion
@@ -23,9 +22,12 @@ namespace DarwinsDescent
         [Tooltip("The Layers which represent gameobjects that the Character Controller can be grounded on.")]
         public LayerMask groundedLayerMask;
 
-        protected Animator animator;
+        
         protected BoxCollider2D boxCollider;
         protected ContactFilter2D contactFilter;
+        protected Damageable damageable;
+        protected Damager damager;
+        public Animator animator;
         public SpriteRenderer spriteRenderer;
         public bool spriteOriginallyFacesLeft = false;
         public float groundedRaycastDistanceCheck = .5f;
@@ -34,17 +36,18 @@ namespace DarwinsDescent
         public Rigidbody2D Rigidbody2D { get { return rigidbody2D; } set { this.rigidbody2D = value; } }
 
         // State Machine Flags
-        protected readonly int HashHorizontalSpeedPara = Animator.StringToHash("HorizontalSpeed");
-        protected readonly int HashVerticalSpeedPara = Animator.StringToHash("VerticalSpeed");
-        protected readonly int HashGroundedPara = Animator.StringToHash("Grounded");
-        protected readonly int HashCrouchingPara = Animator.StringToHash("Crouching");
-        protected readonly int HashPushingPara = Animator.StringToHash("Pushing");
-        protected readonly int HashTimeoutPara = Animator.StringToHash("Timeout");
-        protected readonly int HashRespawnPara = Animator.StringToHash("Respawn");
-        protected readonly int HashDeadPara = Animator.StringToHash("Dead");
-        protected readonly int HashHurtPara = Animator.StringToHash("Hurt");
-        protected readonly int HashForcedRespawnPara = Animator.StringToHash("ForcedRespawn");
-        protected readonly int HashMeleeAttackPara = Animator.StringToHash("MeleeAttack");
+        public readonly int HorizontalSpeedParaHash = Animator.StringToHash("HorizontalSpeed");
+        public readonly int VerticalSpeedParaHash = Animator.StringToHash("VerticalSpeed");
+        public readonly int GroundedParaHash = Animator.StringToHash("Grounded");
+        public readonly int CrouchingParaHash = Animator.StringToHash("Crouching");
+        public readonly int PushingParaHash = Animator.StringToHash("Pushing");
+        public readonly int TimeoutParaHash = Animator.StringToHash("Timeout");
+        public readonly int RespawnParaHash = Animator.StringToHash("Respawn");
+        public readonly int HurtParaHash = Animator.StringToHash("Hurt");
+        public readonly int ForcedRespawnParaHash = Animator.StringToHash("ForcedRespawn");
+        public readonly int MeleeAttackParaHash = Animator.StringToHash("MeleeAttack");
+        public readonly int DeadParaHash = Animator.StringToHash("Dead");
+
 
         #endregion
 
@@ -54,6 +57,8 @@ namespace DarwinsDescent
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
             boxCollider = GetComponent<BoxCollider2D>();
+            damageable = GetComponent<Damageable>();
+            damager = GetComponent<Damager>();
 
             contactFilter.layerMask = groundedLayerMask;
             contactFilter.useLayerMask = true;
@@ -67,6 +72,7 @@ namespace DarwinsDescent
 
         #region Facing
         // Should add to a common function script.
+        // The PlayerInput in this script makes it directly tied to the controller input. TODO: replace this or add this to the player character as an override
         public void UpdateFacing()
         {
             bool faceLeft = PlayerInput.Instance.Horizontal.Value < 0f;
@@ -83,6 +89,7 @@ namespace DarwinsDescent
             }
         }
 
+        // A good way of determining this is by passing aIPath.desiredVelocity.x <= 0 
         public void UpdateFacing(bool faceLeft)
         {
             if (faceLeft)
@@ -104,10 +111,10 @@ namespace DarwinsDescent
         #region Grounded
         public void CheckIsGrounded()
         {
-            // bool wasGrounded = animator.GetBool(HashGroundedPara);
+            // bool wasGrounded = animator.GetBool(GroundedParaHash);
             RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, groundedRaycastDistanceCheck, contactFilter.layerMask);
             isGrounded = raycastHit.collider != null;
-            animator.SetBool(HashGroundedPara, isGrounded);
+            animator.SetBool(GroundedParaHash, isGrounded);
 
             #region Uncomment to see visual Debug
             // Uncomment to see visual Debug

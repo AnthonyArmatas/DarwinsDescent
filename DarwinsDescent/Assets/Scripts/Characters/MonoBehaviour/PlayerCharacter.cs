@@ -61,8 +61,8 @@ namespace DarwinsDescent
         {
             //characterController2D.Move(moveVector * Time.deltaTime);
             MoveAround();
-            animator.SetFloat(HashHorizontalSpeedPara, this.Rigidbody2D.velocity.x);
-            animator.SetFloat(HashVerticalSpeedPara, this.Rigidbody2D.velocity.y);
+            animator.SetFloat(HorizontalSpeedParaHash, this.Rigidbody2D.velocity.x);
+            animator.SetFloat(VerticalSpeedParaHash, this.Rigidbody2D.velocity.y);
 
             // Maybe Add to both Updates
             CheckIsGrounded();
@@ -169,8 +169,8 @@ namespace DarwinsDescent
 
                 // Setting this true here so that the damager can check if the trigger collision happens while MeleeAttack is active, and when the animation state exits, it sets it to false.
                 // This allows every frame of the animation to be register the hits. A different method should be used for specific frames of animation that the damage should be dealt (Or different Dmg).
-                animator.SetBool(HashMeleeAttackPara, true);
-                // animator.SetTrigger(HashMeleeAttackPara) also worked
+                animator.SetBool(MeleeAttackParaHash, true);
+                // animator.SetTrigger(MeleeAttackParaHash) also worked
             }
         }
 

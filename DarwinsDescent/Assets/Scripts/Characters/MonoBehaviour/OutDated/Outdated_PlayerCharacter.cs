@@ -63,17 +63,17 @@ namespace DarwinsDescent
 
         protected bool inPause = false;
 
-        protected readonly int HashHorizontalSpeedPara = Animator.StringToHash("HorizontalSpeed");
-        protected readonly int HashVerticalSpeedPara = Animator.StringToHash("VerticalSpeed");
-        protected readonly int HashGroundedPara = Animator.StringToHash("Grounded");
-        protected readonly int HashCrouchingPara = Animator.StringToHash("Crouching");
-        protected readonly int HashPushingPara = Animator.StringToHash("Pushing");
-        protected readonly int HashTimeoutPara = Animator.StringToHash("Timeout");
-        protected readonly int HashRespawnPara = Animator.StringToHash("Respawn");
-        protected readonly int HashDeadPara = Animator.StringToHash("Dead");
-        protected readonly int HashHurtPara = Animator.StringToHash("Hurt");
-        protected readonly int HashForcedRespawnPara = Animator.StringToHash("ForcedRespawn");
-        protected readonly int HashMeleeAttackPara = Animator.StringToHash("MeleeAttack");
+        protected readonly int HorizontalSpeedParaHash = Animator.StringToHash("HorizontalSpeed");
+        protected readonly int VerticalSpeedParaHash = Animator.StringToHash("VerticalSpeed");
+        protected readonly int GroundedParaHash = Animator.StringToHash("Grounded");
+        protected readonly int CrouchingParaHash = Animator.StringToHash("Crouching");
+        protected readonly int PushingParaHash = Animator.StringToHash("Pushing");
+        protected readonly int TimeoutParaHash = Animator.StringToHash("Timeout");
+        protected readonly int RespawnParaHash = Animator.StringToHash("Respawn");
+        protected readonly int DeadParaHash = Animator.StringToHash("Dead");
+        protected readonly int HurtParaHash = Animator.StringToHash("Hurt");
+        protected readonly int ForcedRespawnParaHash = Animator.StringToHash("ForcedRespawn");
+        protected readonly int MeleeAttackParaHash = Animator.StringToHash("MeleeAttack");
 
         //used in non alloc version of physic function
         protected ContactPoint2D[] m_ContactsBuffer = new ContactPoint2D[16];
@@ -170,8 +170,8 @@ namespace DarwinsDescent
             //characterController2D.Move(moveVector * Time.deltaTime);
             MoveAround();
             moveVector = characterController2D.Rigidbody2D.velocity;
-            animator.SetFloat(HashHorizontalSpeedPara, moveVector.x);
-            animator.SetFloat(HashVerticalSpeedPara, moveVector.y);
+            animator.SetFloat(HorizontalSpeedParaHash, moveVector.x);
+            animator.SetFloat(VerticalSpeedParaHash, moveVector.y);
 
             // Maybe Add to both Updates
             CheckForGrounded();
@@ -278,8 +278,8 @@ namespace DarwinsDescent
 
                 // Setting this true here so that the damager can check if the trigger collision happens while MeleeAttack is active, and when the animation state exits, it sets it to false.
                 // This allows every frame of the animation to be register the hits. A different method should be used for specific frames of animation that the damage should be dealt (Or different Dmg).
-                animator.SetBool(HashMeleeAttackPara,true);
-                // animator.SetTrigger(HashMeleeAttackPara) also worked
+                animator.SetBool(MeleeAttackParaHash,true);
+                // animator.SetTrigger(MeleeAttackParaHash) also worked
             }
         }
 
@@ -323,7 +323,7 @@ namespace DarwinsDescent
         #region Grounded
         public bool CheckForGrounded()
         {
-            bool wasGrounded = animator.GetBool(HashGroundedPara);
+            bool wasGrounded = animator.GetBool(GroundedParaHash);
             bool grounded = characterController2D.IsGrounded;
 
             if (grounded)
@@ -334,7 +334,7 @@ namespace DarwinsDescent
                 }
             }
 
-            animator.SetBool(HashGroundedPara, grounded);
+            animator.SetBool(GroundedParaHash, grounded);
 
             return grounded;
         }
@@ -364,7 +364,7 @@ namespace DarwinsDescent
 
         public void CheckForCrouching()
         {
-            animator.SetBool(HashCrouchingPara, PlayerInput.Instance.Vertical.Value < 0f);
+            animator.SetBool(CrouchingParaHash, PlayerInput.Instance.Vertical.Value < 0f);
         }
 
         protected IEnumerator Flicker()
@@ -402,13 +402,13 @@ namespace DarwinsDescent
             //UpdateFacing(damageable.GetDamageDirection().x > 0f);
             //damageable.EnableInvulnerability();
 
-            //animator.SetTrigger(HashHurtPara);
+            //animator.SetTrigger(HurtParaHash);
 
             ////we only force respawn if health > 0, otherwise both forceRespawn & Death trigger are set in the animator, messing with each other.
             //if (damageable.CurrentHealth > 0 && damager.forceRespawn)
-            //    animator.SetTrigger(HashForcedRespawnPara);
+            //    animator.SetTrigger(ForcedRespawnParaHash);
 
-            //animator.SetBool(HashGroundedPara, false);
+            //animator.SetBool(GroundedParaHash, false);
 
             ////if the health is < 0, mean die callback will take care of respawn
             //if (damager.forceRespawn && damageable.CurrentHealth > 0)
@@ -419,7 +419,7 @@ namespace DarwinsDescent
 
         public void OnDie()
         {
-            animator.SetTrigger(HashDeadPara);
+            animator.SetTrigger(DeadParaHash);
 
             StartCoroutine(DieRespawnCoroutine(true, false));
         }

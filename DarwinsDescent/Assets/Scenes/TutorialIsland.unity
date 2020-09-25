@@ -139,7 +139,6 @@ GameObject:
   - component: {fileID: 7721283}
   - component: {fileID: 7721282}
   - component: {fileID: 7721281}
-  - component: {fileID: 7721280}
   m_Layer: 13
   m_Name: Darwin_Updated
   m_TagString: Untagged
@@ -147,23 +146,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &7721280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7721279}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e79dad4f04e9d5e45b9b646f02091a3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 1
-  ignoreInvincibility: 0
-  hittableLayers:
-    serializedVersion: 2
-    m_Bits: 1114112
 --- !u!114 &7721281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,59 +158,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54d82668876acdc4e96d804f0538c1a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 5
   invulnerableAfterDamage: 1
   invulnerabilityDuration: 3
   disableOnDeath: 0
+  CurHealth: 0
   centreOffset: {x: 0, y: 1}
-  OnHealthSet:
-    m_PersistentCalls:
-      m_Calls: []
-  OnTakeDamage:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: DarwinsDecent.PlayerCharacter, Assembly-CSharp
-        m_MethodName: OnHurt
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnDie:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: DarwinsDecent.PlayerCharacter, Assembly-CSharp
-        m_MethodName: OnDie
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnGainHealth:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7721279}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  actor: {fileID: 7721283}
 --- !u!114 &7721282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,7 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a846466d65cf4f049957b98764e5f073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
+  health: 10
   status: 
   baseMovementSpeed: 0
   baseAttackDamage: 0
@@ -290,6 +225,7 @@ MonoBehaviour:
   groundedLayerMask:
     serializedVersion: 2
     m_Bits: 2148597760
+  animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
   spriteOriginallyFacesLeft: 0
   groundedRaycastDistanceCheck: 0.5
@@ -654,6 +590,7 @@ GameObject:
   m_Component:
   - component: {fileID: 290777249}
   - component: {fileID: 290777250}
+  - component: {fileID: 290777251}
   m_Layer: 0
   m_Name: Zombie_Atk_Range
   m_TagString: Untagged
@@ -701,6 +638,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &290777251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 290777248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e79dad4f04e9d5e45b9b646f02091a3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  ignoreInvincibility: 0
+  hittableLayers:
+    serializedVersion: 2
+    m_Bits: 8192
+  animator: {fileID: 645727008}
 --- !u!1 &451671556
 GameObject:
   m_ObjectHideFlags: 3
@@ -927,7 +882,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.00000047683716, y: 0.24999988, z: -10}
+  m_LocalPosition: {x: -0.00000071525574, y: 0.24999988, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1152,7 +1107,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 8d89030fc8c88364ca66237047dccb20, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 1
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -1229,6 +1184,7 @@ GameObject:
   m_Component:
   - component: {fileID: 765557264}
   - component: {fileID: 765557265}
+  - component: {fileID: 765557266}
   m_Layer: 13
   m_Name: MeleeHitBox
   m_TagString: Untagged
@@ -1276,6 +1232,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.35703933, y: 0.41631985}
   m_EdgeRadius: 0
+--- !u!114 &765557266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765557263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e79dad4f04e9d5e45b9b646f02091a3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  ignoreInvincibility: 0
+  hittableLayers:
+    serializedVersion: 2
+    m_Bits: 1114112
+  animator: {fileID: 7721287}
 --- !u!1 &997822675
 GameObject:
   m_ObjectHideFlags: 0
@@ -1472,11 +1446,8 @@ GameObject:
   - component: {fileID: 1078246200}
   - component: {fileID: 1078246199}
   - component: {fileID: 1078246201}
-  - component: {fileID: 1078246202}
   - component: {fileID: 1078246204}
-  - component: {fileID: 1078246203}
   - component: {fileID: 1078246206}
-  - component: {fileID: 1078246205}
   m_Layer: 0
   m_Name: Zombie
   m_TagString: Untagged
@@ -1576,42 +1547,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1
-  target: {fileID: 1446854338}
---- !u!114 &1078246202
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1078246197}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4b007b4139dff0459cc80ac7fe3a097, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 0}
-  spriteOriginallyFacesLeft: 0
-  damageable: {fileID: 0}
-  meleeDamager: {fileID: 0}
-  animator: {fileID: 0}
-  aIPath: {fileID: 0}
---- !u!114 &1078246203
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1078246197}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e79dad4f04e9d5e45b9b646f02091a3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 1
-  ignoreInvincibility: 0
-  hittableLayers:
-    serializedVersion: 2
-    m_Bits: 0
+  target: {fileID: 7721289}
 --- !u!114 &1078246204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1624,66 +1560,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54d82668876acdc4e96d804f0538c1a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 5
   invulnerableAfterDamage: 1
   invulnerabilityDuration: 3
   disableOnDeath: 0
+  CurHealth: 0
   centreOffset: {x: 0, y: 1}
-  OnHealthSet:
-    m_PersistentCalls:
-      m_Calls: []
-  OnTakeDamage:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1078246202}
-        m_TargetAssemblyTypeName: ZombieHandler, Assembly-CSharp
-        m_MethodName: OnHurt
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnDie:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1078246202}
-        m_TargetAssemblyTypeName: ZombieHandler, Assembly-CSharp
-        m_MethodName: OnDie
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnGainHealth:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!95 &1078246205
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1078246197}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  actor: {fileID: 1078246206}
 --- !u!114 &1078246206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1691,7 +1573,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1078246197}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78f679b23388a9441b84b03a05940a55, type: 3}
   m_Name: 
@@ -1704,9 +1586,14 @@ MonoBehaviour:
   groundedLayerMask:
     serializedVersion: 2
     m_Bits: 2148532480
+  animator: {fileID: 645727008}
   spriteRenderer: {fileID: 0}
   spriteOriginallyFacesLeft: 0
   groundedRaycastDistanceCheck: 0.5
+  pipValue: 1
+  baseAtkDmg: 1
+  aIPath: {fileID: 0}
+  destinationSetter: {fileID: 0}
 --- !u!1 &1116938544
 GameObject:
   m_ObjectHideFlags: 0
@@ -2156,7 +2043,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1438259414}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.00000047683716, y: 0.24999988, z: -10}
+  m_LocalPosition: {x: -0.00000071525574, y: 0.24999988, z: -10}
   m_LocalScale: {x: 1, y: 9.07, z: 1}
   m_Children:
   - {fileID: 451671557}
@@ -2338,6 +2225,7 @@ MonoBehaviour:
   hittableLayers:
     serializedVersion: 2
     m_Bits: 1114112
+  animator: {fileID: 0}
 --- !u!114 &1446854340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2350,59 +2238,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54d82668876acdc4e96d804f0538c1a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 5
   invulnerableAfterDamage: 1
   invulnerabilityDuration: 3
   disableOnDeath: 0
+  CurHealth: 0
   centreOffset: {x: 0, y: 1}
-  OnHealthSet:
-    m_PersistentCalls:
-      m_Calls: []
-  OnTakeDamage:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1446854343}
-        m_TargetAssemblyTypeName: DarwinsDecent.PlayerCharacter, Assembly-CSharp
-        m_MethodName: OnHurt
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnDie:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1446854343}
-        m_TargetAssemblyTypeName: DarwinsDecent.PlayerCharacter, Assembly-CSharp
-        m_MethodName: OnDie
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnGainHealth:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1446854333}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  actor: {fileID: 0}
 --- !u!114 &1446854341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2680,6 +2521,7 @@ MonoBehaviour:
   hittableLayers:
     serializedVersion: 2
     m_Bits: 0
+  animator: {fileID: 0}
 --- !u!114 &1508865221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2692,23 +2534,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54d82668876acdc4e96d804f0538c1a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 5
   invulnerableAfterDamage: 1
   invulnerabilityDuration: 3
   disableOnDeath: 0
+  CurHealth: 0
   centreOffset: {x: 0, y: 1}
-  OnHealthSet:
-    m_PersistentCalls:
-      m_Calls: []
-  OnTakeDamage:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDie:
-    m_PersistentCalls:
-      m_Calls: []
-  OnGainHealth:
-    m_PersistentCalls:
-      m_Calls: []
+  actor: {fileID: 0}
 --- !u!61 &1508865223
 BoxCollider2D:
   m_ObjectHideFlags: 0
