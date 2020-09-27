@@ -5,19 +5,26 @@ using UnityEngine;
 
 namespace DarwinsDescent
 {
+    /// <summary>
+    /// Manages the logic behind the pipsystem.
+    /// </summary>
+    [RequireComponent(typeof(Actor))]
     [RequireComponent(typeof(Damageable))]
 
     public class PipSystem : MonoBehaviour
     {
         #region CopyPasteRegion
         #endregion
-        public Damageable damageable;
+        public Damageable Damageable;
 
-        public int pipPool;
+        public int PipPoolCap;
+        public int PipPool;
+        public int MinimumRequiredPipsInPool;
         public PipModel Head;
         public PipModel Chest;
         public PipModel Arms;
         public PipModel Legs;
+        public Actor Actor;
 
 
 
@@ -25,8 +32,9 @@ namespace DarwinsDescent
         // Start is called before the first frame update
         void Awake()
         {
-            damageable = GetComponent<Damageable>();
-            pipPool = damageable.CurHealth;
+            Damageable = GetComponent<Damageable>();
+            Actor = GetComponent<Actor>();
+            PipPool = Actor.health;
         }
 
 

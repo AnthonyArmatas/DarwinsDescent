@@ -39,27 +39,24 @@ namespace DarwinsDescent
         public bool invulnerableAfterDamage = true;
         public float invulnerabilityDuration = 3f;
         public bool disableOnDeath = false;
-        public int CurHealth;
         // Figure out if this actually works.
         [Tooltip("An offset from the object position used to set from where the distance to the damager is computed")]
         public Vector2 centreOffset = new Vector2(0f, 1f);
         public Actor actor;
 
+        // Used to remember where it would be healed back to full
+        protected int startingHealth;
         protected bool Invulnerable;
         protected float InulnerabilityTimer;
         protected Vector2 DamageDirection;
         protected bool ResetHealthOnSceneReload;
-        protected int startingHealth;
-
-        public int CurrentHealth
-        {
-            get { return CurHealth; }
-        }
 
         void Start()
         {
+            if (actor == null)
+                actor = GetComponent<Actor>();
+
             startingHealth = actor.health;
-            CurHealth = startingHealth;
 
             //OnHealthSet.Invoke(this);
             DisableInvulnerability();
@@ -68,9 +65,6 @@ namespace DarwinsDescent
 
         void Update()
         {
-            // TODO: There is something funky about this (Maybe). Starting health is taken from Actor script in start, 
-            // and it is updated in update. Maybe find a way to have a single place that the health can be dealt with. This feels like it breaks the SRP
-            actor.health = CurHealth;
             if (Invulnerable)
             {
                 InulnerabilityTimer -= Time.deltaTime;
@@ -101,14 +95,14 @@ namespace DarwinsDescent
 
         public void TakeDamage(Damager damager, bool ignoreInvincible = false)
         {
-            if ((Invulnerable && !ignoreInvincible) || CurHealth <= 0)
+            if ((Invulnerable && !ignoreInvincible) || actor.health <= 0)
                 return;
 
             //we can reach that point if the damager was one that was ignoring invincible state.
             //We still want the callback that we were hit, but not the damage to be removed from health.
             if (!Invulnerable)
             {
-                CurHealth -= damager.damage;
+                actor.health -= damager.damage;
                 //OnHealthSet.Invoke(this);
             }
 
@@ -117,7 +111,7 @@ namespace DarwinsDescent
             // this should call OnHurt, do that instead of invoke
             //OnTakeDamage.Invoke(damager, this);
 
-            if (CurHealth <= 0)
+            if (actor.health <= 0)
             {
                 actor.animator.SetBool(actor.DeadParaHash, true);
             }
@@ -126,10 +120,10 @@ namespace DarwinsDescent
 
         public void GainHealth(int amount)
         {
-            CurHealth += amount;
+            actor.health += amount;
 
-            if (CurHealth > startingHealth)
-                CurHealth = startingHealth;
+            if (actor.health > startingHealth)
+                actor.health = startingHealth;
 
             //OnHealthSet.Invoke(this);
 
@@ -138,9 +132,9 @@ namespace DarwinsDescent
 
         public void SetHealth(int amount)
         {
-            CurHealth = amount;
+            actor.health = amount;
 
-            if (CurHealth <= 0)
+            if (actor.health <= 0)
             {
                 //OnDie.Invoke(null, this);
                 ResetHealthOnSceneReload = true;

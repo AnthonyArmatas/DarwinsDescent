@@ -38,7 +38,7 @@ namespace DarwinsDescent
             };
 
             if (health == 0)
-                health = 5;
+                health = 1;
             if (baseMovementSpeed == 0)
                 baseMovementSpeed = 10f;
             if (baseAttackDamage == 0)
