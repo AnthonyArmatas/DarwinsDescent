@@ -43,9 +43,9 @@ namespace DarwinsDescent
         [Tooltip("An offset from the object position used to set from where the distance to the damager is computed")]
         public Vector2 centreOffset = new Vector2(0f, 1f);
         public Actor actor;
-
         // Used to remember where it would be healed back to full
-        protected int startingHealth;
+        public int startingHealth;
+
         protected bool Invulnerable;
         protected float InulnerabilityTimer;
         protected Vector2 DamageDirection;
@@ -56,7 +56,7 @@ namespace DarwinsDescent
             if (actor == null)
                 actor = GetComponent<Actor>();
 
-            startingHealth = actor.health;
+            startingHealth = actor.health.MaxHP;
 
             //OnHealthSet.Invoke(this);
             DisableInvulnerability();
@@ -95,14 +95,14 @@ namespace DarwinsDescent
 
         public void TakeDamage(Damager damager, bool ignoreInvincible = false)
         {
-            if ((Invulnerable && !ignoreInvincible) || actor.health <= 0)
+            if ((Invulnerable && !ignoreInvincible) || actor.health.CurHealth <= 0)
                 return;
 
             //we can reach that point if the damager was one that was ignoring invincible state.
             //We still want the callback that we were hit, but not the damage to be removed from health.
             if (!Invulnerable)
             {
-                actor.health -= damager.damage;
+                actor.health.CurHealth -= damager.damage;
                 //OnHealthSet.Invoke(this);
             }
 
@@ -111,7 +111,7 @@ namespace DarwinsDescent
             // this should call OnHurt, do that instead of invoke
             //OnTakeDamage.Invoke(damager, this);
 
-            if (actor.health <= 0)
+            if (actor.health.CurHealth <= 0)
             {
                 actor.animator.SetBool(actor.DeadParaHash, true);
             }
@@ -120,10 +120,10 @@ namespace DarwinsDescent
 
         public void GainHealth(int amount)
         {
-            actor.health += amount;
+            actor.health.CurHealth += amount;
 
-            if (actor.health > startingHealth)
-                actor.health = startingHealth;
+            if (actor.health.CurHealth > startingHealth)
+                actor.health.CurHealth = startingHealth;
 
             //OnHealthSet.Invoke(this);
 
@@ -132,9 +132,9 @@ namespace DarwinsDescent
 
         public void SetHealth(int amount)
         {
-            actor.health = amount;
+            actor.health.CurHealth = amount;
 
-            if (actor.health <= 0)
+            if (actor.health.CurHealth <= 0)
             {
                 //OnDie.Invoke(null, this);
                 ResetHealthOnSceneReload = true;

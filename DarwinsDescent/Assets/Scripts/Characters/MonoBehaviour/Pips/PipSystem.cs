@@ -1,7 +1,9 @@
-﻿using DarwinsDescent.Assets.Scripts.Characters.MonoBehaviour.Pips;
+﻿using DarwinsDescent.Assets.Scripts.Characters.MonoBehaviour;
+using DarwinsDescent.Assets.Scripts.Characters.MonoBehaviour.Pips;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace DarwinsDescent
 {
@@ -15,16 +17,41 @@ namespace DarwinsDescent
     {
         #region CopyPasteRegion
         #endregion
-        public Damageable Damageable;
+        public DamageablePlayer Damageable;
 
-        public int PipPoolCap;
-        public int PipPool;
-        public int MinimumRequiredPipsInPool;
-        public PipModel Head;
-        public PipModel Chest;
-        public PipModel Arms;
-        public PipModel Legs;
-        public Actor Actor;
+
+        // public int PipPool; is Actor.health
+
+        //Top
+        public PipModel Head = new PipModel();
+        //Left
+        public PipModel Chest = new PipModel();
+        //Right
+        public PipModel Arms = new PipModel();
+        //Bottom
+        public PipModel Legs = new PipModel();
+
+        public PlayerCharacter PlayerCharacter;
+
+        protected Color Disabled = new Color(127f, 127f, 127f);
+        protected Color Enabled = new Color(191f, 191f, 0f);
+        private int PipPoolCap;
+        private int MinimumRequiredPipsInPool = 1;
+        
+        // Used as a work around since the dpad cannot be used as buttons in unity, only as an axis, and by extension you cannot get button up, down , or held. 
+        private bool DpadWasDown = false;
+        private float DpadPrevHorVal = 0f;
+        private float DpadPrevVertVal = 0f;
+
+        #region Events
+        // Sets up the delegate so that the subscriber knows what it function needs to contain
+        public delegate void UpdatePipCount(PipModel PipSection);
+        // The Event publish. This is what the reviving methods subscribe to. So when update is invoked those other methods will run.
+        public event UpdatePipCount Updated;
+
+        public delegate void InitializePipParts(PipModel Head, PipModel Arms, PipModel Chest, PipModel Legs);
+        public InitializePipParts Initialized;
+        #endregion
 
 
 
@@ -32,12 +59,117 @@ namespace DarwinsDescent
         // Start is called before the first frame update
         void Awake()
         {
-            Damageable = GetComponent<Damageable>();
-            Actor = GetComponent<Actor>();
-            PipPool = Actor.health;
+            Damageable = GetComponent<DamageablePlayer>();
+            PlayerCharacter = GetComponent<PlayerCharacter>();
+        }
+        void Start()
+        {
+            // Initializing PipPoolCap in start because healthdetailed is initialized in awake and that needs to be set up first
+            PipPoolCap = PlayerCharacter.healthDetailed.MaxHP;
+
+            // Call function which sets the default/saved values for each of the pip models
+            Initialized.Invoke(Head, Arms, Chest, Legs);
+            if (Updated != null)
+            {
+                Updated.Invoke(Head);
+                Updated.Invoke(Arms);
+                Updated.Invoke(Chest);
+                Updated.Invoke(Legs);
+            }
         }
 
+        void Update()
+        {
+            //UpdateTempPips()
+        }
 
+        void FixedUpdate()
+        {
+            AssignPips();
+            //PlayerInput.Instance.Horizontal.Value
+        }
+
+        public void AssignPips()
+        {
+            if (PipPoolCap == MinimumRequiredPipsInPool)
+                return;
+
+            if (DpadWasDown == true &&
+                PlayerInput.Instance.DPadVertical.ReceivingInput == false)
+            {
+                if (DpadPrevVertVal > 0)
+                {
+                    MovePips(Head);
+                }
+                if (DpadPrevVertVal < 0)
+                {
+                    MovePips(Legs);
+                }
+            }
+
+            if (DpadWasDown == true && 
+                PlayerInput.Instance.DPadHorizontal.ReceivingInput == false)
+            {
+                if (DpadPrevHorVal > 0)
+                {
+                    MovePips(Chest);
+                }
+                if (DpadPrevHorVal < 0)
+                {
+                    MovePips(Arms);
+                }
+            }
+
+            DpadWasDown = PlayerInput.Instance.DPadVertical.ReceivingInput;
+            DpadPrevVertVal = PlayerInput.Instance.DPadVertical.Value;
+            DpadPrevHorVal = PlayerInput.Instance.DPadHorizontal.Value;
+
+        }
+
+        public void MovePips(PipModel PipSection)
+        {
+            // if there are not enough pips to give or the pip in question is locked or the max cap has been reached, return.
+            if(PipSection.MaxCap <= 1  || 
+                PipSection.Locked)
+            {
+                return;
+            }
+
+            // If the left trigger is held then return all pips
+            if(PlayerInput.Instance.RefundPip.Value != 0)
+            {
+                // TODO: Call Damageable to refund health, filling up slots 
+                // and using the rest as temp.
+                PipSection.Allocated = 0;
+                Updated.Invoke(PipSection);
+                return;
+            }
+
+            if(PlayerCharacter.healthDetailed.CurHealth > PlayerCharacter.healthDetailed.MinHp &&
+                PipSection.Allocated != PipSection.MaxCap)
+            {
+                PipSection.Allocated++;
+                if (Updated != null)
+                    Updated.Invoke(PipSection);
+
+            }
+
+            
+
+            // If there is a pip to assign and there is room, 
+
+
+            //if (PipSection.Locked)
+            //    return;
+
+            //if(PipSection.Allocated < PipSection.MaxCap)
+            //{
+            //    PipSection.UsedPips.Push(PipSection.UnusedPips.Pop());
+            //    PipSection.UsedPips.Peek().GetComponent<Image>().color = Enabled;
+            //    return;
+            //}
+
+            //PipSection.UnusedPips.Push(PipSection.UsedPips.Pop());
+        }
     }
-
 }

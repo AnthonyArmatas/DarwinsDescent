@@ -1,4 +1,5 @@
-﻿using Pathfinding;
+﻿using DarwinsDescent.Assets.Scripts;
+using Pathfinding;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,8 +43,8 @@ namespace DarwinsDescent
                 useTriggers = false,
             };
 
-            if (health == 0)
-                health = 5;
+            health = new HealthModel(startingHealth);
+
             if (baseMovementSpeed == 0)
                 baseMovementSpeed = 10f;
             if (baseAttackDamage == 0)
@@ -53,7 +54,7 @@ namespace DarwinsDescent
         void FixedUpdate()
         {
             CheckIsGrounded();
-            if (health <= 0)
+            if (health.CurHealth <= 0)
                 destinationSetter.target = null;
                 return;
 

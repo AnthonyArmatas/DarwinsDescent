@@ -28,6 +28,10 @@ namespace DarwinsDescent
             Menu,
             LeftBumper,
             RightBumper,
+            //DPadUp,
+            //DPadDown,
+            //DPadLeft,
+            //DPadRight
         }
 
         public enum XboxControllerAxes
@@ -66,7 +70,7 @@ namespace DarwinsDescent
             bool afterFixedUpdateHeld;
             bool afterFixedUpdateUp;
 
-            protected static readonly Dictionary<int, string> k_ButtonsToName = new Dictionary<int, string>
+            protected static readonly Dictionary<int, string> ButtonsToName = new Dictionary<int, string>
             {
                 {(int)XboxControllerButtons.A, "A"},
                 {(int)XboxControllerButtons.B, "B"},
@@ -78,6 +82,10 @@ namespace DarwinsDescent
                 {(int)XboxControllerButtons.Menu, "Menu"},
                 {(int)XboxControllerButtons.LeftBumper, "Left Bumper"},
                 {(int)XboxControllerButtons.RightBumper, "Right Bumper"},
+                //{(int)XboxControllerButtons.DPadUp, "DPadUp" },
+                //{(int)XboxControllerButtons.DPadDown, "DPadDown" },
+                //{(int)XboxControllerButtons.DPadLeft, "DPadLeft" },
+                //{(int)XboxControllerButtons.DPadRight, "DPadRight" },
             };
 
             public InputButton(KeyCode key, XboxControllerButtons controllerButton)
@@ -103,9 +111,9 @@ namespace DarwinsDescent
                 {
                     if (fixedUpdateHappened)
                     {
-                        Down = Input.GetButtonDown(k_ButtonsToName[(int)controllerButton]);
-                        Held = Input.GetButton(k_ButtonsToName[(int)controllerButton]);
-                        Up = Input.GetButtonUp(k_ButtonsToName[(int)controllerButton]);
+                        Down = Input.GetButtonDown(ButtonsToName[(int)controllerButton]);
+                        Held = Input.GetButton(ButtonsToName[(int)controllerButton]);
+                        Up = Input.GetButtonUp(ButtonsToName[(int)controllerButton]);
 
                         afterFixedUpdateDown = Down;
                         afterFixedUpdateHeld = Held;
@@ -113,9 +121,9 @@ namespace DarwinsDescent
                     }
                     else
                     {
-                        Down = Input.GetButtonDown(k_ButtonsToName[(int)controllerButton]) || afterFixedUpdateDown;
-                        Held = Input.GetButton(k_ButtonsToName[(int)controllerButton]) || afterFixedUpdateHeld;
-                        Up = Input.GetButtonUp(k_ButtonsToName[(int)controllerButton]) || afterFixedUpdateUp;
+                        Down = Input.GetButtonDown(ButtonsToName[(int)controllerButton]) || afterFixedUpdateDown;
+                        Held = Input.GetButton(ButtonsToName[(int)controllerButton]) || afterFixedUpdateHeld;
+                        Up = Input.GetButtonUp(ButtonsToName[(int)controllerButton]) || afterFixedUpdateUp;
 
                         afterFixedUpdateDown |= Down;
                         afterFixedUpdateHeld |= Held;

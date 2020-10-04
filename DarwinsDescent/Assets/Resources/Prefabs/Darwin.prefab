@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 4831387846832115764}
   - component: {fileID: 4831387846832115762}
   - component: {fileID: 4831387846832115763}
-  - component: {fileID: 4831387846832115760}
   - component: {fileID: 4831387846832115761}
   m_Layer: 13
   m_Name: Darwin
@@ -169,10 +168,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a846466d65cf4f049957b98764e5f073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
   status: 
   baseMovementSpeed: 0
   baseAttackDamage: 0
+  startingHealth: 1
   isGrounded: 0
   groundedLayerMask:
     serializedVersion: 2
@@ -227,23 +226,14 @@ MonoBehaviour:
     positive: 119
     negative: 115
     controllerAxis: 2
---- !u!114 &4831387846832115760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4831387846832115790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54d82668876acdc4e96d804f0538c1a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  invulnerableAfterDamage: 1
-  invulnerabilityDuration: 3
-  disableOnDeath: 0
-  centreOffset: {x: 0, y: 1}
-  actor: {fileID: 0}
+  DPadVertical:
+    positive: 264
+    negative: 258
+    controllerAxis: 4
+  DPadHorizontal:
+    positive: 260
+    negative: 262
+    controllerAxis: 3
 --- !u!114 &4831387846832115761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,7 +248,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Damageable: {fileID: 0}
   PipPoolCap: 0
-  PipPool: 0
   MinimumRequiredPipsInPool: 0
   Actor: {fileID: 0}
 --- !u!1 &4831387847179500414

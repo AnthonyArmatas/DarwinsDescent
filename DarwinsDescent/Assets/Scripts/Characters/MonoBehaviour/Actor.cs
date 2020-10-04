@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DarwinsDescent.Assets.Scripts;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,10 +13,11 @@ namespace DarwinsDescent
         #region Vars
 
         // Character Info
-        public int health;
+        public HealthModel health;
         public string status;
         public float baseMovementSpeed;
         public int baseAttackDamage;
+        public int startingHealth = 1;
         public bool isGrounded = false;
 
         // Actor components and default values
@@ -59,6 +61,7 @@ namespace DarwinsDescent
             boxCollider = GetComponent<BoxCollider2D>();
             damageable = GetComponent<Damageable>();
             damager = GetComponent<Damager>();
+            health = new HealthModel(startingHealth);
 
             contactFilter.layerMask = groundedLayerMask;
             contactFilter.useLayerMask = true;

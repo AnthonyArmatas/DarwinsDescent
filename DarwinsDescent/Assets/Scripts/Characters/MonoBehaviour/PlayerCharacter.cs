@@ -19,10 +19,15 @@ namespace DarwinsDescent
         public bool jumping;
         public float jumpTime;
         public float jumpForce;
+        public HealthPipModel healthDetailed;
         #endregion
 
         void Awake()
         {
+            healthDetailed = new HealthPipModel(startingHealth, 1);
+            health = healthDetailed;
+            healthDetailed.RealHp = 3;
+            healthDetailed.TempHp = 7;
             this.Rigidbody2D = GetComponent<Rigidbody2D>();
             this.spriteRenderer = GetComponent<SpriteRenderer>();
             this.animator = GetComponent<Animator>();
@@ -37,8 +42,6 @@ namespace DarwinsDescent
                 useTriggers = false,
             };
 
-            if (health == 0)
-                health = 1;
             if (baseMovementSpeed == 0)
                 baseMovementSpeed = 10f;
             if (baseAttackDamage == 0)
