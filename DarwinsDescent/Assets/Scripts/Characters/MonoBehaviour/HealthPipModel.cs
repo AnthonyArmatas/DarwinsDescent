@@ -32,6 +32,17 @@ namespace DarwinsDescent
         {
             return RealHp + TempHp;
         }
+
+        public void LoseHealth(int incomingDamage)
+        {
+            TempHp -= incomingDamage;
+            if(TempHp < 0)
+            {
+                int LeftOverHp = Mathf.Abs(TempHp);
+                TempHp = 0;
+                RealHp -= LeftOverHp;
+            }
+        }
     }
 
 }

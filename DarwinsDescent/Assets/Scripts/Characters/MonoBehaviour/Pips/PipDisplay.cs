@@ -23,17 +23,21 @@ namespace DarwinsDescent
         public PipSystem pipSystem;
         public GameObject Hp_PipPool;
         public GameObject PipPad;
-        public Stack<GameObject> pipPool = new Stack<GameObject>();
+        public Stack<GameObject> pipPoolFull = new Stack<GameObject>();
+        public Stack<GameObject> pipPoolEmpty = new Stack<GameObject>();
+        public Stack<GameObject> pipPoolTemp = new Stack<GameObject>();
         public Dictionary<string, GameObject> PipHolder = new Dictionary<string, GameObject>();
         public Dictionary<string, Image> PipImageHolder = new Dictionary<string, Image>();
         public Dictionary<string, Text> PipTextHolder = new Dictionary<string, Text>();
         protected Vector3 CanvasOffSet;
-        protected Color Disabled = new Color(127f, 127f, 127f);
-        protected Color Enabled = new Color(191f, 191f, 0f);
+        protected Color Disabled = Color.gray;
+        protected Color Enabled = Color.yellow;
 
 
-        // Start is called before the first frame update
-        void Start()
+        // Using OnEnable because it is being called after PlayerCharacter onawake but before pipsystems start
+        // This allows the player character to become initialized the pipdisplay to be able to call it and sub to
+        // the pipsystems delegates and then have them call the PipDisplay functions.
+        void OnEnable()
         {
             if (playerCharacter == null)
             {
@@ -54,7 +58,11 @@ namespace DarwinsDescent
             // pipSystem.Updated is the publisher and UpdatePipDisplay is subscribing to it.
             // When Updated is invoked the method UpdatePipDisplay will be called.
             if (pipSystem != null)
-                pipSystem.Updated += UpdatePipDisplay;
+            {
+                pipSystem.Updated += UpdatePipPadDisplay;
+                pipSystem.DisplayUpdated += UpdatePipPoolDisplay;
+            }
+                
 
             if (Hp_PipPool == null || PipPad == null )
             {
@@ -101,21 +109,21 @@ namespace DarwinsDescent
             foreach (Transform child in Hp_PipPool.transform)
             {
                 child.gameObject.GetComponent<Image>().color = new Color(255f, 255f, 0f);
-                pipPool.Push(child.gameObject);
+                pipPoolFull.Push(child.gameObject);
             }
 
             GameObject walkingPipObj;
-            while (pipPool.Count > PipPoolCap)
+            while (pipPoolFull.Count > PipPoolCap)
             {
-                walkingPipObj = pipPool.Pop();
+                walkingPipObj = pipPoolFull.Pop();
                 Destroy(walkingPipObj);
             }
 
-            while(pipPool.Count < PipPoolCap)
+            while(pipPoolFull.Count < PipPoolCap)
             {
                 GameObject NewPipToAdd = new GameObject();
 
-                if (pipPool.Count == 0)
+                if (pipPoolFull.Count == 0)
                 {
                     NewPipToAdd = Instantiate(pipPrefab,
                     new Vector3(0,0),
@@ -126,7 +134,7 @@ namespace DarwinsDescent
                 }
                 else
                 {
-                    walkingPipObj = pipPool?.Peek();
+                    walkingPipObj = pipPoolFull?.Peek();
                     RectTransform rectTransform = (RectTransform)walkingPipObj.transform;
 
                     // unfortunately, something about setting the Vector 3 in the Instantiate is thrown off, and it ends up adding the Canvas transform to the new items transform
@@ -141,9 +149,9 @@ namespace DarwinsDescent
                     newrectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x + rectTransform.rect.width + 5f, rectTransform.anchoredPosition.y);
                 }
                 
-                NewPipToAdd.name = pipPrefab.name + (pipPool.Count + 1).ToString();
+                NewPipToAdd.name = pipPrefab.name + (pipPoolFull.Count + 1).ToString();
                 NewPipToAdd.GetComponent<Image>().color = new Color(255f, 255f, 0f);
-                pipPool.Push(NewPipToAdd);
+                pipPoolFull.Push(NewPipToAdd);
             }
         }
 
@@ -169,7 +177,26 @@ namespace DarwinsDescent
 
         }
 
-        public void UpdatePipDisplay(PipModel PipSection)
+        /// <summary>
+        /// PipPoolDisplay Rulees. There are so far 4 states which need to be taken into consideration.
+        /// 1. Normal - Health is stable and will only changed if funnled to the PipPad or depleted by damaged. Is used after any temnp for damage
+        /// 2. Damaged - Health that is empty and caused by enemy damage. Can be refilled by back to Nomral by killing enemies.
+        /// 3. Funneled - Health that is empty and caused by being funneled to the pippad. Can be filled to normal by returning pips from the pippad.
+        /// Can be filled by a temp by killing an enemy.
+        /// 4. Temp - Health is unstable and cannot be funneled into the pippad. Usually only gained when there is no damaged health and killed an enemy
+        /// while there is funneled Health. When taking damage, used before normal Health. Temp health degrades over time. Degrading time is reset to 
+        /// full if an enemy is hit before it is entirely depleted to funneled. If funneled health is returned while temp health exists, the temp stays
+        /// as extra health but will not have its degrade time reset.
+        /// Resets - 4 slots with extra temp NNDTT. one N gets filtered NFDTT and is in turn filled by temp NDTT. Since four slots and both temp are wirhin the max pool cap they can be reset
+        /// Does Not Reset - 4 slots with extra temp NNDTT. one N gets filtered NFDTT and is in turn filled by temp NDTT. Since four slots and both temp are wirhin the max pool cap they can be reset
+        /// </summary>
+        public void UpdatePipPoolDisplay()
+        {
+
+        }
+
+        // Should just update the pippad
+        public void UpdatePipPadDisplay(PipModel PipSection)
         {
             //child.gameObject.GetComponent<Image>().color = new Color(255f, 255f, 0f);
             PipSection.Name.ToString();

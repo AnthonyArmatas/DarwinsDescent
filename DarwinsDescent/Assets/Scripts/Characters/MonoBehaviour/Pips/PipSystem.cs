@@ -37,20 +37,27 @@ namespace DarwinsDescent
         protected Color Enabled = new Color(191f, 191f, 0f);
         private int PipPoolCap;
         private int MinimumRequiredPipsInPool = 1;
-        
+
         // Used as a work around since the dpad cannot be used as buttons in unity, only as an axis, and by extension you cannot get button up, down , or held. 
-        private bool DpadWasDown = false;
+        private bool DpadHorWasDown = false;
+        private bool DpadVertWasDown = false;
         private float DpadPrevHorVal = 0f;
         private float DpadPrevVertVal = 0f;
 
         #region Events
+        public delegate void InitializePipParts(PipModel Head, PipModel Arms, PipModel Chest, PipModel Legs);
+        public InitializePipParts Initialized;
+
+        // Sets up the delegate so that the subscriber knows what it function needs to contain
+        public delegate void UpdatePipPoolDisplay();
+        // The Event publish. This is what the reviving methods subscribe to. So when update is invoked those other methods will run.
+        public event UpdatePipPoolDisplay DisplayUpdated;
+
         // Sets up the delegate so that the subscriber knows what it function needs to contain
         public delegate void UpdatePipCount(PipModel PipSection);
         // The Event publish. This is what the reviving methods subscribe to. So when update is invoked those other methods will run.
         public event UpdatePipCount Updated;
 
-        public delegate void InitializePipParts(PipModel Head, PipModel Arms, PipModel Chest, PipModel Legs);
-        public InitializePipParts Initialized;
         #endregion
 
 
@@ -80,7 +87,7 @@ namespace DarwinsDescent
 
         void Update()
         {
-            //UpdateTempPips()
+            //UpdateTempPipTime();
         }
 
         void FixedUpdate()
@@ -94,7 +101,7 @@ namespace DarwinsDescent
             if (PipPoolCap == MinimumRequiredPipsInPool)
                 return;
 
-            if (DpadWasDown == true &&
+            if (DpadVertWasDown == true &&
                 PlayerInput.Instance.DPadVertical.ReceivingInput == false)
             {
                 if (DpadPrevVertVal > 0)
@@ -107,20 +114,21 @@ namespace DarwinsDescent
                 }
             }
 
-            if (DpadWasDown == true && 
+            if (DpadHorWasDown == true && 
                 PlayerInput.Instance.DPadHorizontal.ReceivingInput == false)
             {
                 if (DpadPrevHorVal > 0)
                 {
-                    MovePips(Chest);
+                    MovePips(Arms);
                 }
                 if (DpadPrevHorVal < 0)
                 {
-                    MovePips(Arms);
+                    MovePips(Chest);
                 }
             }
 
-            DpadWasDown = PlayerInput.Instance.DPadVertical.ReceivingInput;
+            DpadVertWasDown = PlayerInput.Instance.DPadVertical.ReceivingInput;
+            DpadHorWasDown = PlayerInput.Instance.DPadHorizontal.ReceivingInput;
             DpadPrevVertVal = PlayerInput.Instance.DPadVertical.Value;
             DpadPrevHorVal = PlayerInput.Instance.DPadHorizontal.Value;
 
@@ -148,28 +156,13 @@ namespace DarwinsDescent
             if(PlayerCharacter.healthDetailed.CurHealth > PlayerCharacter.healthDetailed.MinHp &&
                 PipSection.Allocated != PipSection.MaxCap)
             {
+                // Call Pip Display to remove a pip and replace it with an empty one
+                // Call the Damagable script lose a perm health
                 PipSection.Allocated++;
                 if (Updated != null)
                     Updated.Invoke(PipSection);
 
             }
-
-            
-
-            // If there is a pip to assign and there is room, 
-
-
-            //if (PipSection.Locked)
-            //    return;
-
-            //if(PipSection.Allocated < PipSection.MaxCap)
-            //{
-            //    PipSection.UsedPips.Push(PipSection.UnusedPips.Pop());
-            //    PipSection.UsedPips.Peek().GetComponent<Image>().color = Enabled;
-            //    return;
-            //}
-
-            //PipSection.UnusedPips.Push(PipSection.UsedPips.Pop());
         }
     }
 }

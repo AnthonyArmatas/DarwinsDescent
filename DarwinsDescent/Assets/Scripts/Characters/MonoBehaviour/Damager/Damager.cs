@@ -9,7 +9,6 @@ namespace DarwinsDescent
         #region CopyPasteRegion
         #endregion
 
-
         #region CommentedOut
         //[Serializable]
         //public class DamagableEvent : UnityEvent<Damager, Damageable>
@@ -63,6 +62,10 @@ namespace DarwinsDescent
             if (animator == null)
             {
                 animator = GetComponent<Animator>();
+                if(animator == null)
+                {
+                    animator = GetComponentInParent<Animator>();
+                }
             }
 
             //Can also use MeleeAtkBCollider = transform.Find("MeleeHitBox").GetComponent<BoxCollider2D>();
@@ -98,9 +101,9 @@ namespace DarwinsDescent
 
         void FixedUpdate()
         {
-            bool attacking = animator.GetBool(MeleeAttackParaHash);
-            if (!attacking)
-                return;
+            //bool attacking = animator.GetBool(MeleeAttackParaHash);
+            //if (!attacking)
+            //    return;
 
             //AttackCollider.ontr
         }
