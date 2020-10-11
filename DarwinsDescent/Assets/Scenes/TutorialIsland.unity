@@ -3469,8 +3469,8 @@ MonoBehaviour:
     negative: 115
     controllerAxis: 2
   DPadHorizontal:
-    positive: 260
-    negative: 262
+    positive: 262
+    negative: 260
     controllerAxis: 3
   DPadVertical:
     positive: 264
@@ -3492,11 +3492,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a846466d65cf4f049957b98764e5f073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageable: {fileID: 0}
-  animator: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  rigidbody2D: {fileID: 0}
-  boxCollider: {fileID: 0}
+  damageable: {fileID: 2078281731}
+  animator: {fileID: 2078281725}
+  spriteRenderer: {fileID: 2078281726}
+  rigidbody2D: {fileID: 2078281724}
+  boxCollider: {fileID: 2078281723}
   groundedLayerMask:
     serializedVersion: 2
     m_Bits: 2148597760
@@ -3684,8 +3684,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aae6349c9a110544bb63d20f1d132f74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: {fileID: 0}
-  animator: {fileID: 0}
+  health: {fileID: 2078281729}
+  animator: {fileID: 2078281725}
   StartingHealth: 2
 --- !u!850595691 &2132664979
 LightingSettings:

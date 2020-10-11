@@ -17,6 +17,9 @@ namespace DarwinsDescent
 
         public bool HaveControl { get { return haveControl; } }
 
+        /// <summary>
+        /// BIG NOTE WARNING!!! THESE CAN BE OVERWRITTEN IN THE GUI! I KNOW THAT IS OBVIOUS BUT I HAVE FORGOTTEN THAT LIKE THREE TIMES NOW SO IF THERE IS AN ISSUE WITH CONFIG LOOK THERE FIRST
+        /// </summary>
         public InputButton Pause = new InputButton(KeyCode.Escape, XboxControllerButtons.Menu);
         public InputButton Interact = new InputButton(KeyCode.E, XboxControllerButtons.Y);
         public InputButton MeleeAttack = new InputButton(KeyCode.K, XboxControllerButtons.X);
@@ -29,7 +32,7 @@ namespace DarwinsDescent
 
         public InputAxis Horizontal = new InputAxis(KeyCode.D, KeyCode.A, XboxControllerAxes.LeftstickHorizontal);
         public InputAxis Vertical = new InputAxis(KeyCode.W, KeyCode.S, XboxControllerAxes.LeftstickVertical);
-        public InputAxis DPadHorizontal = new InputAxis(KeyCode.Keypad4, KeyCode.Keypad6, XboxControllerAxes.DpadHorizontal);
+        public InputAxis DPadHorizontal = new InputAxis(KeyCode.Keypad6, KeyCode.Keypad4, XboxControllerAxes.DpadHorizontal);
         public InputAxis DPadVertical = new InputAxis(KeyCode.Keypad8, KeyCode.Keypad2, XboxControllerAxes.DpadVertical);
 
         public InputAxis RefundPip = new InputAxis(KeyCode.KeypadPlus, KeyCode.KeypadMinus, XboxControllerAxes.LeftTrigger);

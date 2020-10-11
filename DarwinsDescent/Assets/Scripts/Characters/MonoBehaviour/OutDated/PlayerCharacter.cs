@@ -26,25 +26,34 @@ namespace DarwinsDescent
         //{
         //}
 
+        // According to this https://forum.unity.com/threads/onenable-before-awake.361429/ awake, onenable, start, ect are by script
+        // and do not have call all of the scripts awake, then OnEnable, ect.
+        // According to this https://answers.unity.com/questions/13304/how-to-set-starting-order-of-scripts.html
+        // and actual attempts the way to set script execution is from within the unity gui
+        // Go To Edit -> Prokect Settings -> Script Execution Order and add scripts there in the order they should
+        // be run.
         void Awake()
         {
             //healthDetailed = new HealthPipModel(startingHealth, 1);
             //health = healthDetailed;
             //healthDetailed.RealHp = 3;
             //healthDetailed.TempHp = 7;
-            rigidbody2D = GetComponent<Rigidbody2D>();
-            spriteRenderer = GetComponent<SpriteRenderer>();
-            animator = GetComponent<Animator>();
-            boxCollider = GetComponent<BoxCollider2D>();
-            damageable = GetComponent<DamageablePlayer>();
-            //meleeAtkBCollider = transform.Find("MeleeHitBox")?.GetComponent<BoxCollider2D>();
-            cameraFollowTarget = transform.Find("CameraFollowTarget")?.GetComponent<Transform>();
+            if(rigidbody2D == null)
+                rigidbody2D = GetComponent<Rigidbody2D>();
+            if (spriteRenderer == null)
+                spriteRenderer = GetComponent<SpriteRenderer>();
+            if (animator == null)
+                animator = GetComponent<Animator>();
+            if (boxCollider == null)
+                boxCollider = GetComponent<BoxCollider2D>();
+            if (damageable == null)
+                damageable = GetComponent<DamageablePlayer>();
+            if (cameraFollowTarget == null)
+                cameraFollowTarget = transform.Find("CameraFollowTarget")?.GetComponent<Transform>();
 
 
             if (baseMovementSpeed == 0)
                 baseMovementSpeed = 10f;
-            //if (baseAttackDamage == 0)
-            //    baseAttackDamage = 1;
             if (jumpForce == 0)
                 jumpForce = 2;
             if (jumpTime == 0)
