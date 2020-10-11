@@ -66,7 +66,7 @@ public class ZombieHandler : MonoBehaviour
     public void OnHurt(Damager damager, Damageable damageable)
     {
 
-        UpdateFacing(damageable.GetDamageDirection().x > 0f);
+        //UpdateFacing(damageable.GetDamageDirection().x > 0f);
         //damageable.EnableInvulnerability();
 
         animator.SetTrigger(HurtParaHash);

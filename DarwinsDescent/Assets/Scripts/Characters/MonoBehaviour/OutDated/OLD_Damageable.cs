@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 namespace DarwinsDescent
 {
-    public class Damageable : MonoBehaviour
+    public class OLD_Damageable : MonoBehaviour
     {
         #region CopyPasteRegion
         #endregion
@@ -56,7 +56,7 @@ namespace DarwinsDescent
             if (actor == null)
                 actor = GetComponent<Actor>();
 
-            startingHealth = actor.health.MaxHP;
+            //startingHealth = actor.health.MaxHP;
 
             //OnHealthSet.Invoke(this);
             DisableInvulnerability();
@@ -95,14 +95,14 @@ namespace DarwinsDescent
 
         public void TakeDamage(Damager damager, bool ignoreInvincible = false)
         {
-            if ((Invulnerable && !ignoreInvincible) || actor.health.CurHealth <= 0)
-                return;
+            //if ((Invulnerable && !ignoreInvincible) || actor.health.CurHealth <= 0)
+            //    return;
 
             //we can reach that point if the damager was one that was ignoring invincible state.
             //We still want the callback that we were hit, but not the damage to be removed from health.
             if (!Invulnerable)
             {
-                actor.health.CurHealth -= damager.damage;
+                //actor.health.CurHealth -= damager.damage;
                 //OnHealthSet.Invoke(this);
             }
 
@@ -111,19 +111,19 @@ namespace DarwinsDescent
             // this should call OnHurt, do that instead of invoke
             //OnTakeDamage.Invoke(damager, this);
 
-            if (actor.health.CurHealth <= 0)
-            {
-                actor.animator.SetBool(actor.DeadParaHash, true);
-            }
-            actor.animator.SetTrigger(actor.HurtParaHash);
+            //if (actor.health.CurHealth <= 0)
+            //{
+            //    actor.animator.SetBool(actor.DeadParaHash, true);
+            //}
+            //actor.animator.SetTrigger(actor.HurtParaHash);
         }
 
         public void GainHealth(int amount)
         {
-            actor.health.CurHealth += amount;
+            //actor.health.CurHealth += amount;
 
-            if (actor.health.CurHealth > startingHealth)
-                actor.health.CurHealth = startingHealth;
+            //if (actor.health.CurHealth > startingHealth)
+            //    actor.health.CurHealth = startingHealth;
 
             //OnHealthSet.Invoke(this);
 
@@ -132,17 +132,17 @@ namespace DarwinsDescent
 
         public void SetHealth(int amount)
         {
-            actor.health.CurHealth = amount;
+            //actor.health.CurHealth = amount;
 
-            if (actor.health.CurHealth <= 0)
-            {
-                //OnDie.Invoke(null, this);
-                ResetHealthOnSceneReload = true;
-                EnableInvulnerability();
-                if (disableOnDeath) gameObject.SetActive(false);
-            }
+            //if (actor.health.CurHealth <= 0)
+            //{
+            //    //OnDie.Invoke(null, this);
+            //    ResetHealthOnSceneReload = true;
+            //    EnableInvulnerability();
+            //    if (disableOnDeath) gameObject.SetActive(false);
+            //}
 
-            //OnHealthSet.Invoke(this);
+            ////OnHealthSet.Invoke(this);
         }
     }
 

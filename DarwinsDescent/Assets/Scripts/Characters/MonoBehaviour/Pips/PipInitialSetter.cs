@@ -28,7 +28,14 @@ public class PipInitialSetter : MonoBehaviour
 
     void Awake()
     {
-        pipsetter.Initialized += InitializePipParts;
+        if(pipsetter == null)
+        {
+            pipsetter = GameObject.Find("Darwin").GetComponent<PipSystem>();
+        }
+        if (pipsetter != null)
+        {
+            pipsetter.Initialized += InitializePipParts;
+        }
     }
     
     public void InitializePipParts(PipModel Head, PipModel Arms, PipModel Chest, PipModel Legs)

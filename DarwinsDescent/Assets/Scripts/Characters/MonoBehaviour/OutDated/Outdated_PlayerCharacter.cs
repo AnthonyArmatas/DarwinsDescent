@@ -367,31 +367,31 @@ namespace DarwinsDescent
             animator.SetBool(CrouchingParaHash, PlayerInput.Instance.Vertical.Value < 0f);
         }
 
-        protected IEnumerator Flicker()
-        {
-            float timer = 0f;
+        //protected IEnumerator Flicker()
+        //{
+        //    float timer = 0f;
 
-            while (timer < damageable.invulnerabilityDuration)
-            {
-                spriteRenderer.enabled = !spriteRenderer.enabled;
-                yield return m_FlickeringWait;
-                timer += flickeringDuration;
-            }
+        //    //while (timer < damageable.invulnerabilityDuration)
+        //    //{
+        //    //    spriteRenderer.enabled = !spriteRenderer.enabled;
+        //    //    yield return m_FlickeringWait;
+        //    //    timer += flickeringDuration;
+        //    //}
 
-            spriteRenderer.enabled = true;
-        }
+        //    spriteRenderer.enabled = true;
+        //}
 
-        public Vector2 GetHurtDirection()
-        {
-            Vector2 damageDirection = damageable.GetDamageDirection();
+        //public Vector2 GetHurtDirection()
+        //{
+        //    //Vector2 damageDirection = damageable.GetDamageDirection();
 
-            if (damageDirection.y < 0f)
-                return new Vector2(Mathf.Sign(damageDirection.x), 0f);
+        //    //if (damageDirection.y < 0f)
+        //    //    return new Vector2(Mathf.Sign(damageDirection.x), 0f);
 
-            float y = Mathf.Abs(damageDirection.x) * m_TanHurtJumpAngle;
+        //    //float y = Mathf.Abs(damageDirection.x) * m_TanHurtJumpAngle;
 
-            return new Vector2(damageDirection.x, y).normalized;
-        }
+        //    //return new Vector2(damageDirection.x, y).normalized;
+        //}
 
         public void OnHurt(Damager damager, Damageable damageable)
         {
@@ -439,7 +439,7 @@ namespace DarwinsDescent
 
         public void StartFlickering()
         {
-            m_FlickerCoroutine = StartCoroutine(Flicker());
+            //m_FlickerCoroutine = StartCoroutine(Flicker());
         }
 
         public void StopFlickering()

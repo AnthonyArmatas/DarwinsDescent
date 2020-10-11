@@ -41,6 +41,7 @@ namespace DarwinsDescent
         {
             if (playerCharacter == null)
             {
+                Debug.LogError("Did Not Add A PlayerCharacter to PipDisplay. Fix It.");
                 playerCharacter = GetComponent<PlayerCharacter>();
                 if(playerCharacter == null)
                 {
@@ -90,7 +91,7 @@ namespace DarwinsDescent
             pipPrefab = (GameObject)Resources.Load("Prefabs/Pip", typeof(GameObject));
 
 
-            InitializePipPool(playerCharacter.health.MaxHP);
+            InitializePipPool((PlayerHealth)playerCharacter.damageable.health);
             InitializePipPadDisplay();
         }
 
@@ -99,9 +100,9 @@ namespace DarwinsDescent
         /// Adds pip HP images to the ui using the starting PlayerCharacater Health as the amount of pips.
         /// </summary>
         /// <param name="PipPoolCap"></param>
-        public void InitializePipPool(int PipPoolCap)
+        public void InitializePipPool(PlayerHealth PipPoolInfo)
         {
-            if (PipPoolCap == 0)
+            if (PipPoolInfo.MaxHP == 0)
             {
                 return;
             }
@@ -113,13 +114,13 @@ namespace DarwinsDescent
             }
 
             GameObject walkingPipObj;
-            while (pipPoolFull.Count > PipPoolCap)
+            while (pipPoolFull.Count > PipPoolInfo.MaxHP)
             {
                 walkingPipObj = pipPoolFull.Pop();
                 Destroy(walkingPipObj);
             }
 
-            while(pipPoolFull.Count < PipPoolCap)
+            while(pipPoolFull.Count < PipPoolInfo.MaxHP)
             {
                 GameObject NewPipToAdd = new GameObject();
 
@@ -199,7 +200,7 @@ namespace DarwinsDescent
         public void UpdatePipPadDisplay(PipModel PipSection)
         {
             //child.gameObject.GetComponent<Image>().color = new Color(255f, 255f, 0f);
-            PipSection.Name.ToString();
+            //PipSection.Name.ToString();
             PipTextHolder[PipSection.Name.ToString()].text = PipSection.Allocated.ToString();
             PipTextHolder[PipSection.Name.ToString()].color = Color.black;
             PipImageHolder[PipSection.Name.ToString()].color = Color.grey;

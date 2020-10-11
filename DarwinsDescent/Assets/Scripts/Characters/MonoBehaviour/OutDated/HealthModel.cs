@@ -10,16 +10,16 @@ namespace DarwinsDescent.Assets.Scripts
     {
         public int MaxHP;
 
-        private int _curHealth;
+        private int _CurHealth;
         public int CurHealth 
         {
             get 
             {
-                return _curHealth;
+                return _CurHealth;
             }
             set 
             {
-                _curHealth = value;
+                _CurHealth = value;
             }
         }
         public HealthModel(int maxHp)

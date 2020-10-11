@@ -21,14 +21,15 @@ namespace DarwinsDescent
         protected GameObject Headpoint;
         public bool LookForHeadPoint = false;
         private System.Random Random = new System.Random();
+        public EnemySMF SMF = new EnemySMF();
         // TODO: Maybe move to sub class but then need to make methods virtual and override them,
         public BoxCollider2D meleeAtkBCollider;
 
         void Awake()
         {
-            this.Rigidbody2D = GetComponent<Rigidbody2D>();
-            if (this.Rigidbody2D == null)
-                this.Rigidbody2D = GetComponentInChildren<Rigidbody2D>();
+            this.rigidbody2D = GetComponent<Rigidbody2D>();
+            if (this.rigidbody2D == null)
+                this.rigidbody2D = GetComponentInChildren<Rigidbody2D>();
 
             this.spriteRenderer = GetComponent<SpriteRenderer>();
             if (this.spriteRenderer == null)
@@ -42,6 +43,9 @@ namespace DarwinsDescent
             this.boxCollider = GetComponent<BoxCollider2D>();
             if(this.boxCollider == null)
                 this.boxCollider = GetComponentInChildren<BoxCollider2D>();
+
+            if (this.damageable == null)
+                damageable = GetComponent<DamageableEnemy>();
 
             if (PlayerCharacter == null)
                 PlayerCharacter = GameObject.Find("Darwin");
@@ -61,19 +65,8 @@ namespace DarwinsDescent
             aIPath = GetComponent<AIPath>();
             destinationSetter = GetComponent<AIDestinationSetter>();
 
-            this.contactFilter = new ContactFilter2D()
-            {
-                layerMask = groundedLayerMask,
-                useLayerMask = true,
-                useTriggers = false,
-            };
-
-            health = new HealthModel(startingHealth);
-
             if (baseMovementSpeed == 0)
                 baseMovementSpeed = 10f;
-            if (baseAttackDamage == 0)
-                baseAttackDamage = 1;
             if (StartingDetectionRange == 0f)
                 StartingDetectionRange = 5f;
             if (FollowDetectionRange == 0f)
@@ -85,7 +78,8 @@ namespace DarwinsDescent
         void FixedUpdate()
         {
             CheckIsGrounded();
-            if (health.CurHealth <= 0)
+
+            if (damageable?.health.CurHealth <= 0)
             {
                 destinationSetter.target = null;
                 return;
@@ -93,13 +87,41 @@ namespace DarwinsDescent
 
             CheckPlayerInRange();
              
-            this.animator.SetFloat(this.HorizontalSpeedParaHash, aIPath.desiredVelocity.x);
-            UpdateFacing(aIPath.desiredVelocity.x <= 0);
+            this.animator.SetFloat(SMF.HorizontalSpeedHash, aIPath.desiredVelocity.x);
+            UpdateFacing();
         }
 
-        public new void UpdateFacing(bool faceLeft)
+        #region Grounded
+        public override bool CheckIsGrounded()
         {
-            if (faceLeft)
+            RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, groundedRaycastDistanceCheck, groundedLayerMask);
+            isGrounded = raycastHit.collider != null;
+            animator.SetBool(SMF.GroundedHash, isGrounded);
+
+            #region Uncomment to see visual Debug
+            // Uncomment to see visual Debug
+            //Color rayColor;
+            //if (raycastHit.collider != null)
+            //{
+            //    rayColor = Color.green;
+            //}
+            //else
+            //{
+            //    rayColor = Color.red;
+            //}
+
+            //Debug.DrawRay(boxCollider.bounds.center + new Vector3(boxCollider.bounds.extents.x, 0), Vector2.down * (boxCollider.bounds.extents.y + groundedRaycastDistanceCheck), rayColor);
+            //Debug.DrawRay(boxCollider.bounds.center - new Vector3(boxCollider.bounds.extents.x, 0), Vector2.down * (boxCollider.bounds.extents.y + groundedRaycastDistanceCheck), rayColor);
+            //Debug.DrawRay(boxCollider.bounds.center - new Vector3(boxCollider.bounds.extents.x, boxCollider.bounds.extents.y + groundedRaycastDistanceCheck), Vector2.right * (boxCollider.bounds.extents.y), rayColor);
+            //Debug.Log(raycastHit.collider);
+            #endregion
+            return isGrounded;
+        }
+        #endregion
+
+        public override void UpdateFacing()
+        {
+            if (aIPath.desiredVelocity.x <= 0)
             {
                 spriteRenderer.flipX = !spriteOriginallyFacesLeft;
                 meleeAtkBCollider.transform.localScale = new Vector3(1, 1);
@@ -117,7 +139,7 @@ namespace DarwinsDescent
             RaycastHit2D raycastHit = new RaycastHit2D();
 
             if (PlayerCharacter != null)
-                playerDistance = Vector3.Distance(PlayerCharacter.transform.position, this.Rigidbody2D.position);
+                playerDistance = Vector3.Distance(PlayerCharacter.transform.position, this.rigidbody2D.position);
 
             if(playerDistance != 0f)
             {
@@ -130,7 +152,8 @@ namespace DarwinsDescent
                 if(playerDistance < distanceToFollow)
                 {
                     // TODO: still using ai finder for raycast, figure out why
-                    Transform lookingPoint = this.Rigidbody2D.transform;
+                    // I think a solution would be to make a child Gameobject and throw all of the AI things in there.
+                    Transform lookingPoint = this.rigidbody2D.transform;
                     if (Headpoint != null)
                     {
                         lookingPoint = Headpoint.transform;

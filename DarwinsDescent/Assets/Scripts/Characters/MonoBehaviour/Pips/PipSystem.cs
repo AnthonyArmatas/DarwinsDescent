@@ -10,14 +10,15 @@ namespace DarwinsDescent
     /// <summary>
     /// Manages the logic behind the pipsystem.
     /// </summary>
-    [RequireComponent(typeof(Actor))]
-    [RequireComponent(typeof(Damageable))]
+    //[RequireComponent(typeof(Actor))]
+    //[RequireComponent(typeof(Damageable))]
 
     public class PipSystem : MonoBehaviour
     {
         #region CopyPasteRegion
         #endregion
         public DamageablePlayer Damageable;
+        public PlayerHealth playerHealth;
 
 
         // public int PipPool; is Actor.health
@@ -64,16 +65,19 @@ namespace DarwinsDescent
 
 
         // Start is called before the first frame update
-        void Awake()
-        {
-            Damageable = GetComponent<DamageablePlayer>();
-            PlayerCharacter = GetComponent<PlayerCharacter>();
-        }
         void Start()
         {
-            // Initializing PipPoolCap in start because healthdetailed is initialized in awake and that needs to be set up first
-            PipPoolCap = PlayerCharacter.healthDetailed.MaxHP;
+            Damageable = GetComponent<DamageablePlayer>();
+            if (Damageable != null)
+            {
+                // Setting this because we cannot cast a property of an object, specifically we cannot cast the health object as player health to get and cast its innards.
+                playerHealth = (PlayerHealth)Damageable.health;
+            }
 
+            PlayerCharacter = GetComponent<PlayerCharacter>();
+
+            // Initializing PipPoolCap in start because DamageablePlayer is initialized in awake and that needs to be set up first
+            PipPoolCap = Damageable.StartingHealth;
             // Call function which sets the default/saved values for each of the pip models
             Initialized.Invoke(Head, Arms, Chest, Legs);
             if (Updated != null)
@@ -153,7 +157,8 @@ namespace DarwinsDescent
                 return;
             }
 
-            if(PlayerCharacter.healthDetailed.CurHealth > PlayerCharacter.healthDetailed.MinHp &&
+
+            if (playerHealth.CurHealth > playerHealth.MinRealHp &&
                 PipSection.Allocated != PipSection.MaxCap)
             {
                 // Call Pip Display to remove a pip and replace it with an empty one
