@@ -142,18 +142,18 @@ namespace DarwinsDescent
         {
             if (PipSection.Allocated <= 0)
                 return;
-            
-            if((PipSection.Allocated + playerHealth.CurHealth) > playerHealth.MaxHP)
+
+            playerHealth.LentHp -= PipSection.Allocated;
+            playerHealth.RealHp += PipSection.Allocated;
+            PipSection.Allocated = 0;
+            if (playerHealth.CurHealth > playerHealth.MaxHP)
             {
+                int tempPipsToAdd = playerHealth.CurHealth - playerHealth.MaxHP;
+                while(tempPipsToAdd != 0)
+                {
 
+                }
             }
-            //PipSection.Allocated
-            //playerHealth.RealHp -= LoanAmount;
-            //playerHealth.LentHp += LoanAmount;
-
-            //curHealth = playerHealth.CurHealth;
-            //UpdateHp.Invoke((PlayerHealth)health);
         }
-
     }
 }

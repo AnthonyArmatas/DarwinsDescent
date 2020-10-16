@@ -20,7 +20,7 @@ namespace DarwinsDescent
         }
         public state CurState;
 
-        public int TempTime;
+        public float TempTime;
 
         public Image PipDisplayImage;
     }

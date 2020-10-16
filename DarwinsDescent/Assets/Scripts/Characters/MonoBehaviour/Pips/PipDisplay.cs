@@ -21,9 +21,6 @@ namespace DarwinsDescent
         public Sprite pipFull;
         public Sprite pipEmpty;
         public PipSystem pipSystem;
-        public Stack<GameObject> pipPoolFull = new Stack<GameObject>();
-        public Stack<GameObject> pipPoolEmpty = new Stack<GameObject>();
-        public Stack<GameObject> pipPoolTemp = new Stack<GameObject>();
 
         protected Color Disabled = new Color(((127f * 100f / 255f) / 100f), ((127f * 100f / 255f) / 100f), ((127f * 100f / 255f) / 100f));
         protected Color Enabled = Color.yellow;
@@ -54,7 +51,6 @@ namespace DarwinsDescent
 
             pipFullHPPrefab = (GameObject)Resources.Load("Prefabs/Pip", typeof(GameObject));
             pipLentHPPrefab = (GameObject)Resources.Load("Prefabs/FunnelPip", typeof(GameObject));
-
         }
 
 
@@ -77,29 +73,20 @@ namespace DarwinsDescent
             switch (pipModel.CurState)
             {
                 case HPPipModel.state.Real:
-                    pipModel.PipDisplayImage = pipFullHPPrefab.GetComponent<Image>();
-                    // TODO: Should set in setter but too braindead to do it atm.
-                    pipModel.gameObject.GetComponent<Image>().sprite = pipModel.PipDisplayImage.sprite;
-                    pipModel.gameObject.GetComponent<Image>().color = Enabled;
+                    pipModel.PipDisplayImage.sprite = pipFullHPPrefab.GetComponent<Image>().sprite;
+                    pipModel.PipDisplayImage.color = Enabled;
                     break;
                 case HPPipModel.state.Temp:
-                    pipModel.PipDisplayImage = pipFullHPPrefab.GetComponent<Image>();
-                    // TODO: Should set in setter but too braindead to do it atm.
-                    pipModel.gameObject.GetComponent<Image>().sprite = pipModel.PipDisplayImage.sprite;
-                    pipModel.gameObject.GetComponent<Image>().color = Temp;
+                    pipModel.PipDisplayImage.sprite = pipFullHPPrefab.GetComponent<Image>().sprite;
+                    pipModel.PipDisplayImage.color = Temp;
                     break;
                 case HPPipModel.state.Damaged:
-                    pipModel.PipDisplayImage = pipFullHPPrefab.GetComponent<Image>();
-                    // TODO: Should set in setter but too braindead to do it atm.
-                    pipModel.gameObject.GetComponent<Image>().sprite = pipModel.PipDisplayImage.sprite;
-                    pipModel.gameObject.GetComponent<Image>().color = Disabled;
+                    pipModel.PipDisplayImage.sprite = pipFullHPPrefab.GetComponent<Image>().sprite;
+                    pipModel.PipDisplayImage.color = Disabled;
                     break;
                 case HPPipModel.state.Lent:
-                    pipModel.PipDisplayImage = pipLentHPPrefab.GetComponent<Image>();
-                    // TODO: Should set in setter but too braindead to do it atm.
-                    pipModel.gameObject.GetComponent<Image>().sprite = pipModel.PipDisplayImage.sprite;
-                    pipModel.gameObject.GetComponent<Image>().color = Color.white;
-
+                    pipModel.PipDisplayImage.sprite = pipLentHPPrefab.GetComponent<Image>().sprite;
+                    pipModel.PipDisplayImage.color = Color.white;
                     break;
                 default:
                     break;

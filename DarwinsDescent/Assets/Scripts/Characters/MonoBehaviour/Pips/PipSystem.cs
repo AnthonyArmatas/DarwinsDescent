@@ -36,11 +36,16 @@ namespace DarwinsDescent
 
         public Queue<HPPipModel> hpPips = new Queue<HPPipModel>();
         //public FastPriorityQueue<HPPriorityQueueNode> hpPQPips;
+        public Stack<HPPipModel> tempDecayStack = new Stack<HPPipModel>();
+        public float timeElapsedOnTopTemp;
+        public float lastTimeofTopTemp = 0;
+        public Vector3 curTempDecayScale;
 
         public PlayerCharacter PlayerCharacter;
         public GameObject pipPrefab;
         public GameObject Hp_PipPool;
-        public int PipTempTime = 5;
+        //TODO: Currently Unused, Update UpdateTempPipTime to use this instead of the hardcoded values
+        public float PipTempTime = 5f;
 
         public GameObject PipPad;
         public Dictionary<string, GameObject> PipPadHolder = new Dictionary<string, GameObject>();
@@ -100,7 +105,7 @@ namespace DarwinsDescent
             PipPoolCap = Damageable.StartingHealth;
             // Call function which sets the default/saved values for each of the pip models
             Initialized.Invoke(Head, Arms, Chest, Legs);
-
+            curTempDecayScale = new Vector3(1, 1, 1);
             //hpPQPips = new FastPriorityQueue<HPPriorityQueueNode>(playerHealth.MaxHP);
             InitializePipPool(playerHealth);
             InitializePipPadDisplay();
@@ -117,7 +122,7 @@ namespace DarwinsDescent
 
         void Update()
         {
-            //UpdateTempPipTime();
+            UpdateTempPipTime();
         }
 
         void FixedUpdate()
@@ -267,18 +272,19 @@ namespace DarwinsDescent
                 return;
             }
 
-            // If the left trigger is held then return all pips
+            // If the left trigger or num pad plus is held then return all pips
             if(PlayerInput.Instance.RefundPip.Value != 0)
             {
                 // TODO: Call Damageable to refund health, filling up slots 
                 // and using the rest as temp.
                 Damageable.GetBackLoanHealth(PipSection);
                 Updated.Invoke(PipSection, PipPadTextHolder, PipPadImageHolder);
+                UpdateHPPips(playerHealth);
                 return;
             }
 
 
-            if (playerHealth.CurHealth > playerHealth.MinRealHp &&
+            if (playerHealth.RealHp > playerHealth.MinRealHp &&
                 PipSection.Allocated < PipSection.MaxCap)
             {
                 // Call Pip Display to remove a pip and replace it with an empty one
@@ -365,6 +371,7 @@ namespace DarwinsDescent
             
             for (int RealPips = playerHP.RealHp; RealPips > 0; RealPips--)
             {
+                hpPips.Peek().gameObject.transform.localScale = new Vector3(1, 1, 1);
                 if (hpPips.Peek().CurState == HPPipModel.state.Real)
                 {
                     tempQueue.Enqueue(hpPips.Dequeue());
@@ -376,21 +383,27 @@ namespace DarwinsDescent
             }
 
             for (int tempPips = playerHP.TempHp; tempPips > 0; tempPips--)
-            {
+            { 
                 if (hpPips.Peek().CurState == HPPipModel.state.Temp)
                 {
+                    tempDecayStack.Push(hpPips.Peek());
                     tempQueue.Enqueue(hpPips.Dequeue());
                     continue;
                 }
                 hpPips.Peek().CurState = HPPipModel.state.Temp;
+                tempDecayStack.Push(hpPips.Peek());
                 DisplayUpdated.Invoke(hpPips.Peek());
                 tempQueue.Enqueue(hpPips.Dequeue());
             }
+
+            if(tempDecayStack.Count != 0)
+                tempDecayStack.Peek().gameObject.transform.localScale = curTempDecayScale;
 
             for (int lentPips = playerHP.LentHp; lentPips > 0; lentPips--)
             {
                 if (hpPips.Count > 0)
                 {
+                    hpPips.Peek().gameObject.transform.localScale = new Vector3(1, 1, 1);
                     if (hpPips.Peek().CurState == HPPipModel.state.Lent)
                     {
                         tempQueue.Enqueue(hpPips.Dequeue());
@@ -404,6 +417,7 @@ namespace DarwinsDescent
 
             while (hpPips.Count > 0)
             {
+                hpPips.Peek().gameObject.transform.localScale = new Vector3(1, 1, 1);
                 if (hpPips.Peek().CurState == HPPipModel.state.Damaged)
                 {
                     tempQueue.Enqueue(hpPips.Dequeue());
@@ -415,6 +429,37 @@ namespace DarwinsDescent
             }
 
             hpPips = tempQueue;
+        }
+
+        public void UpdateTempPipTime()
+        {
+            if (playerHealth.TempHp == 0 || tempDecayStack.Count == 0)
+            {
+                timeElapsedOnTopTemp = 0;
+                return;
+            }
+
+            //float sectionAmount = 1 / PipTempTime;
+            float sectionAmount = .2f;
+            int secondToDecreaseBy = 2;
+            timeElapsedOnTopTemp += Time.deltaTime;
+
+            //Update it every two sections
+            if((timeElapsedOnTopTemp - lastTimeofTopTemp) >= secondToDecreaseBy)
+            {
+                lastTimeofTopTemp = timeElapsedOnTopTemp;
+                HPPipModel pipModel = tempDecayStack.Peek();
+                pipModel.gameObject.transform.localScale -= new Vector3(sectionAmount, 0, 0);
+                if(pipModel.gameObject.transform.localScale.x < .1f)
+                {
+                    pipModel.gameObject.transform.localScale = new Vector3(1, 1, 1);
+                    playerHealth.TempHp -= 1;
+                    //pipModel.CurState = HPPipModel.state.Lent;
+                    tempDecayStack.Pop();
+                    UpdateHPPips(playerHealth);
+                }
+                curTempDecayScale = pipModel.gameObject.transform.localScale;
+            }
         }
     }
 }
