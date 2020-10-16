@@ -9,7 +9,6 @@ namespace DarwinsDescent
 { 
     public class PlayerHealth : Health
     {
-        public int MaxHP { get; set; }
         public int RealHp { get; set; }
 
         // Min Real HP that can exist in the hp pool. Used when funneling to the pip pad so the player does not kill self.
@@ -23,23 +22,19 @@ namespace DarwinsDescent
         public int LentHp;
         public int TempHp { get; set; }
 
-        public new int CurHealth => GetCurrentHealth();
+        public override int CurHealth => GetCurrentHealth();
+
+        public int DamagedHealth => GetDamagedHealth();
 
         public override int GetCurrentHealth()
         {
             return RealHp + TempHp;
         }
 
-        public override void HealDamage()
+        private int GetDamagedHealth()
         {
-            // TODO: Implement
-            throw new NotImplementedException();
-        }
-
-        public override void TakeDamage(int DamageAmount)
-        {
-            // TODO: Implement
-            throw new NotImplementedException();
+            //Lent HP is not Damaged since it was full and given to the pippad
+            return MaxHP - RealHp - LentHp;
         }
 
         public override void InitializeHealth(int StartingHealth)

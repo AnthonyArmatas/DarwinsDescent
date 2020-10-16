@@ -14,16 +14,6 @@ namespace DarwinsDescent
             return CurHealth;
         }
 
-        public override void HealDamage()
-        {
-            // TODO: Implement
-            throw new NotImplementedException();
-        }
-        public override void TakeDamage(int DamageAmount)
-        {
-            CurHealth -= DamageAmount;
-        }
-
         public override void InitializeHealth(int StartingHealth)
         {
             InitializeHealth(StartingHealth, StartingHealth);

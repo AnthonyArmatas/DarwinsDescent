@@ -10,6 +10,7 @@ namespace DarwinsDescent
     public class PlayerMeleeDamager : Damager
     {
         private PlayerSMF playerSMF = new PlayerSMF();
+        private DamageablePlayer damageablePlayer;
 
         void Awake()
         {
@@ -34,6 +35,13 @@ namespace DarwinsDescent
             {
                 throw new ArgumentNullException(nameof(AttackCollider));
             }
+
+            if(damageablePlayer == null)
+            {
+                damageablePlayer = GetComponent<DamageablePlayer>();
+                if (damageablePlayer == null)
+                    damageablePlayer = GetComponentInParent<DamageablePlayer>();
+            }
         }
 
         // TODO: QUESTION: The gameobject this is attached to does not have a trigger, and this does not get called when it is hit, but its child object
@@ -53,8 +61,18 @@ namespace DarwinsDescent
                     // The idea behind this is to call some function when hit (Lets say there was a desire for an explosion to dmg enemies on hit
                     // From there that function could be called instead of invoke.)
                     //OnDamageableHit.Invoke(this, damageable);
-                    damageable.TakeDamage(damage);
+                    if(damageable.health.CurHealth > 0)
+                    {
+                        damageable.TakeDamage(damage);
 
+                        if (damageable.health.CurHealth <= 0 &&
+                            damageable.animator.GetBool(playerSMF.DeadHash) &&
+                            (damageable.GetType().Equals(typeof(DamageableEnemy))) ||
+                            damageable.GetType().IsSubclassOf(typeof(DamageableEnemy)))
+                        {
+                            damageablePlayer.GainHealth(((DamageableEnemy)damageable).enemy.pipValue);
+                        }
+                    }
                     //if (disableDamageAfterHit)
                     //    DisableDamage();
                 }

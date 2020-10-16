@@ -636,6 +636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 645727008}
+  enemy: {fileID: 1078246206}
 --- !u!1 &451671556
 GameObject:
   m_ObjectHideFlags: 3
@@ -1790,6 +1791,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 645727007}
+  - {fileID: 1724539904}
   m_Father: {fileID: 984267056}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1884,7 +1886,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHP: 0
-  CurHealth: 0
 --- !u!114 &1078246203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1897,9 +1898,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 259332702cedfd94ca6e70c501d1a953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: {fileID: 1078246202}
   animator: {fileID: 645727008}
-  StartingHealth: 3
+  StartingHealth: 1
+  enemy: {fileID: 0}
 --- !u!114 &1078246206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1924,7 +1925,7 @@ MonoBehaviour:
   isGrounded: 0
   groundedRaycastDistanceCheck: 0.5
   spriteOriginallyFacesLeft: 0
-  pipValue: 1
+  pipValue: 2
   baseAtkDmg: 1
   aIPath: {fileID: 0}
   destinationSetter: {fileID: 0}
@@ -2306,13 +2307,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numHealthPips: 0
-  pipPrefab: {fileID: 0}
+  pipFullHPPrefab: {fileID: 0}
+  pipLentHPPrefab: {fileID: 0}
   pipFull: {fileID: 0}
   pipEmpty: {fileID: 0}
-  playerCharacter: {fileID: 2078281722}
-  pipSystem: {fileID: 0}
-  Hp_PipPool: {fileID: 0}
-  PipPad: {fileID: 0}
+  pipSystem: {fileID: 2078281728}
 --- !u!1 &1286105244
 GameObject:
   m_ObjectHideFlags: 0
@@ -2354,7 +2353,7 @@ GameObject:
   - component: {fileID: 1298119632}
   - component: {fileID: 1298119634}
   - component: {fileID: 1298119633}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: MeleeHitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3092,6 +3091,117 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1600219698}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1724539903
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1724539904}
+  - component: {fileID: 1724539907}
+  - component: {fileID: 1724539906}
+  - component: {fileID: 1724539905}
+  m_Layer: 0
+  m_Name: AStarMovement
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1724539904
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724539903}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1078246198}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1724539905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724539903}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9679e68a0f1144e79c664d9a11ca121, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  target: {fileID: 0}
+--- !u!114 &1724539906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724539903}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6eb1402c17e84a9282a7f0f62eb584f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 2
+  radius: 0.25
+  height: 1
+  repathRate: 0.5
+  canSearch: 1
+  canMove: 1
+  maxSpeed: 3
+  gravity: {x: 0, y: 0, z: 0}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  centerOffsetCompatibility: NaN
+  orientation: 1
+  enableRotation: 0
+  targetCompatibility: {fileID: 0}
+  maxAcceleration: -2.5
+  rotationSpeed: 360
+  slowdownDistance: 0.6
+  pickNextWaypointDist: 1.2
+  endReachedDistance: 0.2
+  alwaysDrawGizmos: 0
+  slowWhenNotFacingTarget: 1
+  whenCloseToDestination: 0
+  constrainInsideGraph: 0
+--- !u!114 &1724539907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724539903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  drawGizmos: 1
+  detailedGizmos: 0
+  startEndModifier:
+    addPoints: 0
+    exactStartPoint: 3
+    exactEndPoint: 3
+    useRaycasting: 0
+    mask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    useGraphRaycasting: 0
+  traversableTags: -1
+  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  graphMask:
+    value: -1
 --- !u!1 &1765225409
 GameObject:
   m_ObjectHideFlags: 0
@@ -3102,6 +3212,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1765225410}
   - component: {fileID: 1765225412}
+  - component: {fileID: 1765225411}
   m_Layer: 20
   m_Name: ZombieMeleeAttack
   m_TagString: Untagged
@@ -3123,6 +3234,25 @@ Transform:
   m_Father: {fileID: 645727007}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1765225411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765225409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ed2598d524624e4daf03c4ca358ebf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  ignoreInvincibility: 0
+  hittableLayers:
+    serializedVersion: 2
+    m_Bits: 8192
+  animator: {fileID: 0}
+  AttackCollider: {fileID: 0}
 --- !u!61 &1765225412
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3509,6 +3639,7 @@ MonoBehaviour:
   jumping: 0
   jumpTime: 0.05
   jumpForce: 0
+  IsDead: 0
 --- !u!61 &2078281723
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3657,6 +3788,10 @@ MonoBehaviour:
   Damageable: {fileID: 0}
   playerHealth: {fileID: 0}
   PlayerCharacter: {fileID: 0}
+  pipPrefab: {fileID: 0}
+  Hp_PipPool: {fileID: 726552153}
+  PipTempTime: 5
+  PipPad: {fileID: 1899016801}
 --- !u!114 &2078281729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3670,7 +3805,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHP: 0
-  CurHealth: 0
   LentHp: 0
 --- !u!114 &2078281731
 MonoBehaviour:
@@ -3684,9 +3818,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aae6349c9a110544bb63d20f1d132f74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: {fileID: 2078281729}
   animator: {fileID: 2078281725}
-  StartingHealth: 2
+  StartingHealth: 4
+  curHealth: 0
 --- !u!850595691 &2132664979
 LightingSettings:
   m_ObjectHideFlags: 0

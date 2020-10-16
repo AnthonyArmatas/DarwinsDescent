@@ -19,6 +19,7 @@ namespace DarwinsDescent
         public bool jumping;
         public float jumpTime;
         public float jumpForce;
+        public bool IsDead;
         #endregion
 
         //public PlayerCharacter(Damageable dmg, Animator ani, SpriteRenderer sr, Rigidbody2D rb, BoxCollider2D bc, float baseMovementSpeed )
@@ -63,6 +64,8 @@ namespace DarwinsDescent
         // Update is called once per frame
         void Update()
         {
+            if (IsDead)
+                return;
             IsJumping();
             IsAttacking();
             UpdateFacing();
@@ -70,7 +73,13 @@ namespace DarwinsDescent
 
         void FixedUpdate()
         {
-            //characterController2D.Move(moveVector * Time.deltaTime);
+            // Should add a call to the gui to get respawn functionality going or something.
+            if (animator.GetBool(SMF.DeadHash))
+            {
+                IsDead = true;
+                return;
+            }
+
             MoveAround();
             animator.SetFloat(SMF.HorizontalSpeedHash, this.rigidbody2D.velocity.x);
             animator.SetFloat(SMF.VerticalSpeedHash, this.rigidbody2D.velocity.y);
@@ -86,6 +95,7 @@ namespace DarwinsDescent
         /// <param name="speedScale"></param>
         public void MoveAround(float speedScale = 1f)
         {
+            
             HorizontalMovement();
             VerticalMovement();
         }
@@ -192,12 +202,15 @@ namespace DarwinsDescent
 
             if (faceLeft)
             {
-                spriteRenderer.flipX = !spriteOriginallyFacesLeft;
+                spriteRenderer.transform.localScale = new Vector3(-1, 1);
+                //spriteRenderer.flipX = !spriteOriginallyFacesLeft;
                 //meleeAtkBCollider.transform.localScale = new Vector3(-1, 1);
             }
             else if (faceRight)
             {
-                spriteRenderer.flipX = spriteOriginallyFacesLeft;
+                spriteRenderer.transform.localScale = new Vector3(1, 1);    
+
+                //spriteRenderer.flipX = spriteOriginallyFacesLeft;
                 //meleeAtkBCollider.transform.localScale = new Vector3(1, 1);
             }
         }

@@ -9,8 +9,15 @@ namespace DarwinsDescent
 {
     public class DamageableEnemy : Damageable
     {
-        private EnemySMF SMF;
-        private Enemy enemy;
+        public Enemy enemy;
+        public EnemySMF SMF;
+
+        public EnemyHealth enemyHealth { get; set; }
+        public override Health health
+        {
+            get { return enemyHealth; }
+            set { enemyHealth = (EnemyHealth)value; }
+        }
 
         // Initializes onEnable so the Enemy is Initialized first
         void Awake()
@@ -69,16 +76,17 @@ namespace DarwinsDescent
             //    // an enemy and since its an event its still loosely coupled.
             //    OnHealthSet.Invoke(this);
             //}
-            health.TakeDamage(DamageAmount);
+            if (DamageAmount >= health.CurHealth)
+            {
+                health.CurHealth = 0;
+                animator.SetBool(SMF.DeadHash, true);
+                return;
+            }
+            health.CurHealth -= DamageAmount;
+            animator.SetTrigger(SMF.HurtHash);
 
             // Do we want to do dmg direction for enemies? I'm not sure we do
-            //DamageDirection = transform.position + (Vector3)centreOffset - damager.transform.position;
-
-            if (health.CurHealth <= 0)
-            {
-                animator.SetBool(SMF.DeadHash, true);
-            }
-            animator.SetTrigger(SMF.HurtHash);            
+            //DamageDirection = transform.position + (Vector3)centreOffset - damager.transform.position;        
         }
     }
 }

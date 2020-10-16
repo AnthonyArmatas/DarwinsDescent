@@ -9,7 +9,7 @@ namespace DarwinsDescent
 {
     public abstract class Damageable : MonoBehaviour
     {
-        public Health health;
+        public virtual Health health { get; set; }
         public Animator animator;
         public int StartingHealth;
 

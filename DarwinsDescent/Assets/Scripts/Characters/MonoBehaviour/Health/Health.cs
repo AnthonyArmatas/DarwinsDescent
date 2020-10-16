@@ -10,11 +10,9 @@ namespace DarwinsDescent
     public abstract class Health : MonoBehaviour
     {
         public int MaxHP;
-        public int CurHealth;
+        public virtual int CurHealth { get; set; }
 
         public abstract int GetCurrentHealth();
-        public abstract void HealDamage();
-        public abstract void TakeDamage(int DamageAmount);
         public abstract void InitializeHealth(int StartingHealth);
         public abstract void InitializeHealth(int StartingHealth, int MaxHp);
         public abstract void InitializeHealth(int StartingHealth, int MaxHp, int RealHp, int TempHp);

@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace DarwinsDescent.Assets.Scripts.Characters.MonoBehaviour.Pips
 {
+    /// <summary>
+    /// PipModel for Pip Pad
+    /// </summary>
     public class PipModel
     {
         public enum PartName

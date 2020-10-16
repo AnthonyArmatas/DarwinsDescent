@@ -1,9 +1,11 @@
 ﻿using DarwinsDescent.Assets.Scripts.Characters.MonoBehaviour;
 using DarwinsDescent.Assets.Scripts.Characters.MonoBehaviour.Pips;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Priority_Queue;
 
 namespace DarwinsDescent
 {
@@ -32,10 +34,19 @@ namespace DarwinsDescent
         //Bottom
         public PipModel Legs = new PipModel();
 
-        public PlayerCharacter PlayerCharacter;
+        public Queue<HPPipModel> hpPips = new Queue<HPPipModel>();
+        //public FastPriorityQueue<HPPriorityQueueNode> hpPQPips;
 
-        protected Color Disabled = new Color(127f, 127f, 127f);
-        protected Color Enabled = new Color(191f, 191f, 0f);
+        public PlayerCharacter PlayerCharacter;
+        public GameObject pipPrefab;
+        public GameObject Hp_PipPool;
+        public int PipTempTime = 5;
+
+        public GameObject PipPad;
+        public Dictionary<string, GameObject> PipPadHolder = new Dictionary<string, GameObject>();
+        public Dictionary<string, Image> PipPadImageHolder = new Dictionary<string, Image>();
+        public Dictionary<string, Text> PipPadTextHolder = new Dictionary<string, Text>();
+
         private int PipPoolCap;
         private int MinimumRequiredPipsInPool = 1;
 
@@ -50,18 +61,16 @@ namespace DarwinsDescent
         public InitializePipParts Initialized;
 
         // Sets up the delegate so that the subscriber knows what it function needs to contain
-        public delegate void UpdatePipPoolDisplay();
+        public delegate void UpdatePipPoolDisplay(HPPipModel pipModel);
         // The Event publish. This is what the reviving methods subscribe to. So when update is invoked those other methods will run.
         public event UpdatePipPoolDisplay DisplayUpdated;
 
         // Sets up the delegate so that the subscriber knows what it function needs to contain
-        public delegate void UpdatePipCount(PipModel PipSection);
+        public delegate void UpdatePipCount(PipModel PipSection, Dictionary<string, Text> PipPadTextHolder, Dictionary<string, Image> PipPadImageHolder);
         // The Event publish. This is what the reviving methods subscribe to. So when update is invoked those other methods will run.
         public event UpdatePipCount Updated;
 
         #endregion
-
-
 
 
         // Start is called before the first frame update
@@ -71,22 +80,39 @@ namespace DarwinsDescent
             if (Damageable != null)
             {
                 // Setting this because we cannot cast a property of an object, specifically we cannot cast the health object as player health to get and cast its innards.
-                playerHealth = (PlayerHealth)Damageable.health;
+                playerHealth = Damageable.playerHealth;
+
+                // Subscribes to UpdateHp so UpdateHPPips will run when called.
+                Damageable.UpdateHp += UpdateHPPips;
             }
 
+            if (Hp_PipPool == null)
+                Hp_PipPool = GameObject.Find("HP_PipPool");
+
+            if (PipPad == null)
+                PipPad = GameObject.Find("PipPad");
+
+
             PlayerCharacter = GetComponent<PlayerCharacter>();
+            pipPrefab = (GameObject)Resources.Load("Prefabs/Pip", typeof(GameObject));
 
             // Initializing PipPoolCap in start because DamageablePlayer is initialized in awake and that needs to be set up first
             PipPoolCap = Damageable.StartingHealth;
             // Call function which sets the default/saved values for each of the pip models
             Initialized.Invoke(Head, Arms, Chest, Legs);
+
+            //hpPQPips = new FastPriorityQueue<HPPriorityQueueNode>(playerHealth.MaxHP);
+            InitializePipPool(playerHealth);
+            InitializePipPadDisplay();
+
             if (Updated != null)
             {
-                Updated.Invoke(Head);
-                Updated.Invoke(Arms);
-                Updated.Invoke(Chest);
-                Updated.Invoke(Legs);
+                Updated.Invoke(Head, PipPadTextHolder, PipPadImageHolder);
+                Updated.Invoke(Arms, PipPadTextHolder, PipPadImageHolder);
+                Updated.Invoke(Chest, PipPadTextHolder, PipPadImageHolder);
+                Updated.Invoke(Legs, PipPadTextHolder, PipPadImageHolder);
             }
+
         }
 
         void Update()
@@ -98,6 +124,95 @@ namespace DarwinsDescent
         {
             AssignPips();
             //PlayerInput.Instance.Horizontal.Value
+        }
+
+        /// <summary>
+        /// Adds pip HP images to the ui using the starting PlayerCharacater Health as the amount of pips.
+        /// </summary>
+        public void InitializePipPool(PlayerHealth PipPoolInfo)
+        {
+            if (PipPoolInfo.MaxHP == 0)
+            {
+                return;
+            }
+
+            GameObject previousPipObj = new GameObject();
+            //while (hpPQPips.Count < PipPoolInfo.MaxHP)
+            while (hpPips.Count < PipPoolInfo.MaxHP)
+            {
+                HPPipModel NewPipToAdd;
+                
+                //If the normal queue implementation is slow take another look at the pri queue
+                //if (hpPQPips.Count == 0)
+                if (hpPips.Count == 0)
+                {
+                    NewPipToAdd = Instantiate(pipPrefab,
+                    new Vector3(0, 0),
+                    new Quaternion(),
+                    Hp_PipPool.transform).GetComponent<HPPipModel>();
+                    NewPipToAdd.PipDisplayImage = NewPipToAdd.gameObject.GetComponent<Image>();
+                    NewPipToAdd.TempTime = PipTempTime;
+                    NewPipToAdd.CurState = HPPipModel.state.Real;
+
+                    RectTransform newrectTransform = (RectTransform)NewPipToAdd.gameObject.transform;
+                    newrectTransform.anchoredPosition = new Vector2(0, 0);
+                }
+                else
+                {
+                    // Check to make sure this makes sense.
+                    // Debug above and make sure when previousPipObj is instatiated its null
+                    if (previousPipObj.name == "New Game Object")
+                    {
+                        previousPipObj = hpPips?.Peek().gameObject;
+                    }
+
+                    RectTransform rectTransform = (RectTransform)previousPipObj.transform;
+
+                    // unfortunately, something about setting the Vector 3 in the Instantiate is thrown off, and it ends up adding the Canvas transform to the new items transform
+                    // instead of the value passed in. Setting the anchored position afterworlds makes it so the Instantiated spawn exactly where they need to.
+                    NewPipToAdd = Instantiate(pipPrefab,
+                        new Vector3(rectTransform.anchoredPosition.x + rectTransform.rect.width + 5f,
+                                    rectTransform.anchoredPosition.y),
+                        rectTransform.transform.rotation,
+                        Hp_PipPool.transform).GetComponent<HPPipModel>();
+                    NewPipToAdd.PipDisplayImage = NewPipToAdd.gameObject.GetComponent<Image>();
+                    NewPipToAdd.TempTime = PipTempTime;
+                    NewPipToAdd.CurState = HPPipModel.state.Real;
+
+                    RectTransform newrectTransform = (RectTransform)NewPipToAdd.gameObject.transform;
+                    newrectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x + rectTransform.rect.width + 5f, rectTransform.anchoredPosition.y);
+                }
+
+                NewPipToAdd.gameObject.name = pipPrefab.name + (hpPips.Count + 1).ToString();
+                NewPipToAdd.GetComponent<Image>().color = new Color(255f, 255f, 0f);
+                hpPips.Enqueue(NewPipToAdd);
+                //HPPriorityQueueNode newHPNode = new HPPriorityQueueNode(NewPipToAdd);
+                //hpPQPips.Enqueue(new HPPriorityQueueNode(NewPipToAdd), (float)HPPipModel.state.Real);
+                previousPipObj = NewPipToAdd.gameObject;
+            }
+
+        }
+
+        public void InitializePipPadDisplay()
+        {
+            foreach (Transform child in PipPad.transform)
+            {
+                string partName = child.name.Replace("PipPort", "");
+                PipPadHolder.Add(partName, child.gameObject);
+
+                Image PipImage = child.GetComponent<Image>();
+                if (PipImage != null)
+                {
+                    PipPadImageHolder.Add(partName, PipImage);
+                }
+
+                Text pipText = child.GetComponentInChildren<Text>();
+                if (pipText != null)
+                {
+                    PipPadTextHolder.Add(partName, pipText);
+                }
+            }
+
         }
 
         public void AssignPips()
@@ -140,8 +255,13 @@ namespace DarwinsDescent
 
         public void MovePips(PipModel PipSection)
         {
+            if (Updated == null)
+            {
+                throw new ArgumentNullException(nameof(Updated));
+            }
+
             // if there are not enough pips to give or the pip in question is locked or the max cap has been reached, return.
-            if(PipSection.MaxCap <= 1  || 
+            if (PipSection.MaxCap <= 1  || 
                 PipSection.Locked)
             {
                 return;
@@ -152,22 +272,149 @@ namespace DarwinsDescent
             {
                 // TODO: Call Damageable to refund health, filling up slots 
                 // and using the rest as temp.
-                PipSection.Allocated = 0;
-                Updated.Invoke(PipSection);
+                Damageable.GetBackLoanHealth(PipSection);
+                Updated.Invoke(PipSection, PipPadTextHolder, PipPadImageHolder);
                 return;
             }
 
 
             if (playerHealth.CurHealth > playerHealth.MinRealHp &&
-                PipSection.Allocated != PipSection.MaxCap)
+                PipSection.Allocated < PipSection.MaxCap)
             {
                 // Call Pip Display to remove a pip and replace it with an empty one
                 // Call the Damagable script lose a perm health
                 PipSection.Allocated++;
-                if (Updated != null)
-                    Updated.Invoke(PipSection);
-
+                Damageable.LoanHealth(1);
+                Updated.Invoke(PipSection, PipPadTextHolder, PipPadImageHolder);
             }
+        }
+
+        public void UpdateHPPips(PlayerHealth playerHP)
+        {
+            if(playerHP.CurHealth > playerHP.MaxHP &&
+                playerHP.RealHp == playerHP.MaxHP)
+            {
+                // If there is an incoming full health this looks like it will skip that, fix it
+                //Add new temp HPPips to pippool
+                return;
+            }
+
+            #region PriQueue Implimentation To come back to
+
+            //FastPriorityQueue<HPPriorityQueueNode> tempQueue = new FastPriorityQueue<HPPriorityQueueNode>(hpPQPips.Count);
+            //for(int RealPips = playerHP.RealHp; RealPips > 0; RealPips--)
+            //{
+            //    if (hpPQPips.First.Priority == (float)HPPipModel.state.Real)
+            //    {
+            //        tempQueue.Enqueue(hpPQPips.Dequeue(), (float)HPPipModel.state.Real);
+            //        continue;
+            //    }
+            //    hpPQPips.First.PipModel.CurState = HPPipModel.state.Real;
+            //    tempQueue.Enqueue(hpPQPips.Dequeue(), (float)HPPipModel.state.Real);
+            //}
+
+            //for(int tempPips = playerHP.TempHp; tempPips > 0; tempPips--)
+            //{
+            //    if (hpPQPips.First.Priority == (float)HPPipModel.state.Temp)
+            //    {
+            //        tempQueue.Enqueue(hpPQPips.Dequeue(), (float)HPPipModel.state.Temp);
+            //        continue;
+            //    }
+            //    hpPQPips.First.PipModel.CurState = HPPipModel.state.Temp;
+            //    tempQueue.Enqueue(hpPQPips.Dequeue(), (float)HPPipModel.state.Temp);
+            //}
+            //for (int lentPips = playerHP.LentHp; lentPips > 0; lentPips--)
+            //{
+            //    if (hpPQPips.First.Priority == (float)HPPipModel.state.Lent)
+            //    {
+            //        tempQueue.Enqueue(hpPQPips.Dequeue(), (float)HPPipModel.state.Lent);
+            //        continue;
+            //    }
+            //    hpPQPips.First.PipModel.CurState = HPPipModel.state.Lent;
+            //    tempQueue.Enqueue(hpPQPips.Dequeue(), (float)HPPipModel.state.Lent);
+            //}
+
+            //while(hpPQPips.Count > 0)
+            //{
+            //    if (hpPQPips.First.Priority == (float)HPPipModel.state.Damaged)
+            //    {
+            //        tempQueue.Enqueue(hpPQPips.Dequeue(), (float)HPPipModel.state.Damaged);
+            //        continue;
+            //    }
+            //    hpPQPips.First.PipModel.CurState = HPPipModel.state.Damaged;
+            //    tempQueue.Enqueue(hpPQPips.Dequeue(), (float)HPPipModel.state.Damaged);
+            //}
+
+            //hpPQPips = tempQueue;       
+            #endregion
+
+            Queue<HPPipModel> tempQueue = new Queue<HPPipModel>();
+
+            if (playerHP.RealHp <= 0)
+            {
+                while(hpPips.Count > 0)
+                {
+                    hpPips.Peek().CurState = HPPipModel.state.Damaged;
+                    DisplayUpdated.Invoke(hpPips.Peek());
+                    tempQueue.Enqueue(hpPips.Dequeue());
+                }
+                hpPips = tempQueue;
+                return;
+            }
+
+            
+            for (int RealPips = playerHP.RealHp; RealPips > 0; RealPips--)
+            {
+                if (hpPips.Peek().CurState == HPPipModel.state.Real)
+                {
+                    tempQueue.Enqueue(hpPips.Dequeue());
+                    continue;
+                }
+                hpPips.Peek().CurState = HPPipModel.state.Real;
+                DisplayUpdated.Invoke(hpPips.Peek());
+                tempQueue.Enqueue(hpPips.Dequeue());
+            }
+
+            for (int tempPips = playerHP.TempHp; tempPips > 0; tempPips--)
+            {
+                if (hpPips.Peek().CurState == HPPipModel.state.Temp)
+                {
+                    tempQueue.Enqueue(hpPips.Dequeue());
+                    continue;
+                }
+                hpPips.Peek().CurState = HPPipModel.state.Temp;
+                DisplayUpdated.Invoke(hpPips.Peek());
+                tempQueue.Enqueue(hpPips.Dequeue());
+            }
+
+            for (int lentPips = playerHP.LentHp; lentPips > 0; lentPips--)
+            {
+                if (hpPips.Count > 0)
+                {
+                    if (hpPips.Peek().CurState == HPPipModel.state.Lent)
+                    {
+                        tempQueue.Enqueue(hpPips.Dequeue());
+                        continue;
+                    }
+                    hpPips.Peek().CurState = HPPipModel.state.Lent;
+                    DisplayUpdated.Invoke(hpPips.Peek());
+                    tempQueue.Enqueue(hpPips.Dequeue());
+                }
+            }
+
+            while (hpPips.Count > 0)
+            {
+                if (hpPips.Peek().CurState == HPPipModel.state.Damaged)
+                {
+                    tempQueue.Enqueue(hpPips.Dequeue());
+                    continue;
+                }
+                hpPips.Peek().CurState = HPPipModel.state.Damaged;
+                DisplayUpdated.Invoke(hpPips.Peek());
+                tempQueue.Enqueue(hpPips.Dequeue());
+            }
+
+            hpPips = tempQueue;
         }
     }
 }

@@ -27,22 +27,65 @@ namespace DarwinsDescent
 
         void Awake()
         {
-            this.rigidbody2D = GetComponent<Rigidbody2D>();
+            
             if (this.rigidbody2D == null)
-                this.rigidbody2D = GetComponentInChildren<Rigidbody2D>();
+            {
+                this.rigidbody2D = GetComponent<Rigidbody2D>();
+                if (this.rigidbody2D == null)
+                    this.rigidbody2D = GetComponentInChildren<Rigidbody2D>();
+            }
 
-            this.spriteRenderer = GetComponent<SpriteRenderer>();
             if (this.spriteRenderer == null)
-                this.spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            {
+                this.spriteRenderer = GetComponent<SpriteRenderer>();
+                if (this.spriteRenderer == null)
+                    this.spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            }
 
-            this.animator = GetComponent<Animator>();
             if (this.animator == null)
-                this.animator = GetComponentInChildren<Animator>();
+            {
+                this.animator = GetComponent<Animator>();
+                if (this.animator == null)
+                    this.animator = GetComponentInChildren<Animator>();
+            }
 
             // This only works if the GFX subcomponent is a child game object of the main. TODO: Think of a better implementation
-            this.boxCollider = GetComponent<BoxCollider2D>();
-            if(this.boxCollider == null)
-                this.boxCollider = GetComponentInChildren<BoxCollider2D>();
+            if (this.boxCollider == null)
+            {
+                this.boxCollider = GetComponent<BoxCollider2D>();
+                if (this.boxCollider == null)
+                    this.boxCollider = GetComponentInChildren<BoxCollider2D>();
+            }
+
+            if (this.aIPath == null)
+            {
+                this.aIPath = GetComponent<AIPath>();
+                if (this.aIPath == null)
+                    this.aIPath = GetComponentInChildren<AIPath>();
+            }
+
+            if (this.destinationSetter == null)
+            {
+                this.destinationSetter = GetComponent<AIDestinationSetter>();
+                if (this.destinationSetter == null)
+                    this.destinationSetter = GetComponentInChildren<AIDestinationSetter>();
+            }
+
+            // Use this when figureing out the seperate AI star movement
+            //if (aIPath == null && destinationSetter == null)
+            //{
+            //    foreach (Transform child in this.transform)
+            //    {
+            //        if (child.name == "AStarMovement")
+            //        {
+            //            if (aIPath == null)
+            //                aIPath = GetComponent<AIPath>();
+            //            if (destinationSetter == null)
+            //                destinationSetter = GetComponent<AIDestinationSetter>();
+            //            break;
+            //        }
+            //    }
+            //}
 
             if (this.damageable == null)
                 damageable = GetComponent<DamageableEnemy>();
@@ -61,9 +104,6 @@ namespace DarwinsDescent
                     break;
                 }
             }
-
-            aIPath = GetComponent<AIPath>();
-            destinationSetter = GetComponent<AIDestinationSetter>();
 
             if (baseMovementSpeed == 0)
                 baseMovementSpeed = 10f;
@@ -133,6 +173,7 @@ namespace DarwinsDescent
             }
         }
 
+        // TODO: Still need to decouple the transform point of the ai and the enemies transform
         public void CheckPlayerInRange()
         {
             float playerDistance = 0f;
@@ -159,19 +200,24 @@ namespace DarwinsDescent
                         lookingPoint = Headpoint.transform;
                     }
 
-                    Vector3 Direction = (PlayerCharacter.transform.position - lookingPoint.position).normalized;
+                    //Vector3 Direction = (PlayerCharacter.transform.position - lookingPoint.localPosition).normalized;
+                    Vector3 Direction = (PlayerCharacter.transform.position - lookingPoint.position);
 
+                    //TODO FIX WHY THIS KEEPS HITTING ZOMBIE COLLIDERS. I think it maybe where the raycast is starting from. a little too close to the zombie.
+                    //Edit -> Project Settings -> Physcis 2D -> Raycasts Start In Colliders set to false
                     raycastHit = Physics2D.Raycast(lookingPoint.position, Direction, distanceToFollow);
                     Debug.DrawRay(lookingPoint.position, Direction * distanceToFollow, Color.green);
 
-                    if (raycastHit.collider != null)
+                    if (raycastHit.transform.name == PlayerCharacter.name)
                     {
                         Target = PlayerCharacter;
                     }
                 }
             }
 
-            if (raycastHit.collider == null && WanderPoints.Count != 0)
+            if ((raycastHit.collider == null ||
+                raycastHit.collider.name != PlayerCharacter.name) && 
+                WanderPoints.Count != 0)
                 Target = WanderPoints[Random.Next(WanderPoints.Count)];
 
             destinationSetter.target = Target.transform;

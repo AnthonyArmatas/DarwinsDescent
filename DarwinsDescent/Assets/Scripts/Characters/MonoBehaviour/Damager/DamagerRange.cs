@@ -11,7 +11,8 @@ namespace DarwinsDescent
     public class DamagerRange : MonoBehaviour
     {
         public Animator animator;
-        protected readonly int MeleeAttackParaHash = Animator.StringToHash("MeleeAttack");
+        public Enemy enemy;
+        public EnemySMF enemySMF = new EnemySMF();
         protected BoxCollider2D AttackCollider = null;
 
         void Start()
@@ -32,11 +33,30 @@ namespace DarwinsDescent
                     AttackCollider = GetComponentInChildren<BoxCollider2D>();
                 }
             }
+            if (enemy == null)
+            {
+                enemy = GetComponent<Enemy>();
+                if (enemy == null)
+                {
+                    enemy = GetComponentInParent<Enemy>();
+                }
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            animator.SetTrigger(MeleeAttackParaHash);
+            if (enemy.damageable.health.CurHealth <= 0)
+                return;
+
+            animator.SetTrigger(enemySMF.BaseAttackHash);
+        }
+
+        private void OnTriggerStay2D(Collider2D collision)
+        {
+            if (enemy.damageable.health.CurHealth <= 0)
+                return;
+
+            animator.SetTrigger(enemySMF.BaseAttackHash);
         }
     }
 }

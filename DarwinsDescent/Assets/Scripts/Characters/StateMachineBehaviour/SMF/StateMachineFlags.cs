@@ -14,7 +14,5 @@ namespace DarwinsDescent
         int RespawnParaHash { get; }
         int HurtHash { get; }
         int DeadHash { get; }
-
-        int GetExtendedHash(string HashName);
     }
 }
