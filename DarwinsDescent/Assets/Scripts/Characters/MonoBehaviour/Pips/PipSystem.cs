@@ -278,6 +278,38 @@ namespace DarwinsDescent
                 // TODO: Call Damageable to refund health, filling up slots 
                 // and using the rest as temp.
                 Damageable.GetBackLoanHealth(PipSection);
+                if (playerHealth.CurHealth > playerHealth.MaxHP)
+                {
+                    RectTransform rectTransform = new RectTransform();
+                    for (int tempPipsToAdd = playerHealth.CurHealth - playerHealth.MaxHP;
+                        tempPipsToAdd > 0; tempPipsToAdd--)
+                    {
+                        // Get the first instance from the function
+                        if(tempPipsToAdd == playerHealth.CurHealth - playerHealth.MaxHP)
+                                rectTransform = (RectTransform)GetLastItemInQueue(true).transform;
+
+                        // unfortunately, something about setting the Vector 3 in the Instantiate is thrown off, and it ends up adding the Canvas transform to the new items transform
+                        // instead of the value passed in. Setting the anchored position afterworlds makes it so the Instantiated spawn exactly where they need to.
+                        HPPipModel NewPipToAdd = Instantiate(pipPrefab,
+                            new Vector3(rectTransform.anchoredPosition.x + rectTransform.rect.width + 5f,
+                                        rectTransform.anchoredPosition.y),
+                            rectTransform.transform.rotation,
+                            Hp_PipPool.transform).GetComponent<HPPipModel>();
+                        NewPipToAdd.PipDisplayImage = NewPipToAdd.gameObject.GetComponent<Image>();
+                        NewPipToAdd.TempTime = PipTempTime;
+                        NewPipToAdd.CurState = HPPipModel.state.Real;
+
+                        RectTransform newrectTransform = (RectTransform)NewPipToAdd.gameObject.transform;
+                        newrectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x + rectTransform.rect.width + 5f, rectTransform.anchoredPosition.y);
+
+                        NewPipToAdd.gameObject.name = pipPrefab.name + (hpPips.Count + 1).ToString();
+                        NewPipToAdd.GetComponent<Image>().color = new Color(255f, 255f, 0f);
+                        hpPips.Enqueue(NewPipToAdd);
+                        //HPPriorityQueueNode newHPNode = new HPPriorityQueueNode(NewPipToAdd);
+                        //hpPQPips.Enqueue(new HPPriorityQueueNode(NewPipToAdd), (float)HPPipModel.state.Real);
+                        rectTransform = (RectTransform)NewPipToAdd.gameObject.transform;
+                    }
+                }
                 Updated.Invoke(PipSection, PipPadTextHolder, PipPadImageHolder);
                 UpdateHPPips(playerHealth);
                 return;
@@ -297,13 +329,13 @@ namespace DarwinsDescent
 
         public void UpdateHPPips(PlayerHealth playerHP)
         {
-            if(playerHP.CurHealth > playerHP.MaxHP &&
-                playerHP.RealHp == playerHP.MaxHP)
-            {
-                // If there is an incoming full health this looks like it will skip that, fix it
-                //Add new temp HPPips to pippool
-                return;
-            }
+            //if(playerHP.CurHealth > playerHP.MaxHP &&
+            //    playerHP.RealHp == playerHP.MaxHP)
+            //{
+            //    // If there is an incoming full health this looks like it will skip that, fix it
+            //    //Add new temp HPPips to pippool
+            //    return;
+            //}
 
             #region PriQueue Implimentation To come back to
 
@@ -383,7 +415,8 @@ namespace DarwinsDescent
             }
 
             for (int tempPips = playerHP.TempHp; tempPips > 0; tempPips--)
-            { 
+            {
+                hpPips.Peek().gameObject.transform.localScale = new Vector3(1, 1, 1);
                 if (hpPips.Peek().CurState == HPPipModel.state.Temp)
                 {
                     tempDecayStack.Push(hpPips.Peek());
@@ -453,13 +486,45 @@ namespace DarwinsDescent
                 if(pipModel.gameObject.transform.localScale.x < .1f)
                 {
                     pipModel.gameObject.transform.localScale = new Vector3(1, 1, 1);
+                    tempDecayStack.Pop();
+                    if (playerHealth.CurHealth > playerHealth.MaxHP)
+                    {
+                        Destroy(GetLastItemInQueue(false).gameObject);
+                        // TODO: Super Inefficient refactor this whole function and any related functions.
+                        pipModel = GetLastItemInQueue(true);
+                    }
                     playerHealth.TempHp -= 1;
                     //pipModel.CurState = HPPipModel.state.Lent;
-                    tempDecayStack.Pop();
+                    
                     UpdateHPPips(playerHealth);
                 }
                 curTempDecayScale = pipModel.gameObject.transform.localScale;
             }
+        }
+
+        public HPPipModel GetLastItemInQueue(bool KeepLastInQueue)
+        {
+            if (hpPips?.Count == 0)
+                return null;
+            if (hpPips?.Count == 1)
+                return hpPips.Peek();
+
+
+            HPPipModel first = hpPips.Peek();
+            HPPipModel current = null;
+            while (true)
+            {
+                current = hpPips.Dequeue();
+                if (hpPips.Peek() == first)
+                {
+                    break;
+                }
+                hpPips.Enqueue(current);
+            }
+            
+            if(KeepLastInQueue)
+                hpPips.Enqueue(current);
+            return current;
         }
     }
 }

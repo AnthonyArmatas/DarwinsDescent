@@ -23,7 +23,7 @@ namespace DarwinsDescent
         public PipSystem pipSystem;
 
         protected Color Disabled = new Color(((127f * 100f / 255f) / 100f), ((127f * 100f / 255f) / 100f), ((127f * 100f / 255f) / 100f));
-        protected Color Enabled = Color.yellow;
+        protected Color Enabled = new Color(255f, 255f, 0f);
         protected Color Temp = new Color(0f, ((222f * 100f / 255f) / 100f), ((255f * 100f / 255f) / 100f));
 
 

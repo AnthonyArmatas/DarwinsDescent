@@ -146,14 +146,6 @@ namespace DarwinsDescent
             playerHealth.LentHp -= PipSection.Allocated;
             playerHealth.RealHp += PipSection.Allocated;
             PipSection.Allocated = 0;
-            if (playerHealth.CurHealth > playerHealth.MaxHP)
-            {
-                int tempPipsToAdd = playerHealth.CurHealth - playerHealth.MaxHP;
-                while(tempPipsToAdd != 0)
-                {
-
-                }
-            }
         }
     }
 }
