@@ -386,6 +386,7 @@ namespace DarwinsDescent
             //hpPQPips = tempQueue;       
             #endregion
 
+
             Queue<HPPipModel> tempQueue = new Queue<HPPipModel>();
 
             if (playerHP.RealHp <= 0)
@@ -429,7 +430,7 @@ namespace DarwinsDescent
                 tempQueue.Enqueue(hpPips.Dequeue());
             }
 
-            if(tempDecayStack.Count != 0)
+            if(tempDecayStack.Count != 0 && playerHP.TempHp != 0)
                 tempDecayStack.Peek().gameObject.transform.localScale = curTempDecayScale;
 
             for (int lentPips = playerHP.LentHp; lentPips > 0; lentPips--)
@@ -446,6 +447,12 @@ namespace DarwinsDescent
                     DisplayUpdated.Invoke(hpPips.Peek());
                     tempQueue.Enqueue(hpPips.Dequeue());
                 }
+            }
+
+            while (playerHealth.CurHealth + playerHealth.LentHp < hpPips.Count + tempQueue.Count)
+            {
+                Destroy(GetLastItemInQueue(false).gameObject);
+                hpPips.Dequeue();
             }
 
             while (hpPips.Count > 0)
