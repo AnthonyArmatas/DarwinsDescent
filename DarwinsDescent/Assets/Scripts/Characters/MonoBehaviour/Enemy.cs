@@ -1,5 +1,6 @@
 ﻿using DarwinsDescent.Assets.Scripts;
 using Pathfinding;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -208,7 +209,11 @@ namespace DarwinsDescent
                     raycastHit = Physics2D.Raycast(lookingPoint.position, Direction, distanceToFollow);
                     Debug.DrawRay(lookingPoint.position, Direction * distanceToFollow, Color.green);
 
-                    if (raycastHit.transform.name == PlayerCharacter.name)
+                    // Make sure the transform is not null. No idea why sometimes the
+                    // Collider, transform, ridgedbody are null and all of the rest of the coords
+                    // are 0,0 but I happens and I am not sure what is being hit.
+                    if (raycastHit.transform != null &&
+                        raycastHit.transform.name == PlayerCharacter.name)
                     {
                         Target = PlayerCharacter;
                     }

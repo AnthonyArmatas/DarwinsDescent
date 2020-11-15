@@ -525,3 +525,4 @@ F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\AstarPathfindingProject.
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\AstarPathfindingProject.csproj.CopyComplete
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\AstarPathfindingProject.dll
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\AstarPathfindingProject.pdb
+F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\PriorityQueue.dll

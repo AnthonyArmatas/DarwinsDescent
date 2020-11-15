@@ -389,6 +389,7 @@ namespace DarwinsDescent
 
             Queue<HPPipModel> tempQueue = new Queue<HPPipModel>();
 
+            // Updates the Hp if damaged
             if (playerHP.RealHp <= 0)
             {
                 while(hpPips.Count > 0)
@@ -404,6 +405,7 @@ namespace DarwinsDescent
             
             for (int RealPips = playerHP.RealHp; RealPips > 0; RealPips--)
             {
+                // Resets the size of the pip object to default
                 hpPips.Peek().gameObject.transform.localScale = new Vector3(1, 1, 1);
                 if (hpPips.Peek().CurState == HPPipModel.state.Real)
                 {
@@ -411,6 +413,8 @@ namespace DarwinsDescent
                     continue;
                 }
                 hpPips.Peek().CurState = HPPipModel.state.Real;
+                // Currently has PipDisplay subscribed and the function UpdatePipPoolDisplay 
+                // is called to update the pips color
                 DisplayUpdated.Invoke(hpPips.Peek());
                 tempQueue.Enqueue(hpPips.Dequeue());
             }
@@ -430,9 +434,11 @@ namespace DarwinsDescent
                 tempQueue.Enqueue(hpPips.Dequeue());
             }
 
+            // Sets the furtherest temp pip to its proper size.
             if(tempDecayStack.Count != 0 && playerHP.TempHp != 0)
                 tempDecayStack.Peek().gameObject.transform.localScale = curTempDecayScale;
 
+            // Updates the lent pip hp sizes and color
             for (int lentPips = playerHP.LentHp; lentPips > 0; lentPips--)
             {
                 if (hpPips.Count > 0)
@@ -449,7 +455,8 @@ namespace DarwinsDescent
                 }
             }
 
-            while (playerHealth.CurHealth + playerHealth.LentHp < hpPips.Count + tempQueue.Count)
+            while (tempDecayStack.Count > 0 &&
+                    playerHealth.CurHealth + playerHealth.LentHp < hpPips.Count + tempQueue.Count)
             {
                 Destroy(GetLastItemInQueue(false).gameObject);
                 hpPips.Dequeue();
