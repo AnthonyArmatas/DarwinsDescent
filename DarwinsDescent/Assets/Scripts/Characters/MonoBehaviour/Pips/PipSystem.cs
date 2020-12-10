@@ -275,6 +275,10 @@ namespace DarwinsDescent
             // If the left trigger or num pad plus is held then return all pips
             if(PlayerInput.Instance.RefundPip.Value != 0)
             {
+                for (int lent = PipSection.Allocated; lent > 0; lent--)
+                {
+                    tempDecayStack.Pop();
+                }
                 // TODO: Call Damageable to refund health, filling up slots 
                 // and using the rest as temp.
                 Damageable.GetBackLoanHealth(PipSection);

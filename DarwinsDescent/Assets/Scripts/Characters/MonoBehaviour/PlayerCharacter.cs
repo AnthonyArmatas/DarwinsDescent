@@ -113,14 +113,21 @@ namespace DarwinsDescent
                 return;
             }
 
-            Vector2 targetVelocity = new Vector2(this.baseMovementSpeed * 10f, this.rigidbody2D.velocity.y);
-            // And then smoothing it out and applying it to the character
-            Vector2 smoothedSpeed = Vector2.SmoothDamp(this.rigidbody2D.velocity, PlayerInput.Instance.Horizontal.Value * targetVelocity, ref moveVelocity, .05f, this.baseMovementSpeed);
-            if (smoothedSpeed.x > this.baseMovementSpeed)
-            {
-                smoothedSpeed.x = this.baseMovementSpeed;
-            }
-            this.rigidbody2D.velocity = smoothedSpeed;
+            //Vector2 targetVelocity = new Vector2(this.baseMovementSpeed * 10f, this.rigidbody2D.velocity.y);
+            //// And then smoothing it out and applying it to the character
+            //Vector2 smoothedSpeed = Vector2.SmoothDamp(this.rigidbody2D.velocity, PlayerInput.Instance.Horizontal.Value * targetVelocity, ref moveVelocity, .05f, this.baseMovementSpeed);
+            //if (Mathf.Abs(smoothedSpeed.x) > this.baseMovementSpeed)
+            //{
+            //    if(smoothedSpeed.x > 0)
+            //        smoothedSpeed.x = this.baseMovementSpeed;
+            //    else
+            //        smoothedSpeed.x = this.baseMovementSpeed * -1;
+            //}
+            //this.rigidbody2D.velocity = smoothedSpeed;
+
+
+
+            this.rigidbody2D.velocity = new Vector2(this.baseMovementSpeed * PlayerInput.Instance.Horizontal.Value, this.rigidbody2D.velocity.y);
         }
 
         public void VerticalMovement()

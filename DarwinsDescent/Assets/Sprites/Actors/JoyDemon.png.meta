@@ -1,0 +1,481 @@
+fileFormatVersion: 2
+guid: 7aa9ecaa5dce5cb42829f25fc6786caa
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 9027484706282519548
+    second: Explosion_0
+  - first:
+      213: 6311101036411558124
+    second: Explosion_1
+  - first:
+      213: -7941446765356348639
+    second: Explosion_2
+  - first:
+      213: 1946219527359276313
+    second: Explosion_3
+  - first:
+      213: 6175992569581033716
+    second: Explosion_4
+  - first:
+      213: -529435924149634557
+    second: Explosion_5
+  - first:
+      213: -3949699723937295298
+    second: JoyDemon_Fall
+  - first:
+      213: -7271609881504113702
+    second: JoyDemon_Idle_0
+  - first:
+      213: 2354722090270633503
+    second: JoyDemon_Idle_1
+  - first:
+      213: 8467206516641025668
+    second: JoyDemon_Idle_2
+  - first:
+      213: 2597929760753597167
+    second: JoyDemon_Idle_3
+  - first:
+      213: -810612471168996167
+    second: JoyDemon_Jump
+  - first:
+      213: -4099551614283502633
+    second: JoyDemon_12
+  - first:
+      213: 1370958927535586249
+    second: JoyDemon_13
+  - first:
+      213: 8880046241463066523
+    second: JoyDemon_14
+  - first:
+      213: 4979095254358863460
+    second: JoyDemon_15
+  - first:
+      213: 5803386766241935123
+    second: JoyDemon_16
+  - first:
+      213: -9201931158156823550
+    second: JoyDemon_17
+  - first:
+      213: -7079536472066568071
+    second: JoyDemon_18
+  - first:
+      213: 7431340756373222096
+    second: JoyDemon_19
+  - first:
+      213: -707535411642929067
+    second: JoyDemon_20
+  - first:
+      213: -2201304934153943843
+    second: JoyDemon_21
+  - first:
+      213: 8268680847701494849
+    second: JoyDemon_22
+  - first:
+      213: -2702236952437491458
+    second: JoyDemon_23
+  - first:
+      213: -6079584742688961884
+    second: JoyDemon_24
+  - first:
+      213: -2161825326022607095
+    second: JoyDemon_25
+  - first:
+      213: 1165673254925900912
+    second: JoyDemon_26
+  - first:
+      213: 3856443212913025216
+    second: JoyDemon_27
+  - first:
+      213: -6165984442702610185
+    second: JoyDemon_28
+  - first:
+      213: -1039666544568783288
+    second: JoyDemon_29
+  - first:
+      213: 3090381348080616083
+    second: JoyDemon_30
+  - first:
+      213: 7446653511998112768
+    second: JoyDemon_31
+  - first:
+      213: -7518985267104471422
+    second: JoyDemon_32
+  - first:
+      213: 5324703606465103476
+    second: JoyDemon_33
+  - first:
+      213: -7547553366979292514
+    second: JoyDemon_34
+  - first:
+      213: -3129037762199588667
+    second: JoyDemon_35
+  - first:
+      213: -5038033903843373822
+    second: JoyDemon_36
+  - first:
+      213: -1774117867975805038
+    second: JoyDemon_37
+  - first:
+      213: -4001076260836441005
+    second: JoyDemon_38
+  - first:
+      213: -6506824140570946666
+    second: JoyDemon_39
+  - first:
+      213: 1267140767436587553
+    second: JoyDemon_40
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Explosion_0
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 29
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cfbbd3db281184d70800000000000000
+      internalID: 9027484706282519548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Explosion_1
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 26
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce819e874f8859750800000000000000
+      internalID: 6311101036411558124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Explosion_2
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 22
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12b82441e305ac190800000000000000
+      internalID: -7941446765356348639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Explosion_3
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 20
+        width: 28
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 915ad2f395c520b10800000000000000
+      internalID: 1946219527359276313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Explosion_4
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 18
+        width: 32
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f8545d258885b550800000000000000
+      internalID: 6175992569581033716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Explosion_5
+      rect:
+        serializedVersion: 2
+        x: 357
+        y: 17
+        width: 34
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30afab105d017a8f0800000000000000
+      internalID: -529435924149634557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JoyDemon_Fall
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 35
+        width: 19
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3452490709df29c0800000000000000
+      internalID: -3949699723937295298
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JoyDemon_Idle_0
+      rect:
+        serializedVersion: 2
+        x: 478
+        y: 34
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: adb1ab3e65d061b90800000000000000
+      internalID: -7271609881504113702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JoyDemon_Idle_1
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 34
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1ea857e347ada020800000000000000
+      internalID: 2354722090270633503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JoyDemon_Idle_2
+      rect:
+        serializedVersion: 2
+        x: 582
+        y: 34
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 48ec248377f818570800000000000000
+      internalID: 8467206516641025668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JoyDemon_Idle_3
+      rect:
+        serializedVersion: 2
+        x: 634
+        y: 34
+        width: 16
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fea322d5a53bd0420800000000000000
+      internalID: 2597929760753597167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JoyDemon_Jump
+      rect:
+        serializedVersion: 2
+        x: 686
+        y: 34
+        width: 22
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9bc6875904020c4f0800000000000000
+      internalID: -810612471168996167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

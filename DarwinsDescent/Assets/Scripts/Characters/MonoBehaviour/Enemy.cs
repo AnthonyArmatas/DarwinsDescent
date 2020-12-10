@@ -225,6 +225,7 @@ namespace DarwinsDescent
                 WanderPoints.Count != 0)
                 Target = WanderPoints[Random.Next(WanderPoints.Count)];
 
+            // If there are no wander points the target remains on the playerCharacter
             destinationSetter.target = Target.transform;
 
 

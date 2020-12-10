@@ -23,7 +23,7 @@ namespace DarwinsDescent
         public LayerMask groundedLayerMask;
         public float baseMovementSpeed;
         public bool isGrounded = false;
-        public float groundedRaycastDistanceCheck = .5f;
+        public float groundedRaycastDistanceCheck = 0.05f;
         public bool spriteOriginallyFacesLeft = false;
 
 

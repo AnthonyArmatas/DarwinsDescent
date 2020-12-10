@@ -10,6 +10,8 @@ namespace DarwinsDescent
     public class EnemyDamager : Damager
     {
         private EnemySMF enemySMF = new EnemySMF();
+        public bool NeedToBeAttacking = false;
+
         void Awake()
         {
             if (damage == 0)
@@ -40,7 +42,7 @@ namespace DarwinsDescent
         private void OnTriggerEnter2D(Collider2D collision)
         {
             bool attacking = animator.GetBool(enemySMF.BaseAttackHash);
-            if (!attacking)
+            if (!attacking && NeedToBeAttacking)
                 return;
 
             // This checks the layers its hit.
