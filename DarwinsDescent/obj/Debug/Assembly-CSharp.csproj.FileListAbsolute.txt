@@ -556,11 +556,7 @@ F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\ExCSS.Unity.dll
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\Unity.Legacy.NRefactory.dll
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\UnityEngine.TestRunner.dll
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\UnityEditor.TestRunner.dll
-F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\nunit.framework.dll
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\Unity.CecilTools.dll
-F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\AstarPathfindingProject.pdb
-F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\PackageToolsEditor.pdb
-F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\AstarPathfindingProjectEditor.pdb
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\UnityEngine.xml
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\UnityEditor.xml
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\Unity.Timeline.Editor.pdb
@@ -661,10 +657,9 @@ F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\UnityEngine.WindMod
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\UnityEngine.XRModule.xml
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\UnityEngine.TestRunner.pdb
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\UnityEditor.TestRunner.pdb
-F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\nunit.framework.pdb
-F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\nunit.framework.xml
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\Assembly-CSharp.dll
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\Assembly-CSharp.pdb
+F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\PriorityQueue.dll

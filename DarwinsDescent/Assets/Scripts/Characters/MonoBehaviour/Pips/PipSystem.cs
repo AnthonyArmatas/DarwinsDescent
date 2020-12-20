@@ -34,16 +34,18 @@ namespace DarwinsDescent
         //Bottom
         public PipModel Legs = new PipModel();
 
-        public Queue<HPPipModel> hpPips = new Queue<HPPipModel>();
+        //public Queue<HPPipModel> hpPips = new Queue<HPPipModel>();
         //public FastPriorityQueue<HPPriorityQueueNode> hpPQPips;
         public Stack<HPPipModel> tempDecayStack = new Stack<HPPipModel>();
         public float timeElapsedOnTopTemp;
         public float lastTimeofTopTemp = 0;
         public Vector3 curTempDecayScale;
+        public PipLinkedList pipLinkedList;// = new PipLinkedList(new PipNode(PipNode.StatusKey.Real));
 
         public PlayerCharacter PlayerCharacter;
         public GameObject pipPrefab;
         public GameObject Hp_PipPool;
+        public Queue<GameObject> hpPips = new Queue<GameObject>();
         //TODO: Currently Unused, Update UpdateTempPipTime to use this instead of the hardcoded values
         public float PipTempTime = 5f;
 
@@ -66,7 +68,7 @@ namespace DarwinsDescent
         public InitializePipParts Initialized;
 
         // Sets up the delegate so that the subscriber knows what it function needs to contain
-        public delegate void UpdatePipPoolDisplay(HPPipModel pipModel);
+        public delegate void UpdatePipPoolDisplay(PipNode pipModel);
         // The Event publish. This is what the reviving methods subscribe to. So when update is invoked those other methods will run.
         public event UpdatePipPoolDisplay DisplayUpdated;
 
@@ -76,7 +78,6 @@ namespace DarwinsDescent
         public event UpdatePipCount Updated;
 
         #endregion
-
 
         // Start is called before the first frame update
         void Start()
@@ -106,8 +107,10 @@ namespace DarwinsDescent
             // Call function which sets the default/saved values for each of the pip models
             Initialized.Invoke(Head, Arms, Chest, Legs);
             curTempDecayScale = new Vector3(1, 1, 1);
-            //hpPQPips = new FastPriorityQueue<HPPriorityQueueNode>(playerHealth.MaxHP);
+
+            // Sets the PipLinkedList
             InitializePipPool(playerHealth);
+            
             InitializePipPadDisplay();
 
             if (Updated != null)
@@ -117,7 +120,6 @@ namespace DarwinsDescent
                 Updated.Invoke(Chest, PipPadTextHolder, PipPadImageHolder);
                 Updated.Invoke(Legs, PipPadTextHolder, PipPadImageHolder);
             }
-
         }
 
         void Update()
@@ -136,66 +138,31 @@ namespace DarwinsDescent
         /// </summary>
         public void InitializePipPool(PlayerHealth PipPoolInfo)
         {
-            if (PipPoolInfo.MaxHP == 0)
+            if (PipPoolInfo.MaxHP == 0 ||
+                Hp_PipPool.transform.childCount > 0)
             {
-                return;
+                 Debug.Log("MaxHP was Zero or had Hp_PipPool.transform.childCount > 0");
+                throw new Exception("MaxHP was Zero or had Hp_PipPool.transform.childCount > 0");
             }
 
+            //pipLinkedList.UpdateNodes(PipPoolInfo);
             GameObject previousPipObj = new GameObject();
-            //while (hpPQPips.Count < PipPoolInfo.MaxHP)
-            while (hpPips.Count < PipPoolInfo.MaxHP)
-            {
-                HPPipModel NewPipToAdd;
-                
-                //If the normal queue implementation is slow take another look at the pri queue
-                //if (hpPQPips.Count == 0)
-                if (hpPips.Count == 0)
-                {
-                    NewPipToAdd = Instantiate(pipPrefab,
-                    new Vector3(0, 0),
-                    new Quaternion(),
-                    Hp_PipPool.transform).GetComponent<HPPipModel>();
-                    NewPipToAdd.PipDisplayImage = NewPipToAdd.gameObject.GetComponent<Image>();
-                    NewPipToAdd.TempTime = PipTempTime;
-                    NewPipToAdd.CurState = HPPipModel.state.Real;
 
-                    RectTransform newrectTransform = (RectTransform)NewPipToAdd.gameObject.transform;
-                    newrectTransform.anchoredPosition = new Vector2(0, 0);
-                }
-                else
-                {
-                    // Check to make sure this makes sense.
-                    // Debug above and make sure when previousPipObj is instatiated its null
-                    if (previousPipObj.name == "New Game Object")
-                    {
-                        previousPipObj = hpPips?.Peek().gameObject;
-                    }
-
-                    RectTransform rectTransform = (RectTransform)previousPipObj.transform;
-
-                    // unfortunately, something about setting the Vector 3 in the Instantiate is thrown off, and it ends up adding the Canvas transform to the new items transform
-                    // instead of the value passed in. Setting the anchored position afterworlds makes it so the Instantiated spawn exactly where they need to.
-                    NewPipToAdd = Instantiate(pipPrefab,
-                        new Vector3(rectTransform.anchoredPosition.x + rectTransform.rect.width + 5f,
-                                    rectTransform.anchoredPosition.y),
-                        rectTransform.transform.rotation,
-                        Hp_PipPool.transform).GetComponent<HPPipModel>();
-                    NewPipToAdd.PipDisplayImage = NewPipToAdd.gameObject.GetComponent<Image>();
-                    NewPipToAdd.TempTime = PipTempTime;
-                    NewPipToAdd.CurState = HPPipModel.state.Real;
-
-                    RectTransform newrectTransform = (RectTransform)NewPipToAdd.gameObject.transform;
-                    newrectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x + rectTransform.rect.width + 5f, rectTransform.anchoredPosition.y);
-                }
-
-                NewPipToAdd.gameObject.name = pipPrefab.name + (hpPips.Count + 1).ToString();
-                NewPipToAdd.GetComponent<Image>().color = new Color(255f, 255f, 0f);
-                hpPips.Enqueue(NewPipToAdd);
-                //HPPriorityQueueNode newHPNode = new HPPriorityQueueNode(NewPipToAdd);
-                //hpPQPips.Enqueue(new HPPriorityQueueNode(NewPipToAdd), (float)HPPipModel.state.Real);
-                previousPipObj = NewPipToAdd.gameObject;
-            }
-
+            GameObject newHPPip = Instantiate(pipPrefab,
+                        new Vector3(0, 0),
+                        new Quaternion(),
+                        Hp_PipPool.transform);
+            RectTransform newrectTransform = (RectTransform)newHPPip.gameObject.transform;
+            newrectTransform.anchoredPosition = new Vector2(0, 0);
+            newHPPip.gameObject.name = pipPrefab.name + (hpPips.Count + 1).ToString();
+            newHPPip.GetComponent<Image>().color = new Color(255f, 255f, 0f);
+            pipLinkedList = new PipLinkedList(
+                newHPPip.GetComponent<PipNode>(),
+                pipPrefab,
+                Hp_PipPool,
+                hpPips);
+            hpPips.Enqueue(newHPPip);
+            UpdateHPPips(playerHealth);
         }
 
         public void InitializePipPadDisplay()
@@ -217,7 +184,6 @@ namespace DarwinsDescent
                     PipPadTextHolder.Add(partName, pipText);
                 }
             }
-
         }
 
         public void AssignPips()
@@ -266,21 +232,15 @@ namespace DarwinsDescent
             }
 
             // if there are not enough pips to give or the pip in question is locked or the max cap has been reached, return.
-            if (PipSection.MaxCap <= 1  || 
+            if (PipSection.MaxCap <= 1 ||
                 PipSection.Locked)
             {
                 return;
             }
 
             // If the left trigger or num pad plus is held then return all pips
-            if(PlayerInput.Instance.RefundPip.Value != 0)
+            if (PlayerInput.Instance.RefundPip.Value != 0)
             {
-                for (int lent = PipSection.Allocated; lent > 0; lent--)
-                {
-                    tempDecayStack.Pop();
-                }
-                // TODO: Call Damageable to refund health, filling up slots 
-                // and using the rest as temp.
                 Damageable.GetBackLoanHealth(PipSection);
                 if (playerHealth.CurHealth > playerHealth.MaxHP)
                 {
@@ -288,30 +248,10 @@ namespace DarwinsDescent
                     for (int tempPipsToAdd = playerHealth.CurHealth - playerHealth.MaxHP;
                         tempPipsToAdd > 0; tempPipsToAdd--)
                     {
-                        // Get the first instance from the function
-                        if(tempPipsToAdd == playerHealth.CurHealth - playerHealth.MaxHP)
-                                rectTransform = (RectTransform)GetLastItemInQueue(true).transform;
+                        
+                        // Just add the largest key so it is added to the end of the LL. The visuals will be updated later.
+                        pipLinkedList.AddNode(new PipNode(PipNode.StatusKey.Damaged));
 
-                        // unfortunately, something about setting the Vector 3 in the Instantiate is thrown off, and it ends up adding the Canvas transform to the new items transform
-                        // instead of the value passed in. Setting the anchored position afterworlds makes it so the Instantiated spawn exactly where they need to.
-                        HPPipModel NewPipToAdd = Instantiate(pipPrefab,
-                            new Vector3(rectTransform.anchoredPosition.x + rectTransform.rect.width + 5f,
-                                        rectTransform.anchoredPosition.y),
-                            rectTransform.transform.rotation,
-                            Hp_PipPool.transform).GetComponent<HPPipModel>();
-                        NewPipToAdd.PipDisplayImage = NewPipToAdd.gameObject.GetComponent<Image>();
-                        NewPipToAdd.TempTime = PipTempTime;
-                        NewPipToAdd.CurState = HPPipModel.state.Real;
-
-                        RectTransform newrectTransform = (RectTransform)NewPipToAdd.gameObject.transform;
-                        newrectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x + rectTransform.rect.width + 5f, rectTransform.anchoredPosition.y);
-
-                        NewPipToAdd.gameObject.name = pipPrefab.name + (hpPips.Count + 1).ToString();
-                        NewPipToAdd.GetComponent<Image>().color = new Color(255f, 255f, 0f);
-                        hpPips.Enqueue(NewPipToAdd);
-                        //HPPriorityQueueNode newHPNode = new HPPriorityQueueNode(NewPipToAdd);
-                        //hpPQPips.Enqueue(new HPPriorityQueueNode(NewPipToAdd), (float)HPPipModel.state.Real);
-                        rectTransform = (RectTransform)NewPipToAdd.gameObject.transform;
                     }
                 }
                 Updated.Invoke(PipSection, PipPadTextHolder, PipPadImageHolder);
@@ -331,160 +271,27 @@ namespace DarwinsDescent
             }
         }
 
+        /// from there was can walk through the list linked list
+        /// updating each and every game object image.
+        /// when it gets to the end of the list it:
+        ///  - Checks if there are more nodes connected to it
+        ///  - If so it recursively goes in it and checks to see if it has more connected
+        ///  - Once it does not, it destroys that game object and returns 
+        ///  and the objects do the same until it gets back to the begining
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="playerHP"></param>
         public void UpdateHPPips(PlayerHealth playerHP)
         {
-            //if(playerHP.CurHealth > playerHP.MaxHP &&
-            //    playerHP.RealHp == playerHP.MaxHP)
-            //{
-            //    // If there is an incoming full health this looks like it will skip that, fix it
-            //    //Add new temp HPPips to pippool
-            //    return;
-            //}
 
-            #region PriQueue Implimentation To come back to
-
-            //FastPriorityQueue<HPPriorityQueueNode> tempQueue = new FastPriorityQueue<HPPriorityQueueNode>(hpPQPips.Count);
-            //for(int RealPips = playerHP.RealHp; RealPips > 0; RealPips--)
-            //{
-            //    if (hpPQPips.First.Priority == (float)HPPipModel.state.Real)
-            //    {
-            //        tempQueue.Enqueue(hpPQPips.Dequeue(), (float)HPPipModel.state.Real);
-            //        continue;
-            //    }
-            //    hpPQPips.First.PipModel.CurState = HPPipModel.state.Real;
-            //    tempQueue.Enqueue(hpPQPips.Dequeue(), (float)HPPipModel.state.Real);
-            //}
-
-            //for(int tempPips = playerHP.TempHp; tempPips > 0; tempPips--)
-            //{
-            //    if (hpPQPips.First.Priority == (float)HPPipModel.state.Temp)
-            //    {
-            //        tempQueue.Enqueue(hpPQPips.Dequeue(), (float)HPPipModel.state.Temp);
-            //        continue;
-            //    }
-            //    hpPQPips.First.PipModel.CurState = HPPipModel.state.Temp;
-            //    tempQueue.Enqueue(hpPQPips.Dequeue(), (float)HPPipModel.state.Temp);
-            //}
-            //for (int lentPips = playerHP.LentHp; lentPips > 0; lentPips--)
-            //{
-            //    if (hpPQPips.First.Priority == (float)HPPipModel.state.Lent)
-            //    {
-            //        tempQueue.Enqueue(hpPQPips.Dequeue(), (float)HPPipModel.state.Lent);
-            //        continue;
-            //    }
-            //    hpPQPips.First.PipModel.CurState = HPPipModel.state.Lent;
-            //    tempQueue.Enqueue(hpPQPips.Dequeue(), (float)HPPipModel.state.Lent);
-            //}
-
-            //while(hpPQPips.Count > 0)
-            //{
-            //    if (hpPQPips.First.Priority == (float)HPPipModel.state.Damaged)
-            //    {
-            //        tempQueue.Enqueue(hpPQPips.Dequeue(), (float)HPPipModel.state.Damaged);
-            //        continue;
-            //    }
-            //    hpPQPips.First.PipModel.CurState = HPPipModel.state.Damaged;
-            //    tempQueue.Enqueue(hpPQPips.Dequeue(), (float)HPPipModel.state.Damaged);
-            //}
-
-            //hpPQPips = tempQueue;       
-            #endregion
-
-
-            Queue<HPPipModel> tempQueue = new Queue<HPPipModel>();
-
-            // Updates the Hp if damaged
-            if (playerHP.RealHp <= 0)
-            {
-                while(hpPips.Count > 0)
-                {
-                    hpPips.Peek().CurState = HPPipModel.state.Damaged;
-                    DisplayUpdated.Invoke(hpPips.Peek());
-                    tempQueue.Enqueue(hpPips.Dequeue());
-                }
-                hpPips = tempQueue;
-                return;
-            }
-
-            
-            for (int RealPips = playerHP.RealHp; RealPips > 0; RealPips--)
-            {
-                // Resets the size of the pip object to default
-                hpPips.Peek().gameObject.transform.localScale = new Vector3(1, 1, 1);
-                if (hpPips.Peek().CurState == HPPipModel.state.Real)
-                {
-                    tempQueue.Enqueue(hpPips.Dequeue());
-                    continue;
-                }
-                hpPips.Peek().CurState = HPPipModel.state.Real;
-                // Currently has PipDisplay subscribed and the function UpdatePipPoolDisplay 
-                // is called to update the pips color
-                DisplayUpdated.Invoke(hpPips.Peek());
-                tempQueue.Enqueue(hpPips.Dequeue());
-            }
-
-            for (int tempPips = playerHP.TempHp; tempPips > 0; tempPips--)
-            {
-                hpPips.Peek().gameObject.transform.localScale = new Vector3(1, 1, 1);
-                if (hpPips.Peek().CurState == HPPipModel.state.Temp)
-                {
-                    tempDecayStack.Push(hpPips.Peek());
-                    tempQueue.Enqueue(hpPips.Dequeue());
-                    continue;
-                }
-                hpPips.Peek().CurState = HPPipModel.state.Temp;
-                tempDecayStack.Push(hpPips.Peek());
-                DisplayUpdated.Invoke(hpPips.Peek());
-                tempQueue.Enqueue(hpPips.Dequeue());
-            }
-
-            // Sets the furtherest temp pip to its proper size.
-            if(tempDecayStack.Count != 0 && playerHP.TempHp != 0)
-                tempDecayStack.Peek().gameObject.transform.localScale = curTempDecayScale;
-
-            // Updates the lent pip hp sizes and color
-            for (int lentPips = playerHP.LentHp; lentPips > 0; lentPips--)
-            {
-                if (hpPips.Count > 0)
-                {
-                    hpPips.Peek().gameObject.transform.localScale = new Vector3(1, 1, 1);
-                    if (hpPips.Peek().CurState == HPPipModel.state.Lent)
-                    {
-                        tempQueue.Enqueue(hpPips.Dequeue());
-                        continue;
-                    }
-                    hpPips.Peek().CurState = HPPipModel.state.Lent;
-                    DisplayUpdated.Invoke(hpPips.Peek());
-                    tempQueue.Enqueue(hpPips.Dequeue());
-                }
-            }
-
-            while (tempDecayStack.Count > 0 &&
-                    playerHealth.CurHealth + playerHealth.LentHp < hpPips.Count + tempQueue.Count)
-            {
-                Destroy(GetLastItemInQueue(false).gameObject);
-                hpPips.Dequeue();
-            }
-
-            while (hpPips.Count > 0)
-            {
-                hpPips.Peek().gameObject.transform.localScale = new Vector3(1, 1, 1);
-                if (hpPips.Peek().CurState == HPPipModel.state.Damaged)
-                {
-                    tempQueue.Enqueue(hpPips.Dequeue());
-                    continue;
-                }
-                hpPips.Peek().CurState = HPPipModel.state.Damaged;
-                DisplayUpdated.Invoke(hpPips.Peek());
-                tempQueue.Enqueue(hpPips.Dequeue());
-            }
-
-            hpPips = tempQueue;
+            pipLinkedList.UpdateNodes(playerHealth);
+            DisplayUpdated.Invoke(pipLinkedList.Head);
         }
 
         public void UpdateTempPipTime()
         {
-            if (playerHealth.TempHp == 0 || tempDecayStack.Count == 0)
+            if (playerHealth.TempHp == 0 || pipLinkedList.LastTempPip == null)
             {
                 timeElapsedOnTopTemp = 0;
                 return;
@@ -499,50 +306,15 @@ namespace DarwinsDescent
             if((timeElapsedOnTopTemp - lastTimeofTopTemp) >= secondToDecreaseBy)
             {
                 lastTimeofTopTemp = timeElapsedOnTopTemp;
-                HPPipModel pipModel = tempDecayStack.Peek();
-                pipModel.gameObject.transform.localScale -= new Vector3(sectionAmount, 0, 0);
-                if(pipModel.gameObject.transform.localScale.x < .1f)
+                pipLinkedList.LastTempPip.gameObject.transform.localScale -= new Vector3(sectionAmount, 0, 0);
+                if(pipLinkedList.LastTempPip.gameObject.transform.localScale.x < .1f)
                 {
-                    pipModel.gameObject.transform.localScale = new Vector3(1, 1, 1);
-                    tempDecayStack.Pop();
-                    if (playerHealth.CurHealth > playerHealth.MaxHP)
-                    {
-                        Destroy(GetLastItemInQueue(false).gameObject);
-                        // TODO: Super Inefficient refactor this whole function and any related functions.
-                        pipModel = GetLastItemInQueue(true);
-                    }
+                    pipLinkedList.LastTempPip.gameObject.transform.localScale = new Vector3(1, 1, 1);
                     playerHealth.TempHp -= 1;
-                    //pipModel.CurState = HPPipModel.state.Lent;
-                    
-                    UpdateHPPips(playerHealth);
+                    pipLinkedList.LastTempPip = null;
                 }
-                curTempDecayScale = pipModel.gameObject.transform.localScale;
+                UpdateHPPips(playerHealth);
             }
-        }
-
-        public HPPipModel GetLastItemInQueue(bool KeepLastInQueue)
-        {
-            if (hpPips?.Count == 0)
-                return null;
-            if (hpPips?.Count == 1)
-                return hpPips.Peek();
-
-
-            HPPipModel first = hpPips.Peek();
-            HPPipModel current = null;
-            while (true)
-            {
-                current = hpPips.Dequeue();
-                if (hpPips.Peek() == first)
-                {
-                    break;
-                }
-                hpPips.Enqueue(current);
-            }
-            
-            if(KeepLastInQueue)
-                hpPips.Enqueue(current);
-            return current;
         }
     }
 }

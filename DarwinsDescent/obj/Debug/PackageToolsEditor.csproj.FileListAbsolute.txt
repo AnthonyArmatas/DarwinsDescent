@@ -466,7 +466,6 @@ F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\ExCSS.Unity.dll
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\Unity.Legacy.NRefactory.dll
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\SyntaxTree.VisualStudio.Unity.Messaging.dll
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\Unity.CecilTools.dll
-F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\AstarPathfindingProject.pdb
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\UnityEngine.xml
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\UnityEditor.xml
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\UnityEditor.UI.pdb
@@ -541,3 +540,4 @@ F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\PackageToolsEditor.cspro
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\PackageToolsEditor.csproj.CopyComplete
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\PackageToolsEditor.dll
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\PackageToolsEditor.pdb
+F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\PriorityQueue.dll

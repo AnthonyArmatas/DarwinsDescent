@@ -68,28 +68,34 @@ namespace DarwinsDescent
         /// Does Not Reset - 4 slots with extra temp NNDTT. one N gets filtered NFDTT and is in turn filled by temp NDTT. Since four slots and both temp are wirhin the max pool cap they can be reset
         /// </summary>
         /// <param name="pipModel"></param>
-        public void UpdatePipPoolDisplay(HPPipModel pipModel)
+        public void UpdatePipPoolDisplay(PipNode pipModel)
         {
-            switch (pipModel.CurState)
+            PipNode walker = pipModel;
+            while(walker != null)
             {
-                case HPPipModel.state.Real:
-                    pipModel.PipDisplayImage.sprite = pipFullHPPrefab.GetComponent<Image>().sprite;
-                    pipModel.PipDisplayImage.color = Enabled;
-                    break;
-                case HPPipModel.state.Temp:
-                    pipModel.PipDisplayImage.sprite = pipFullHPPrefab.GetComponent<Image>().sprite;
-                    pipModel.PipDisplayImage.color = Temp;
-                    break;
-                case HPPipModel.state.Damaged:
-                    pipModel.PipDisplayImage.sprite = pipFullHPPrefab.GetComponent<Image>().sprite;
-                    pipModel.PipDisplayImage.color = Disabled;
-                    break;
-                case HPPipModel.state.Lent:
-                    pipModel.PipDisplayImage.sprite = pipLentHPPrefab.GetComponent<Image>().sprite;
-                    pipModel.PipDisplayImage.color = Color.white;
-                    break;
-                default:
-                    break;
+                switch (walker.PipState)
+                {
+                    case PipNode.StatusKey.Real:
+                        walker.PipDisplayImage.sprite = pipFullHPPrefab.GetComponent<Image>().sprite;
+                        walker.PipDisplayImage.color = Enabled;
+                        break;
+                    case PipNode.StatusKey.Temp:
+                        walker.PipDisplayImage.sprite = pipFullHPPrefab.GetComponent<Image>().sprite;
+                        walker.PipDisplayImage.color = Temp;
+                        break;
+                    case PipNode.StatusKey.Damaged:
+                        walker.PipDisplayImage.sprite = pipFullHPPrefab.GetComponent<Image>().sprite;
+                        walker.PipDisplayImage.color = Disabled;
+                        break;
+                    case PipNode.StatusKey.Lent:
+                        walker.PipDisplayImage.sprite = pipLentHPPrefab.GetComponent<Image>().sprite;
+                        walker.PipDisplayImage.color = Color.white;
+                        break;
+                    default:
+                        break;
+                }
+
+                walker = walker.NextNode;
             }
         }
 

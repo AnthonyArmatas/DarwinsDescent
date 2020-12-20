@@ -467,8 +467,6 @@ F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\ExCSS.Unity.dll
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\Unity.Legacy.NRefactory.dll
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\SyntaxTree.VisualStudio.Unity.Messaging.dll
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\Unity.CecilTools.dll
-F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\AstarPathfindingProject.pdb
-F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\PackageToolsEditor.pdb
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\UnityEngine.xml
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\UnityEditor.xml
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\UnityEditor.UI.pdb
@@ -543,3 +541,4 @@ F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\AstarPathfindingProjectE
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\AstarPathfindingProjectEditor.csproj.CopyComplete
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\AstarPathfindingProjectEditor.dll
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\AstarPathfindingProjectEditor.pdb
+F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\PriorityQueue.dll
