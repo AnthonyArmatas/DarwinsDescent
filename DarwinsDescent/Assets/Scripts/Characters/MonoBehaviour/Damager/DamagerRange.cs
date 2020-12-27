@@ -40,6 +40,10 @@ namespace DarwinsDescent
                 {
                     enemy = GetComponentInParent<Enemy>();
                 }
+                if (enemy == null)
+                {
+                    enemy = GetComponentInChildren<Enemy>();
+                }
             }
         }
 

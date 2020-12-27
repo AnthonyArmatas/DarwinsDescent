@@ -146,8 +146,6 @@ namespace DarwinsDescent
             }
 
             //pipLinkedList.UpdateNodes(PipPoolInfo);
-            GameObject previousPipObj = new GameObject();
-
             GameObject newHPPip = Instantiate(pipPrefab,
                         new Vector3(0, 0),
                         new Quaternion(),
