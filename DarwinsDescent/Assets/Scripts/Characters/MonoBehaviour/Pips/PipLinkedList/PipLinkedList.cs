@@ -46,7 +46,8 @@ namespace DarwinsDescent
             nodeWalker = WalkThroughList(nodeWalker, playerHealth, PipNode.StatusKey.Real, ref lastNode);
             nodeWalker = WalkThroughList(nodeWalker, playerHealth, PipNode.StatusKey.Temp, ref lastNode);
             CheckStateOfTemp(lastNode);
-            if (lastNode.PipState == PipNode.StatusKey.Temp)
+            if (lastNode != null &&
+                lastNode.PipState == PipNode.StatusKey.Temp)
                 LastTempPip = lastNode;
 
             nodeWalker = WalkThroughList(nodeWalker, playerHealth, PipNode.StatusKey.Lent, ref lastNode);

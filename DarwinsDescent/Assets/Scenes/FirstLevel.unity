@@ -1393,6 +1393,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2148540672
   baseMovementSpeed: 0
+  baseAccelerationSpeed: 0
   isGrounded: 0
   groundedRaycastDistanceCheck: 0.05
   spriteOriginallyFacesLeft: 0
@@ -2746,6 +2747,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2148532480
   baseMovementSpeed: 0
+  baseAccelerationSpeed: 0
   isGrounded: 0
   groundedRaycastDistanceCheck: 0.5
   spriteOriginallyFacesLeft: 0
@@ -20076,6 +20078,16 @@ PrefabInstance:
       propertyPath: groundedRaycastDistanceCheck
       value: 0.05
       objectReference: {fileID: 0}
+    - target: {fileID: 2442671432423069994, guid: 532c2d424526bbe4cb798a60d2a8e5a4,
+        type: 3}
+      propertyPath: baseAccelerationSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2442671432423069996, guid: 532c2d424526bbe4cb798a60d2a8e5a4,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 7dc9ce5b37e5b344db59015445e04982, type: 2}
     - target: {fileID: 2442671432423069999, guid: 532c2d424526bbe4cb798a60d2a8e5a4,
         type: 3}
       propertyPath: m_LocalPosition.x

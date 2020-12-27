@@ -22,6 +22,7 @@ namespace DarwinsDescent
         [Tooltip("The Layers which represent gameobjects that the Character Controller can be grounded on.")]
         public LayerMask groundedLayerMask;
         public float baseMovementSpeed;
+        public float baseAccelerationSpeed;
         public bool isGrounded = false;
         public float groundedRaycastDistanceCheck = 0.05f;
         public bool spriteOriginallyFacesLeft = false;
