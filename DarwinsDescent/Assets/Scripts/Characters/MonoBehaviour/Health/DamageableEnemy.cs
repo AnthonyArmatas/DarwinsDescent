@@ -36,7 +36,7 @@ namespace DarwinsDescent
         }
 
         void OnEnable()
-        {   
+        {
             if(enemy == null)
             {
                 enemy = GetComponent<Enemy>();
