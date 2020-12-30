@@ -1,5 +1,4 @@
 ﻿using DarwinsDescent.Assets.Scripts.Characters.MonoBehaviour;
-using DarwinsDescent.Assets.Scripts.Characters.MonoBehaviour.Pips;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -282,7 +281,6 @@ namespace DarwinsDescent
         /// <param name="playerHP"></param>
         public void UpdateHPPips(PlayerHealth playerHP)
         {
-
             pipLinkedList.UpdateNodes(playerHealth);
             DisplayUpdated.Invoke(pipLinkedList.Head);
         }

@@ -94,7 +94,7 @@ namespace DarwinsDescent
             if (PlayerCharacter == null)
                 PlayerCharacter = GameObject.Find("Darwin");
 
-            foreach (Transform child in this.transform)
+            foreach (Transform child in this.transform.parent)
             {
                 if(child.name == "WanderPoints")
                 {
