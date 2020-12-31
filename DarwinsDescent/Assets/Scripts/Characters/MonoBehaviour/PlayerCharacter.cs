@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace DarwinsDescent
         protected Vector2 moveVelocity;
         public Transform cameraFollowTarget;
         public PlayerSMF SMF = new PlayerSMF();
+        public SpriteRenderer InteractObjRenderer;
 
         private float jumpTimeCounter;
         public bool jumpRequest;
@@ -20,6 +22,13 @@ namespace DarwinsDescent
         public float jumpTime;
         public float jumpForce;
         public bool IsDead;
+        #endregion
+
+        #region Events
+        // Instantiates the event for others to subscribe to with their functions.
+        public delegate void InteractWithObj();
+        public InteractWithObj interact;
+
         #endregion
 
         //public PlayerCharacter(Damageable dmg, Animator ani, SpriteRenderer sr, Rigidbody2D rb, BoxCollider2D bc, float baseMovementSpeed )
@@ -51,6 +60,18 @@ namespace DarwinsDescent
                 damageable = GetComponent<DamageablePlayer>();
             if (cameraFollowTarget == null)
                 cameraFollowTarget = transform.Find("CameraFollowTarget")?.GetComponent<Transform>();
+            
+            if (InteractObjRenderer == null) 
+            {
+                foreach (Transform child in transform)
+                {
+                    if (child.name == "InteractFlag")
+                        InteractObjRenderer = child.GetComponent<SpriteRenderer>();
+                }
+
+                if (InteractObjRenderer == null)
+                    InteractObjRenderer = transform.Find("InteractFlag")?.GetComponent<SpriteRenderer>();
+            } 
 
 
             if (baseMovementSpeed == 0)
@@ -68,6 +89,7 @@ namespace DarwinsDescent
                 return;
             IsJumping();
             IsAttacking();
+            IsInteracting();
             UpdateFacing();
         }
 
@@ -80,6 +102,11 @@ namespace DarwinsDescent
                 return;
             }
 
+            // Get input should only be done in Update since fixed update "can and will miss inputs"
+            // https://forum.unity.com/threads/check-for-user-input-in-fixedupdate.214706/#:~:text=Tracking%20input%20in%20FixedUpdate%20absolutely,respond%20to%20it%20in%20FixedUpdate.
+            // There doesnt seems to be any issues, but if I dump this into update the jump gets weird and flys up.
+            //  TODO: Look into this and make sure the  playerinput class and values are only taken from update.
+            //  Did a quick check, and it looks like GetInputs is in update in InputComponent. Should look in deeper to make sure.
             MoveAround();
             animator.SetFloat(SMF.HorizontalSpeedHash, this.rigidbody2D.velocity.x);
             animator.SetFloat(SMF.VerticalSpeedHash, this.rigidbody2D.velocity.y);
@@ -211,6 +238,18 @@ namespace DarwinsDescent
             }
         }
 
+        private void IsInteracting()
+        {
+            if (PlayerInput.Instance.Interact.Down)
+            {
+                Debug.Log("Before interact");
+                if(interact != null)
+                    interact.Invoke();
+
+                Debug.Log("after interact");
+            }
+        }
+
         #region Facing
         public override void UpdateFacing()
         {
@@ -220,13 +259,14 @@ namespace DarwinsDescent
             if (faceLeft)
             {
                 spriteRenderer.transform.localScale = new Vector3(-1, 1);
+                InteractObjRenderer.flipX = true;
                 //spriteRenderer.flipX = !spriteOriginallyFacesLeft;
                 //meleeAtkBCollider.transform.localScale = new Vector3(-1, 1);
             }
             else if (faceRight)
             {
-                spriteRenderer.transform.localScale = new Vector3(1, 1);    
-
+                spriteRenderer.transform.localScale = new Vector3(1, 1);
+                InteractObjRenderer.flipX = false;
                 //spriteRenderer.flipX = spriteOriginallyFacesLeft;
                 //meleeAtkBCollider.transform.localScale = new Vector3(1, 1);
             }
