@@ -542,3 +542,5 @@ F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\AstarPathfindingProjectE
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\AstarPathfindingProjectEditor.dll
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\obj\Debug\AstarPathfindingProjectEditor.pdb
 F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\PriorityQueue.dll
+F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\AstarPathfindingProject.pdb
+F:\Workshop\DarwinsDecentRepo2\DarwinsDescent\Temp\bin\Debug\PackageToolsEditor.pdb

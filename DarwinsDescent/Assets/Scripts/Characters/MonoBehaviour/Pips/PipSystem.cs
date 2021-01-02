@@ -229,7 +229,7 @@ namespace DarwinsDescent
             }
 
             // if there are not enough pips to give or the pip in question is locked or the max cap has been reached, return.
-            if (PipSection.MaxCap <= 1 ||
+            if (PipSection.MaxCap <= 0 ||
                 PipSection.Locked)
             {
                 return;
@@ -253,6 +253,7 @@ namespace DarwinsDescent
                 }
                 Updated.Invoke(PipSection, PipPadTextHolder, PipPadImageHolder);
                 UpdateHPPips(playerHealth);
+                PipSection.ApplyPipModifications(PlayerCharacter);
                 return;
             }
 
@@ -265,6 +266,7 @@ namespace DarwinsDescent
                 PipSection.Allocated++;
                 Damageable.LoanHealth(1);
                 Updated.Invoke(PipSection, PipPadTextHolder, PipPadImageHolder);
+                PipSection.ApplyPipModifications(PlayerCharacter);
             }
         }
 
@@ -283,6 +285,11 @@ namespace DarwinsDescent
         {
             pipLinkedList.UpdateNodes(playerHealth);
             DisplayUpdated.Invoke(pipLinkedList.Head);
+        }
+
+        public void UpdatePipPad(PipModel pipModel)
+        {
+            Updated.Invoke(pipModel, PipPadTextHolder, PipPadImageHolder);
         }
 
         public void UpdateTempPipTime()

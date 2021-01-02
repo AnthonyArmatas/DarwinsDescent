@@ -9,11 +9,33 @@ namespace DarwinsDescent
 {
     public class PowerUp : Interactable
     {
+        public bool UsedUp;
+        
+        //Currently just adding in the gui for expediency of development.
+        public PipSystem PipSystem;
+
+        public Animator Animator;
+
+        public int ActivateHash => Animator.StringToHash("Activate");
+
+        void Start()
+        {
+            UsedUp = false;
+            // TODO: Doesnt work, figure out why
+            //if (playerCharacter == null)
+            //{
+            //    playerCharacter = transform.Find("Darwin")?.GetComponent<PlayerCharacter>();
+            //}
+            //if (pipSystem == null) { ... }
+        }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            ShowInteractObj();
-            playerCharacter.interact += TriggerEvent;
+            if (!UsedUp)
+            {
+                ShowInteractObj();
+                playerCharacter.interact += TriggerEvent;
+            }
         }
 
         private void OnTriggerExit2D(Collider2D collision)
@@ -22,7 +44,7 @@ namespace DarwinsDescent
             playerCharacter.interact -= TriggerEvent;
         }
 
-        public void TriggerEvent()
+        public virtual void TriggerEvent()
         {
             Debug.Log("EventTriggered");
         }

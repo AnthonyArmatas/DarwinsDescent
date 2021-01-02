@@ -71,15 +71,25 @@ namespace DarwinsDescent
 
                 if (InteractObjRenderer == null)
                     InteractObjRenderer = transform.Find("InteractFlag")?.GetComponent<SpriteRenderer>();
-            } 
+            }
 
 
+            // Get PipModel for legs and get the associated LegPipUp values
             if (baseMovementSpeed == 0)
                 baseMovementSpeed = 10f;
             if (jumpForce == 0)
                 jumpForce = 2;
             if (jumpTime == 0)
                 jumpTime = 0.05f;
+
+            // Basic all in one shader if added as the material
+            // Look to AllIn1SpriteShader.shader file for the names
+            // for invincibility
+            // FLICKER_ON, percent 0.25 | frequent 1
+            //Material mat = GetComponent<Renderer>().material;
+            //mat.SetFloat("_Glow", 10f);
+            //mat.EnableKeyword("GLOW_ON");
+
         }
 
         // Update is called once per frame

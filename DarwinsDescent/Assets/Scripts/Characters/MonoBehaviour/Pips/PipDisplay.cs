@@ -130,6 +130,14 @@ namespace DarwinsDescent
             //child.gameObject.GetComponent<Image>().color = new Color(255f, 255f, 0f);
             //PipSection.Name.ToString();
             PipPadTextHolder[PipSection.Name.ToString()].text = PipSection.Allocated.ToString();
+
+            if (PipSection.Locked)
+            {
+                PipPadTextHolder[PipSection.Name.ToString()].color = Color.black;
+                PipPadImageHolder[PipSection.Name.ToString()].color = Color.black;
+                return;
+            }
+
             PipPadTextHolder[PipSection.Name.ToString()].color = Color.black;
             PipPadImageHolder[PipSection.Name.ToString()].color = Color.grey;
 
