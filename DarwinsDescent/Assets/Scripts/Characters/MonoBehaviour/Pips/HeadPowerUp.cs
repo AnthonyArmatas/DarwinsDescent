@@ -2,7 +2,7 @@
 
 namespace DarwinsDescent
 {
-    public class LegPowerUp : PowerUp
+    public class HeadPowerUp : PowerUp
     {
         void Awake()
         {
@@ -16,10 +16,10 @@ namespace DarwinsDescent
             this.UsedUp = true;
             playerCharacter.interact -= TriggerEvent;
             HideInteractObj();
-            if (PipSystem.Legs.Locked)
-                PipSystem.Legs.Locked = false;
-            PipSystem.Legs.MaxCap++;
-            PipSystem.UpdatePipPad(PipSystem.Legs);
+            if (PipSystem.Head.Locked)
+                PipSystem.Head.Locked = false;
+            PipSystem.Head.MaxCap++;
+            PipSystem.UpdatePipPad(PipSystem.Head);
             Animator.SetTrigger(ActivateHash);
         }
     }
