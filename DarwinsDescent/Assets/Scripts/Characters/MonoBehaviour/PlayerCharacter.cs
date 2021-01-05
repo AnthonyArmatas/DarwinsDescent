@@ -22,6 +22,7 @@ namespace DarwinsDescent
         public float jumpTime;
         public float jumpForce;
         public bool IsDead;
+        public bool movementDisabled;
         #endregion
 
         #region Events
@@ -95,7 +96,7 @@ namespace DarwinsDescent
         // Update is called once per frame
         void Update()
         {
-            if (IsDead)
+            if (IsDead || movementDisabled)
                 return;
             IsJumping();
             IsAttacking();
@@ -139,7 +140,7 @@ namespace DarwinsDescent
 
         public void HorizontalMovement(float speedScale = 1f)
         {
-            if (PlayerInput.Instance.Horizontal.Value == 0)
+            if (PlayerInput.Instance.Horizontal.Value == 0 || movementDisabled)
             {
                 // Immediately stops the player if he is on the floor and moving faster than small nudges. If more precision is desired remove the Mathf.Abs(this.rigidbody2D.velocity.x) > 2f
                 if (this.rigidbody2D.velocity.x != 0 && isGrounded && Mathf.Abs(this.rigidbody2D.velocity.x) > 0f)
