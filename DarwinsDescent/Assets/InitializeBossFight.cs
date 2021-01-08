@@ -11,6 +11,7 @@ namespace DarwinsDescent
         public Transform CameraOriginalTransform;
         public Collider2D BossBarrier;
         public PlayerCharacter playerCharacter;
+        public WallowBoss wallowBoss;
 
         void Start()
         {
@@ -31,6 +32,8 @@ namespace DarwinsDescent
 
             if (playerCharacter == null)
                 playerCharacter = GameObject.Find("Darwin").GetComponent<PlayerCharacter>();
+            if (wallowBoss == null)
+                wallowBoss = GameObject.Find("WallowBossCore").GetComponent<WallowBoss>();
 
         }
 
@@ -46,7 +49,8 @@ namespace DarwinsDescent
                 transposer.m_DeadZoneHeight = 0;
                 BossBarrier.enabled = true;
                 playerCharacter.movementDisabled = true;
-                Debug.Log("ENTERED");
+                wallowBoss.animator.SetTrigger("EnteredRange");
+                Debug.Log("ENTERED");   
             }
         }
 
