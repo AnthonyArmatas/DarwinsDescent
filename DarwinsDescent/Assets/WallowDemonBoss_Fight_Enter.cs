@@ -1,12 +1,20 @@
-﻿using System.Collections;
+﻿using DarwinsDescent;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class WallowDemonBoss_Fight_Enter : StateMachineBehaviour
 {
+    public PlayerCharacter playerCharacter;
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        if (playerCharacter == null)
+        {
+            playerCharacter = GameObject.Find("Darwin").GetComponent<PlayerCharacter>();
+        }
+        playerCharacter.movementDisabled = false;
         animator.SetBool("InFight", true);
     }
 

@@ -10,7 +10,7 @@ namespace DarwinsDescent
     public class EnemyDamager : Damager
     {
         private EnemySMF enemySMF = new EnemySMF();
-        public bool NeedToBeAttacking = false;
+        public bool NeedToBeAttacking;
 
         void Awake()
         {

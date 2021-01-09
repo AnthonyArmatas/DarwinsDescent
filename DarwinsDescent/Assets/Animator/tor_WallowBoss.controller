@@ -52,6 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 558a80c1a7fdf7947a512ddf215f27d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCharacter: {fileID: 0}
 --- !u!1102 &-5668968264273121919
 AnimatorState:
   serializedVersion: 5
@@ -186,7 +187,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: Attack
+  - m_Name: BaseAttack
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -317,7 +318,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Attack
+    m_ConditionEvent: BaseAttack
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5668968264273121919}
@@ -350,16 +351,16 @@ AnimatorStateMachine:
     m_Position: {x: 440, y: 30, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8181023948147760457}
-    m_Position: {x: 440, y: 120, z: 0}
+    m_Position: {x: 440, y: 110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2781064453307833212}
-    m_Position: {x: 320, y: 200, z: 0}
+    m_Position: {x: 290, y: 200, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5668968264273121919}
-    m_Position: {x: 570, y: 200, z: 0}
+    m_Position: {x: 600, y: 200, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3586674305370807777}
-    m_Position: {x: 690, y: 80, z: 0}
+    m_Position: {x: 690, y: 60, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: 8920169932575683657}

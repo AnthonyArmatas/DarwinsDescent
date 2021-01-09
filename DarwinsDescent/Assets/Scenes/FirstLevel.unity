@@ -303,6 +303,7 @@ GameObject:
   m_Component:
   - component: {fileID: 47133144}
   - component: {fileID: 47133145}
+  - component: {fileID: 47133146}
   m_Layer: 20
   m_Name: Tentacle6
   m_TagString: Untagged
@@ -318,7 +319,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 47133143}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2017368068}
@@ -334,7 +335,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -350,6 +351,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.2, y: 0.2}
   m_EdgeRadius: 0
+--- !u!114 &47133146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47133143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ed2598d524624e4daf03c4ca358ebf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  ignoreInvincibility: 0
+  hittableLayers:
+    serializedVersion: 2
+    m_Bits: 8192
+  animator: {fileID: 2017368072}
+  AttackCollider: {fileID: 649131479}
+  NeedToBeAttacking: 1
 --- !u!1 &52621964
 GameObject:
   m_ObjectHideFlags: 0
@@ -4070,7 +4091,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 69051257}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: WallowBoss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4407,7 +4428,7 @@ GameObject:
   - component: {fileID: 233119463}
   - component: {fileID: 233119465}
   - component: {fileID: 233119464}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: BossEnterRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4446,8 +4467,8 @@ MonoBehaviour:
   BossCamera: {fileID: 1264904622}
   CameraOriginalTransform: {fileID: 1180975787}
   BossBarrier: {fileID: 1192247482}
-  playerCharacter: {fileID: 0}
-  wallowBoss: {fileID: 0}
+  playerCharacter: {fileID: 964049961}
+  wallowBoss: {fileID: 2017368070}
 --- !u!61 &233119465
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5581,7 +5602,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 486425612}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2017368068}
@@ -5597,7 +5618,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -6540,6 +6561,7 @@ GameObject:
   m_Component:
   - component: {fileID: 649131478}
   - component: {fileID: 649131479}
+  - component: {fileID: 649131480}
   m_Layer: 20
   m_Name: Tentacle1
   m_TagString: Untagged
@@ -6555,7 +6577,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 649131477}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2017368068}
@@ -6571,7 +6593,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -6587,6 +6609,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.2, y: 0.2}
   m_EdgeRadius: 0
+--- !u!114 &649131480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 649131477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ed2598d524624e4daf03c4ca358ebf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  ignoreInvincibility: 0
+  hittableLayers:
+    serializedVersion: 2
+    m_Bits: 8192
+  animator: {fileID: 2017368072}
+  AttackCollider: {fileID: 649131479}
+  NeedToBeAttacking: 1
 --- !u!1 &658018435
 GameObject:
   m_ObjectHideFlags: 0
@@ -16929,6 +16971,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: JoyDemon
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467336963166403976, guid: 79861cefd7d18b54aa6c4d2e4c629278,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4467336963166403979, guid: 79861cefd7d18b54aa6c4d2e4c629278,
         type: 3}
@@ -64112,7 +64159,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1192247481}
   - component: {fileID: 1192247482}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: BossBarrier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64489,7 +64536,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1264904622}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: CameraTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65273,6 +65320,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1415510804}
   - component: {fileID: 1415510805}
+  - component: {fileID: 1415510806}
   m_Layer: 20
   m_Name: Tentacle3
   m_TagString: Untagged
@@ -65288,7 +65336,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1415510803}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2017368068}
@@ -65304,7 +65352,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -65320,6 +65368,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.2, y: 0.2}
   m_EdgeRadius: 0
+--- !u!114 &1415510806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1415510803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ed2598d524624e4daf03c4ca358ebf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  ignoreInvincibility: 0
+  hittableLayers:
+    serializedVersion: 2
+    m_Bits: 8192
+  animator: {fileID: 2017368072}
+  AttackCollider: {fileID: 649131479}
+  NeedToBeAttacking: 1
 --- !u!1001 &1441549811
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -65481,6 +65549,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: JoyDemon
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467336963166403976, guid: 79861cefd7d18b54aa6c4d2e4c629278,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4467336963166403979, guid: 79861cefd7d18b54aa6c4d2e4c629278,
         type: 3}
@@ -65923,7 +65996,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1524567915}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2017368068}
@@ -65939,7 +66012,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -66256,6 +66329,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: JoyDemon
       objectReference: {fileID: 0}
+    - target: {fileID: 4467336963166403976, guid: 79861cefd7d18b54aa6c4d2e4c629278,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4467336963166403979, guid: 79861cefd7d18b54aa6c4d2e4c629278,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -66509,6 +66587,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1703208809}
   - component: {fileID: 1703208810}
+  - component: {fileID: 1703208811}
   m_Layer: 20
   m_Name: Mouth
   m_TagString: Untagged
@@ -66524,7 +66603,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1703208808}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2017368068}
@@ -66540,7 +66619,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -66556,6 +66635,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.2, y: 0.2}
   m_EdgeRadius: 0
+--- !u!114 &1703208811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1703208808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ed2598d524624e4daf03c4ca358ebf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  ignoreInvincibility: 0
+  hittableLayers:
+    serializedVersion: 2
+    m_Bits: 8192
+  animator: {fileID: 2017368072}
+  AttackCollider: {fileID: 649131479}
+  NeedToBeAttacking: 1
 --- !u!1001 &1732207367
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66577,6 +66676,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: JoyDemon
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467336963166403976, guid: 79861cefd7d18b54aa6c4d2e4c629278,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4467336963166403979, guid: 79861cefd7d18b54aa6c4d2e4c629278,
         type: 3}
@@ -67433,6 +67537,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1800193406}
   - component: {fileID: 1800193407}
+  - component: {fileID: 1800193408}
   m_Layer: 20
   m_Name: Tentacle5
   m_TagString: Untagged
@@ -67448,7 +67553,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1800193405}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2017368068}
@@ -67464,7 +67569,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -67480,6 +67585,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.2, y: 0.2}
   m_EdgeRadius: 0
+--- !u!114 &1800193408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800193405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ed2598d524624e4daf03c4ca358ebf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  ignoreInvincibility: 0
+  hittableLayers:
+    serializedVersion: 2
+    m_Bits: 8192
+  animator: {fileID: 2017368072}
+  AttackCollider: {fileID: 649131479}
+  NeedToBeAttacking: 1
 --- !u!1 &1809245189
 GameObject:
   m_ObjectHideFlags: 0
@@ -67978,13 +68103,13 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2017368067}
   m_BodyType: 0
-  m_Simulated: 0
+  m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -68162,6 +68287,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2031024834}
   - component: {fileID: 2031024835}
+  - component: {fileID: 2031024836}
   m_Layer: 20
   m_Name: Tentacle2
   m_TagString: Untagged
@@ -68177,7 +68303,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2031024833}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2017368068}
@@ -68193,7 +68319,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -68209,6 +68335,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.2, y: 0.2}
   m_EdgeRadius: 0
+--- !u!114 &2031024836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2031024833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ed2598d524624e4daf03c4ca358ebf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  ignoreInvincibility: 0
+  hittableLayers:
+    serializedVersion: 2
+    m_Bits: 8192
+  animator: {fileID: 2017368072}
+  AttackCollider: {fileID: 649131479}
+  NeedToBeAttacking: 1
 --- !u!1 &2049492881
 GameObject:
   m_ObjectHideFlags: 0
@@ -68580,6 +68726,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2129012934}
   - component: {fileID: 2129012935}
+  - component: {fileID: 2129012936}
   m_Layer: 20
   m_Name: Tentacle4
   m_TagString: Untagged
@@ -68595,7 +68742,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2129012933}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2017368068}
@@ -68611,7 +68758,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -68627,6 +68774,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.2, y: 0.2}
   m_EdgeRadius: 0
+--- !u!114 &2129012936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2129012933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ed2598d524624e4daf03c4ca358ebf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  ignoreInvincibility: 0
+  hittableLayers:
+    serializedVersion: 2
+    m_Bits: 8192
+  animator: {fileID: 2017368072}
+  AttackCollider: {fileID: 649131479}
+  NeedToBeAttacking: 1
 --- !u!1001 &4467336963835576257
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -68648,6 +68815,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: JoyDemon
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467336963166403976, guid: 79861cefd7d18b54aa6c4d2e4c629278,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4467336963166403979, guid: 79861cefd7d18b54aa6c4d2e4c629278,
         type: 3}
