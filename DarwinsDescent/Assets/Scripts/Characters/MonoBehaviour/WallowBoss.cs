@@ -41,9 +41,9 @@ namespace DarwinsDescent
         public bool HasTelegraphed;
         public int BossHealth = 10;
 
-        public delegate void BossTakeDmg(int DmgAmount);
+        public delegate void BossDefeated(int DmgAmount);
         // The Event publish. This is what the reviving methods subscribe to. So when update is invoked those other methods will run.
-        public event BossTakeDmg Updated;
+        public event BossDefeated Updated;
 
         // Start is called before the first frame update
         void Start()
@@ -56,7 +56,6 @@ namespace DarwinsDescent
                 AttackTime = 10f;
             HasTelegraphed = false;
 
-            Updated += TakeDamage;
         }
 
         // Update is called once per frame
@@ -93,6 +92,7 @@ namespace DarwinsDescent
         public void TakeDamage(int DmgAmount)
         {
             BossHealth -= DmgAmount;
+            animator.SetTrigger("Hurt");
         }
     }
 }
