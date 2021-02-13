@@ -11,8 +11,8 @@ public class BossBulbatoeHandler : MonoBehaviour
     public float TimeBetweenActivations;
     public float ActivationTimer;
     public bool Fightstarted;
-    // Would be private but public so I can see it in the GUI
-    public bool BossDefeated;
+    
+    private static bool BossDefeated;
 
     // Start is called before the first frame update
     void Start()
@@ -58,7 +58,7 @@ public class BossBulbatoeHandler : MonoBehaviour
         UnactivatedBulbatoes.Add(bulbatoe);
     }
 
-    public void BossKilled()
+    public static void BossKilled()
     {
         BossDefeated = true;
     }

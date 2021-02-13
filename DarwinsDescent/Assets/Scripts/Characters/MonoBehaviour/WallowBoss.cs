@@ -93,6 +93,13 @@ namespace DarwinsDescent
         {
             BossHealth -= DmgAmount;
             animator.SetTrigger("Hurt");
+
+            if (BossHealth <= 0)
+            {
+                animator.SetBool("Dead", true);
+                BossBulbatoeHandler.BossKilled();
+            }
+
         }
     }
 }

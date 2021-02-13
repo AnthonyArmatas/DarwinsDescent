@@ -4102,7 +4102,6 @@ MonoBehaviour:
   TimeBetweenActivations: 0
   ActivationTimer: 0
   Fightstarted: 0
-  BossDefeated: 0
 --- !u!1 &69051256
 GameObject:
   m_ObjectHideFlags: 0
@@ -69316,7 +69315,7 @@ MonoBehaviour:
   AttackTime: 7
   TelegraphTime: 5
   HasTelegraphed: 0
-  BossHealth: 10
+  BossHealth: 1
 --- !u!50 &2017368071
 Rigidbody2D:
   serializedVersion: 4

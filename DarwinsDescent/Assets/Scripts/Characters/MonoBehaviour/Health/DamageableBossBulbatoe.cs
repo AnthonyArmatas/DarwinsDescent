@@ -55,7 +55,9 @@ namespace DarwinsDescent
 
         public override void TakeDamage(int DamageAmount)
         {
-            if (health.CurHealth <= 0 || !animator.GetBool("Killable"))
+            if (health.CurHealth <= 0 ||
+                wallowBoss.BossHealth <= 0 ||
+                !animator.GetBool("Killable"))
                 return;
 
             if (DamageAmount >= health.CurHealth)
@@ -70,7 +72,6 @@ namespace DarwinsDescent
                 health.CurHealth = 0;
                 animator.SetBool("Destroyed", true);
                 animator.SetTrigger("Dead");
-
 
                 // For each bulbatoe destroyed make the wallow demon take one dmg
                 wallowBoss.TakeDamage(1);
