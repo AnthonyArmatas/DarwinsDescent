@@ -107,6 +107,27 @@ namespace DarwinsDescent
                 if (!gettingInput)
                     return;
 
+                if (fixedUpdateHappened)
+                {
+                    Down = Input.GetKeyDown(key);
+                    Held = Input.GetKey(key);
+                    Up = Input.GetKeyUp(key);
+
+                    afterFixedUpdateDown = Down;
+                    afterFixedUpdateHeld = Held;
+                    afterFixedUpdateUp = Up;
+                }
+                else
+                {
+                    Down = Input.GetKeyDown(key) || afterFixedUpdateDown;
+                    Held = Input.GetKey(key) || afterFixedUpdateHeld;
+                    Up = Input.GetKeyUp(key) || afterFixedUpdateUp;
+
+                    afterFixedUpdateDown |= Down;
+                    afterFixedUpdateHeld |= Held;
+                    afterFixedUpdateUp |= Up;
+                }
+
                 if (inputType == InputType.Controller)
                 {
                     if (fixedUpdateHappened)
@@ -240,16 +261,15 @@ namespace DarwinsDescent
                 bool positiveHeld = false;
                 bool negativeHeld = false;
 
-                if (inputType == InputType.Controller)
+                float value = Input.GetAxisRaw(k_AxisToName[(int)controllerAxis]);
+                if (value > Single.Epsilon || Input.GetKey(positive))
                 {
-                    float value = Input.GetAxisRaw(k_AxisToName[(int)controllerAxis]);
-                    positiveHeld = value > Single.Epsilon;
-                    negativeHeld = value < -Single.Epsilon;
+                    positiveHeld = true;
                 }
-                else if (inputType == InputType.MouseAndKeyboard)
+
+                if (value < -Single.Epsilon || Input.GetKey(negative))
                 {
-                    positiveHeld = Input.GetKey(positive);
-                    negativeHeld = Input.GetKey(negative);
+                    negativeHeld = true;
                 }
 
                 if (positiveHeld == negativeHeld)
