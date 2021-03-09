@@ -7,6 +7,7 @@ using UnityEngine;
 public class PipSetter : MonoBehaviour
 {
     public PipSystem pipSystem;
+    public Animator CreditsAnimator;
     public bool HeadLocked;
     public int HeadMaxCap;
     public int HeadAllocated;
@@ -32,6 +33,10 @@ public class PipSetter : MonoBehaviour
         if (pipSystem != null)
         {
             pipSystem.Initialized += InitializePipParts;
+        }
+        if (CreditsAnimator != null)
+        {
+            CreditsAnimator = GameObject.Find("Credits").GetComponent<Animator>();
         }
     }
     

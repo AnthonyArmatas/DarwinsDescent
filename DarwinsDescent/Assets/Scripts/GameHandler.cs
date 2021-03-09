@@ -4,6 +4,7 @@ using UnityEngine;
 using CodeMonkey;
 using CodeMonkey.Utils;
 using System;
+using UnityEngine.SceneManagement;
 
 public class GameHandler : MonoBehaviour
 {
@@ -26,5 +27,10 @@ public class GameHandler : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene("FirstLevel");
     }
 }
