@@ -15,6 +15,7 @@ namespace DarwinsDescent
         public Transform cameraFollowTarget;
         public PlayerSMF SMF = new PlayerSMF();
         public SpriteRenderer InteractObjRenderer;
+        public GameHandler GameHandler;
 
         private float jumpTimeCounter;
         public bool jumpRequest;
@@ -59,6 +60,8 @@ namespace DarwinsDescent
                 boxCollider = GetComponent<BoxCollider2D>();
             if (damageable == null)
                 damageable = GetComponent<DamageablePlayer>();
+            if (GameHandler == null)
+                GameHandler = transform.Find("GameHandler")?.GetComponent<GameHandler>();
             if (cameraFollowTarget == null)
                 cameraFollowTarget = transform.Find("CameraFollowTarget")?.GetComponent<Transform>();
             
@@ -96,7 +99,7 @@ namespace DarwinsDescent
         // Update is called once per frame
         void Update()
         {
-            if (IsDead || movementDisabled)
+            if (IsDead || movementDisabled || GameHandler.GameIsPaused)
                 return;
             IsJumping();
             IsAttacking();
