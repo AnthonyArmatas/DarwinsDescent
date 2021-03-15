@@ -6,6 +6,7 @@ using CodeMonkey.Utils;
 using System;
 using UnityEngine.SceneManagement;
 using DarwinsDescent;
+using UnityEngine.InputSystem;
 
 public class GameHandler : MonoBehaviour
 {
@@ -23,19 +24,16 @@ public class GameHandler : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+
+    public void HitPause(InputAction.CallbackContext Value)
     {
-        if (CreditsAnimator.GetBool("StartCredits"))
+        if (Value.performed)
         {
-            if (PlayerInput.Instance.Pause.Down)
+            if (CreditsAnimator.GetBool("StartCredits"))
             {
                 RestartLevel();
             }
-        }
-        else
-        {
-            if (PlayerInput.Instance.Pause.Up)
+            else
             {
                 if (GameIsPaused)
                 {
@@ -47,10 +45,13 @@ public class GameHandler : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void ConfirmRestart(InputAction.CallbackContext Value)
+    {
         if (GameIsPaused)
         {
-            if (PlayerInput.Instance.MeleeAttack.Up ||
-                PlayerInput.Instance.Jump.Up)
+            if (Value.performed)
             {
                 Resume();
                 RestartLevel();

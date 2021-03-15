@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
+
 
 namespace DarwinsDescent
 {
@@ -16,10 +19,12 @@ namespace DarwinsDescent
         public PlayerSMF SMF = new PlayerSMF();
         public SpriteRenderer InteractObjRenderer;
         public GameHandler GameHandler;
+        public UnityEngine.InputSystem.PlayerInput PlayerInput;
 
         private float jumpTimeCounter;
         public bool jumpRequest;
         public bool jumping;
+        public bool moving;
         public float jumpTime;
         public float jumpForce;
         public bool IsDead;
@@ -64,6 +69,8 @@ namespace DarwinsDescent
                 GameHandler = transform.Find("GameHandler")?.GetComponent<GameHandler>();
             if (cameraFollowTarget == null)
                 cameraFollowTarget = transform.Find("CameraFollowTarget")?.GetComponent<Transform>();
+            if (PlayerInput == null)
+                PlayerInput = new UnityEngine.InputSystem.PlayerInput();
             
             if (InteractObjRenderer == null) 
             {
@@ -101,9 +108,9 @@ namespace DarwinsDescent
         {
             if (IsDead || movementDisabled || GameHandler.GameIsPaused)
                 return;
-            IsJumping();
-            IsAttacking();
-            IsInteracting();
+            //IsJumping();
+            //IsAttacking();
+            //IsInteracting();
             UpdateFacing();
         }
 
@@ -130,20 +137,29 @@ namespace DarwinsDescent
         }
 
         #region PlayerMovement
-        /// <summary>
-        /// Controls base movement.
-        /// </summary>
-        /// <param name="speedScale"></param>
-        public void MoveAround(float speedScale = 1f)
+        ///// <summary>
+        ///// Controls base movement.
+        ///// </summary>
+        ///// <param name="speedScale"></param>
+        public void MoveAround()
         {
-            
             HorizontalMovement();
             VerticalMovement();
         }
 
-        public void HorizontalMovement(float speedScale = 1f)
+        public void IsMoving(InputAction.CallbackContext Value)
         {
-            if (PlayerInput.Instance.Horizontal.Value == 0 || movementDisabled)
+            // Updates the movement here on preformed to actually get the direction and on canceled to set it to 0 when it stops.
+            // HorizontalMovement handles the actual calculations about where and when the movement is happening, this is just getting the input immediately via events. 
+            moveVelocity = Value.ReadValue<Vector2>();
+        }
+
+        public void HorizontalMovement()
+        {
+
+            //Debug.Log(moveVelocity);
+            //Debug.Log(Value.action.phase);
+            if (moveVelocity.x == 0 || movementDisabled)
             {
                 // Immediately stops the player if he is on the floor and moving faster than small nudges. If more precision is desired remove the Mathf.Abs(this.rigidbody2D.velocity.x) > 2f
                 if (this.rigidbody2D.velocity.x != 0 && isGrounded && Mathf.Abs(this.rigidbody2D.velocity.x) > 0f)
@@ -154,31 +170,33 @@ namespace DarwinsDescent
                 return;
             }
 
-            if (PlayerInput.Instance.Horizontal.Value > 0 &&
+            if (moveVelocity.x > 0 &&
                 this.rigidbody2D.velocity.x > this.baseMovementSpeed)
             {
                 this.rigidbody2D.velocity = new Vector2(this.baseMovementSpeed, this.rigidbody2D.velocity.y);
                 return;
             }
 
-            if (PlayerInput.Instance.Horizontal.Value < 0 &&
+            if (moveVelocity.x < 0 &&
                 this.rigidbody2D.velocity.x < (this.baseMovementSpeed * -1))
             {
                 this.rigidbody2D.velocity = new Vector2((this.baseMovementSpeed * -1), this.rigidbody2D.velocity.y);
                 return;
             }
 
-            if (PlayerInput.Instance.Horizontal.Value > 0)
+            if (moveVelocity.x > 0)
             {
                 this.rigidbody2D.AddForce(new Vector2(this.baseAccelerationSpeed, 0), ForceMode2D.Impulse);
                 return;
             }
 
-            if (PlayerInput.Instance.Horizontal.Value < 0)
+            if (moveVelocity.x < 0)
             {
                 this.rigidbody2D.AddForce(new Vector2(this.baseAccelerationSpeed * -1, 0), ForceMode2D.Impulse);
                 return;
             }
+
+            
         }
 
         public void VerticalMovement()
@@ -189,7 +207,7 @@ namespace DarwinsDescent
                 jumpRequest = false;
                 jumping = true;
             }
-            else if (PlayerInput.Instance.Jump.Held && jumping == true)
+            else if (jumping == true)
             {
                 if (jumpTimeCounter > 0 && this.rigidbody2D.velocity.y > 0)
                 {
@@ -201,12 +219,6 @@ namespace DarwinsDescent
                     jumping = false;
                 }
             }
-
-            if (PlayerInput.Instance.Jump.Up)
-            {
-                jumping = false;
-            }
-
 
             // QoL Addition: Adds a small pause to the peak of a jump which should give the player a moment to adjust their landing.
             // Mathf.Round is like MidpointRounding.ToEven,if MidpointRounding.ToZero is desired use Math
@@ -229,19 +241,23 @@ namespace DarwinsDescent
         /// <summary>
         /// Jump mechanics
         /// </summary>
-        public void IsJumping()
+        public void IsJumping(InputAction.CallbackContext Value)
         {
-            if (isGrounded && PlayerInput.Instance.Jump.Down)
+            if (isGrounded && Value.performed)
             {
                 jumpRequest = true;
                 jumpTimeCounter = jumpTime;
             }
+            if (Value.canceled)
+            {
+                jumping = false;
+            }
         }
         #endregion
 
-        public void IsAttacking()
+        public void MeleeAttack(InputAction.CallbackContext Value)
         {
-            if (PlayerInput.Instance.MeleeAttack.Down)
+            if (Value.performed)
             {
                 // attacking = true;
 
@@ -252,9 +268,9 @@ namespace DarwinsDescent
             }
         }
 
-        private void IsInteracting()
+        public void IsInteracting(InputAction.CallbackContext Value)
         {
-            if (PlayerInput.Instance.Interact.Down)
+            if (Value.performed)
             {
                 Debug.Log("Before interact");
                 if(interact != null)
@@ -267,8 +283,8 @@ namespace DarwinsDescent
         #region Facing
         public override void UpdateFacing()
         {
-            bool faceLeft = PlayerInput.Instance.Horizontal.Value < 0f;
-            bool faceRight = PlayerInput.Instance.Horizontal.Value > 0f;
+            bool faceLeft = moveVelocity.x < 0f;
+            bool faceRight = moveVelocity.x > 0f;
 
             if (faceLeft)
             {

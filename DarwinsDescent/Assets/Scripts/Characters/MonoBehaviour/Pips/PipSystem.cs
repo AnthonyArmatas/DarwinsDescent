@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Priority_Queue;
+using UnityEngine.InputSystem;
 
 namespace DarwinsDescent
 {
@@ -40,6 +41,11 @@ namespace DarwinsDescent
         public float lastTimeofTopTemp = 0;
         public Vector3 curTempDecayScale;
         public PipLinkedList pipLinkedList;// = new PipLinkedList(new PipNode(PipNode.StatusKey.Real));
+        public bool Refunding;
+        public bool HeadToggled;
+        public bool ChestToggled;
+        public bool ArmsToggled;
+        public bool LegsToggled;
 
         public PlayerCharacter PlayerCharacter;
         public GameObject pipPrefab;
@@ -236,7 +242,7 @@ namespace DarwinsDescent
             }
 
             // If the left trigger or num pad plus is held then return all pips
-            if (PlayerInput.Instance.RefundPip.Value != 0)
+            if (Refunding)
             {
                 Damageable.GetBackLoanHealth(PipSection);
                 if (playerHealth.CurHealth > playerHealth.MaxHP)
@@ -317,6 +323,39 @@ namespace DarwinsDescent
                     pipLinkedList.LastTempPip = null;
                 }
                 UpdateHPPips(playerHealth);
+            }
+        }
+
+        public void IsRefunding(InputAction.CallbackContext Value)
+        {
+            Debug.Log(Value);
+            if (Value.performed)
+                Refunding = true;
+            else if (Value.canceled)
+                Refunding = false;
+        }
+
+        public void IsTogglingPip(InputAction.CallbackContext Value)
+        {
+            if (Value.performed)
+            {
+                switch (Value.action.name)
+                {
+                    case "NorthPip":
+                        MovePips(Head);
+                        break;
+                    case "EastPip":
+                        MovePips(Arms);
+                        break;
+                    case "SouthPip":
+                        MovePips(Legs);
+                        break;
+                    case "WestPip":
+                        MovePips(Chest);
+                        break;
+                    default:
+                        return;
+                }
             }
         }
     }
