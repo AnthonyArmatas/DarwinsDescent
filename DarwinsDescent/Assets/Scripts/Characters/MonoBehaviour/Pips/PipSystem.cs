@@ -134,8 +134,6 @@ namespace DarwinsDescent
 
         void FixedUpdate()
         {
-            AssignPips();
-            //PlayerInput.Instance.Horizontal.Value
         }
 
         /// <summary>
@@ -187,44 +185,6 @@ namespace DarwinsDescent
                     PipPadTextHolder.Add(partName, pipText);
                 }
             }
-        }
-
-        public void AssignPips()
-        {
-            if (PipPoolCap == MinimumRequiredPipsInPool)
-                return;
-
-            if (DpadVertWasDown == true &&
-                PlayerInput.Instance.DPadVertical.ReceivingInput == false)
-            {
-                if (DpadPrevVertVal > 0)
-                {
-                    MovePips(Head);
-                }
-                if (DpadPrevVertVal < 0)
-                {
-                    MovePips(Legs);
-                }
-            }
-
-            if (DpadHorWasDown == true && 
-                PlayerInput.Instance.DPadHorizontal.ReceivingInput == false)
-            {
-                if (DpadPrevHorVal > 0)
-                {
-                    MovePips(Arms);
-                }
-                if (DpadPrevHorVal < 0)
-                {
-                    MovePips(Chest);
-                }
-            }
-
-            DpadVertWasDown = PlayerInput.Instance.DPadVertical.ReceivingInput;
-            DpadHorWasDown = PlayerInput.Instance.DPadHorizontal.ReceivingInput;
-            DpadPrevVertVal = PlayerInput.Instance.DPadVertical.Value;
-            DpadPrevHorVal = PlayerInput.Instance.DPadHorizontal.Value;
-
         }
 
         public void MovePips(PipModel PipSection)
