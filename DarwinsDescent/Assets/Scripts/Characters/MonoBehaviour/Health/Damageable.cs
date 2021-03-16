@@ -12,6 +12,10 @@ namespace DarwinsDescent
         public virtual Health health { get; set; }
         public Animator animator;
         public int StartingHealth;
+        public bool Invincible;
+        public bool JustHit;
+        public float InvincibleTime;
+
 
         public void SetHealth(Health hp)
         {

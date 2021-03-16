@@ -5061,6 +5061,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 387242143}
   StartingHealth: 1
+  Invincible: 0
+  JustHit: 0
+  InvincibleTime: 0
   wallowBoss: {fileID: 0}
   bossBulbatoes: {fileID: 0}
 --- !u!114 &387242140
@@ -6024,6 +6027,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 435041000}
   StartingHealth: 1
+  Invincible: 0
+  JustHit: 0
+  InvincibleTime: 0
   wallowBoss: {fileID: 0}
   bossBulbatoes: {fileID: 0}
 --- !u!114 &435041005
@@ -6891,6 +6897,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 658018437}
   StartingHealth: 1
+  Invincible: 0
+  JustHit: 0
+  InvincibleTime: 0
   enemy: {fileID: 0}
 --- !u!114 &586076934
 MonoBehaviour:
@@ -7047,6 +7056,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 601005647}
   StartingHealth: 1
+  Invincible: 0
+  JustHit: 0
+  InvincibleTime: 0
   wallowBoss: {fileID: 0}
   bossBulbatoes: {fileID: 0}
 --- !u!114 &601005644
@@ -65582,6 +65594,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2442671432423065299, guid: 532c2d424526bbe4cb798a60d2a8e5a4,
+        type: 3}
+      propertyPath: InvincibleTime
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2442671432423069992, guid: 532c2d424526bbe4cb798a60d2a8e5a4,
         type: 3}
       propertyPath: m_Name
@@ -65642,6 +65659,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 1522861659}
+    - target: {fileID: 2442671432423069998, guid: 532c2d424526bbe4cb798a60d2a8e5a4,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2442671432423069999, guid: 532c2d424526bbe4cb798a60d2a8e5a4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -70153,6 +70175,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1905038333}
   StartingHealth: 1
+  Invincible: 0
+  JustHit: 0
+  InvincibleTime: 0
   wallowBoss: {fileID: 0}
   bossBulbatoes: {fileID: 0}
 --- !u!114 &1905038330
@@ -70376,6 +70401,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1909532067}
   StartingHealth: 1
+  Invincible: 0
+  JustHit: 0
+  InvincibleTime: 0
   wallowBoss: {fileID: 0}
   bossBulbatoes: {fileID: 0}
 --- !u!114 &1909532064

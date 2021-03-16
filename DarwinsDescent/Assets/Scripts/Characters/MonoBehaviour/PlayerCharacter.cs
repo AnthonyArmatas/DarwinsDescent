@@ -29,6 +29,9 @@ namespace DarwinsDescent
         public float jumpForce;
         public bool IsDead;
         public bool movementDisabled;
+        private float hitFlashCounter;
+        private bool hitFlashStarted;
+        public float timeBetweenVisualHitFlashes;
         #endregion
 
         #region Events
@@ -71,7 +74,9 @@ namespace DarwinsDescent
                 cameraFollowTarget = transform.Find("CameraFollowTarget")?.GetComponent<Transform>();
             if (PlayerInput == null)
                 PlayerInput = new UnityEngine.InputSystem.PlayerInput();
-            
+            if (timeBetweenVisualHitFlashes == 0)
+                timeBetweenVisualHitFlashes = .25f;
+
             if (InteractObjRenderer == null) 
             {
                 foreach (Transform child in transform)
@@ -108,10 +113,39 @@ namespace DarwinsDescent
         {
             if (IsDead || movementDisabled || GameHandler.GameIsPaused)
                 return;
-            //IsJumping();
-            //IsAttacking();
-            //IsInteracting();
+
             UpdateFacing();
+            JustAttacked();
+        }
+
+        private void JustAttacked()
+        {
+            if (damageable.JustHit)
+            {
+                damageable.JustHit = false;
+                damageable.Invincible = true;
+                hitFlashStarted = true;
+                hitFlashCounter = Time.deltaTime;
+                return;
+            }
+
+            if (hitFlashStarted)
+            {
+                if(hitFlashCounter > damageable.InvincibleTime)
+                {
+                    spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1);
+                    damageable.Invincible = false;
+                    hitFlashStarted = false;
+                    return;
+                }
+
+                if (spriteRenderer.color.a == 1)
+                    spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0);
+                else
+                    spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1);
+
+                hitFlashCounter += Time.deltaTime;
+            }
         }
 
         void FixedUpdate()

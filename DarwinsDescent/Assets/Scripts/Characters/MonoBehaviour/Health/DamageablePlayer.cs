@@ -32,6 +32,7 @@ namespace DarwinsDescent
                 health = GetComponent<PlayerHealth>();
             health.InitializeHealth(StartingHealth);
             curHealth = StartingHealth;
+            Invincible = false;
         }
 
         // TODO: Would it just be easier to keep track of the damaged health if 
@@ -75,22 +76,8 @@ namespace DarwinsDescent
 
         public override void TakeDamage(int DamageAmount)
         {
-            // TODO: Implement invincibility
-            //if ((Invulnerable && !ignoreInvincible) || health.CurHealth <= 0)
-            //    return;
-            if (playerHealth.CurHealth <= 0)
+            if (playerHealth.CurHealth <= 0 || Invincible)
                 return;
-
-            //we can reach that point if the damager was one that was ignoring invincible state.
-            //We still want the callback that we were hit, but not the damage to be removed from health.
-            //if (!Invulnerable)
-            //{
-            //    actor.health.CurHealth -= damager.damage;
-            //    // Maybe Turn this OnHealth Set to an event that resets any temp timer
-            //    // It makes sense to call it here since this is where it absolutely takes dmg away from
-            //    // an enemy and since its an event its still loosely coupled.
-            //    OnHealthSet.Invoke(this);
-            //}
 
             PlayerHealth beforeDamage = (PlayerHealth)health;
             //health.TakeDamage(DamageAmount);
@@ -104,6 +91,7 @@ namespace DarwinsDescent
                 return;
             }
 
+            JustHit = true;
             if (DamageAmount <= playerHealth.TempHp)
             {
                 playerHealth.TempHp -= DamageAmount;
