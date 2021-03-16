@@ -306,11 +306,11 @@ namespace DarwinsDescent
         {
             if (Value.performed)
             {
-                Debug.Log("Before interact");
+                //Debug.Log("Before interact");
                 if(interact != null)
                     interact.Invoke();
 
-                Debug.Log("after interact");
+                //Debug.Log("after interact");
             }
         }
 

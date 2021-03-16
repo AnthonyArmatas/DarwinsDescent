@@ -288,7 +288,7 @@ namespace DarwinsDescent
 
         public void IsRefunding(InputAction.CallbackContext Value)
         {
-            Debug.Log(Value);
+            //Debug.Log(Value);
             if (Value.performed)
                 Refunding = true;
             else if (Value.canceled)

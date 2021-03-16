@@ -53,6 +53,7 @@ namespace DarwinsDescent
                 case PartName.Head:
                     break;
                 case PartName.Arms:
+                    PlayerCharacter.animator.SetBool("MeleeAttack_Upgraded", ArmPipUp.AttackUpgrade[this.Allocated]);
                     break;
                 case PartName.Chest:
                     break;
@@ -84,6 +85,12 @@ namespace DarwinsDescent
 
     public class ArmPipUp
     {
-
+        public static Dictionary<int, bool> AttackUpgrade = new Dictionary<int, bool>()
+        {
+            {0, false },
+            {1, true },
+            {2, true },
+            {3, true },
+        };
     }
 }

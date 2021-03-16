@@ -38,6 +38,9 @@ TextureImporter:
   - first:
       213: -4327784476520464121
     second: Darwin_Dead_0
+  - first:
+      213: -1138116961445085729
+    second: DarwinSpriteSheet_12
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -68,7 +71,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
+    filterMode: 0
     aniso: -1
     mipBias: -100
     wrapU: 1
@@ -128,12 +131,12 @@ TextureImporter:
       name: Darwin_Idle_00
       rect:
         serializedVersion: 2
-        x: 122
+        x: 123
         y: 18
-        width: 31
-        height: 34
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 67
+        height: 56
+      alignment: 9
+      pivot: {x: 0.2350041, y: 0.5161081}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -151,10 +154,10 @@ TextureImporter:
         serializedVersion: 2
         x: 190
         y: 18
-        width: 31
-        height: 34
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 67
+        height: 56
+      alignment: 9
+      pivot: {x: 0.2350041, y: 0.5161081}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -172,10 +175,10 @@ TextureImporter:
         serializedVersion: 2
         x: 260
         y: 19
-        width: 34
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 67
+        height: 56
+      alignment: 9
+      pivot: {x: 0.2350041, y: 0.5161081}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -191,12 +194,12 @@ TextureImporter:
       name: Darwin_Scythe_0
       rect:
         serializedVersion: 2
-        x: 337
+        x: 338
         y: 10
-        width: 26
-        height: 46
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 71
+        height: 56
+      alignment: 9
+      pivot: {x: 0.2350041, y: 0.5161081}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -212,12 +215,12 @@ TextureImporter:
       name: Darwin_Scythe_1
       rect:
         serializedVersion: 2
-        x: 434
-        y: 10
-        width: 60
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 429
+        y: 6
+        width: 71
+        height: 56
+      alignment: 9
+      pivot: {x: 0.2350041, y: 0.5161081}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -235,10 +238,10 @@ TextureImporter:
         serializedVersion: 2
         x: 534
         y: 10
-        width: 60
-        height: 46
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 71
+        height: 56
+      alignment: 9
+      pivot: {x: 0.2350041, y: 0.5161081}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -256,10 +259,10 @@ TextureImporter:
         serializedVersion: 2
         x: 634
         y: 10
-        width: 60
-        height: 43
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 71
+        height: 56
+      alignment: 9
+      pivot: {x: 0.2350041, y: 0.5161081}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -277,10 +280,10 @@ TextureImporter:
         serializedVersion: 2
         x: 734
         y: 10
-        width: 33
-        height: 30
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 71
+        height: 56
+      alignment: 9
+      pivot: {x: 0.2350041, y: 0.5161081}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -298,10 +301,10 @@ TextureImporter:
         serializedVersion: 2
         x: 827
         y: 18
-        width: 33
-        height: 30
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 45
+        height: 56
+      alignment: 9
+      pivot: {x: 0.2350041, y: 0.5161081}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -319,10 +322,10 @@ TextureImporter:
         serializedVersion: 2
         x: 896
         y: 18
-        width: 33
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 45
+        height: 56
+      alignment: 9
+      pivot: {x: 0.2350041, y: 0.5161081}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -340,10 +343,10 @@ TextureImporter:
         serializedVersion: 2
         x: 963
         y: 18
-        width: 35
-        height: 30
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 45
+        height: 56
+      alignment: 9
+      pivot: {x: 0.2350041, y: 0.5161081}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -364,7 +367,7 @@ TextureImporter:
         width: 39
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
