@@ -7,12 +7,18 @@ using UnityEngine;
 public class BulbatoeDoneRotting : StateMachineBehaviour
 {
     public GameObject JoyDemon;
+    public AudioSource Rotting;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        //if (Rotting == null)
+        //{
+        //    Rotting = GameObject.Find("BossBulbatoe_Rot_Sound").GetComponent<AudioSource>();
+        //}
+
+        //Rotting.Play();
+    }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -44,8 +50,6 @@ public class BulbatoeDoneRotting : StateMachineBehaviour
                 }
 
             }
-
-
 
             bossBulbatoe.BossBulbatoeHandler.ResetBulbatoe(bossBulbatoe);
             animator.SetBool("Killable", false);

@@ -21,6 +21,8 @@ namespace DarwinsDescent
             PipSystem.Arms.MaxCap++;
             PipSystem.UpdatePipPad(PipSystem.Arms);
             Animator.SetTrigger(ActivateHash);
+            PowerUpSound.Play();
+            PowerUpDarwinSound.PlayDelayed(PowerUpSound.clip.length);
         }
     }
 }

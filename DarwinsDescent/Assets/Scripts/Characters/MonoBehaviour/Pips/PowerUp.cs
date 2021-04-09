@@ -15,6 +15,8 @@ namespace DarwinsDescent
         public PipSystem PipSystem;
 
         public Animator Animator;
+        public AudioSource PowerUpDarwinSound;
+        public AudioSource PowerUpSound;
 
         public int ActivateHash => Animator.StringToHash("Activate");
 

@@ -32,6 +32,19 @@ namespace DarwinsDescent
         private float hitFlashCounter;
         private bool hitFlashStarted;
         public float timeBetweenVisualHitFlashes;
+
+        public AudioSource CurrentAttackSound;
+        public AudioSource CurrentWeaponSound;
+        public AudioSource BaseAttackSound;
+        public AudioSource BaseWeaponSound;
+        public AudioSource UpgradedAttackSound;
+        public AudioSource UpgradedWeaponSound;
+        public AudioSource HurtSound;
+        public AudioSource DieSound;
+        public AudioSource Jump;
+        public AudioSource Landed;
+
+
         #endregion
 
         #region Events
@@ -106,6 +119,14 @@ namespace DarwinsDescent
             //mat.SetFloat("_Glow", 10f);
             //mat.EnableKeyword("GLOW_ON");
 
+        }
+
+        private void VerifySound(AudioSource soundSource)
+        {
+            if (soundSource == null)
+            {
+
+            }
         }
 
         // Update is called once per frame
@@ -240,6 +261,7 @@ namespace DarwinsDescent
                 this.rigidbody2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                 jumpRequest = false;
                 jumping = true;
+                Jump.Play();
             }
             else if (jumping == true)
             {
@@ -362,6 +384,13 @@ namespace DarwinsDescent
             //Debug.DrawRay(boxCollider.bounds.center - new Vector3(boxCollider.bounds.extents.x, boxCollider.bounds.extents.y + groundedRaycastDistanceCheck), Vector2.right * (boxCollider.bounds.extents.y), rayColor);
             //Debug.Log(raycastHit.collider);
             #endregion
+            if(wasGrounded == false && isGrounded)
+            {
+                if (!Landed.isPlaying)
+                {
+                    Landed.Play();
+                } 
+            }
 
             return isGrounded;
         }

@@ -11,6 +11,7 @@ namespace DarwinsDescent
     {
         public Enemy enemy;
         public EnemySMF SMF;
+        public AudioSource DeathSound;
 
         public EnemyHealth enemyHealth { get; set; }
         public override Health health
@@ -80,6 +81,16 @@ namespace DarwinsDescent
             {
                 health.CurHealth = 0;
                 animator.SetBool(SMF.DeadHash, true);
+                if(DeathSound != null)
+                {
+                    DeathSound.Play();
+                }
+                else
+                {
+                    Debug.LogError("DeathSound Is null");
+                }
+
+                
                 return;
             }
             health.CurHealth -= DamageAmount;

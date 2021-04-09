@@ -12,6 +12,13 @@ namespace DarwinsDescent
         public Collider2D BossBarrier;
         public PlayerCharacter playerCharacter;
         public WallowBoss wallowBoss;
+        public AudioSource WallBossIdle;
+
+        #region Events
+        public delegate void StopAllMusic();
+        public StopAllMusic StopTheMusic;
+
+        #endregion
 
         void Start()
         {
@@ -50,6 +57,8 @@ namespace DarwinsDescent
                 BossBarrier.enabled = true;
                 playerCharacter.movementDisabled = true;
                 wallowBoss.animator.SetTrigger("EnteredRange");
+                WallBossIdle.Stop();
+                StopTheMusic.Invoke();
                 Debug.Log("ENTERED");   
             }
         }

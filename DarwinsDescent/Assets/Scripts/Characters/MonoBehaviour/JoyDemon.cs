@@ -14,6 +14,7 @@ namespace DarwinsDescent.Assets.Scripts.Characters.MonoBehaviour
         public bool CanLeap = false;
         public float TimeTillLeap = 1.5f;
         public float CurLeapTime = 0;
+        public AudioSource JumpAttack;
 
         void FixedUpdate()
         {
@@ -72,7 +73,12 @@ namespace DarwinsDescent.Assets.Scripts.Characters.MonoBehaviour
                         Vector2 dir = new Vector2(.5f, 1);
                         this.rigidbody2D.AddForce(dir * ForcePower, ForceMode2D.Impulse);
                     }
-                        
+                    if (JumpAttack != null)
+                    {
+                        JumpAttack.Play();
+                    }
+                    
+
 
 
                     //option 2: apply an ACCELERATION - this will directly accelerate the ball by a fixed amount regardless of mass

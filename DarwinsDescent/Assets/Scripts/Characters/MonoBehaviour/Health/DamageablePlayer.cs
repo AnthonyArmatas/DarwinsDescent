@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace DarwinsDescent
 {
@@ -13,6 +14,11 @@ namespace DarwinsDescent
         private PlayerSMF playerSMF = new PlayerSMF();
         
         public PlayerHealth playerHealth { get; set; }
+        public AudioSource TakeDamageSound;
+        public AudioSource OnDeathSound;
+        public AudioSource DarwinsBreathing;
+        public AudioSource DarwinsHeartbeat;
+        public AudioSource DarwinsHeal;
         public override Health health 
         { 
             get { return playerHealth; }
@@ -35,6 +41,25 @@ namespace DarwinsDescent
             Invincible = false;
         }
 
+        private void Update()
+        {
+            if(playerHealth.CurHealth == 1)
+            {
+                if(!DarwinsBreathing.isPlaying && !DarwinsHeartbeat.isPlaying)
+                {
+                    PlayDarwinNearDeath();
+                }
+            }
+
+            if (playerHealth.CurHealth != 1)
+            {
+                if (DarwinsBreathing.isPlaying || DarwinsHeartbeat.isPlaying)
+                {
+                    StopDarwinNearDeath();
+                }
+            }
+        }
+
         // TODO: Would it just be easier to keep track of the damaged health if 
         // calculated in the player health class instead of needing to do it every time 
         // the damaged health needs to be taken into account?
@@ -49,6 +74,7 @@ namespace DarwinsDescent
                     playerHealth.RealHp += HealAmount;
                     UpdateHp.Invoke((PlayerHealth)health);
                     // Maybe call for an effect eventually
+                    DarwinsHeal.Play();
                     return;
                 }
 
@@ -63,6 +89,7 @@ namespace DarwinsDescent
                 playerHealth.TempHp += HealAmount;
                 if (playerHealth.TempHp > playerHealth.LentHp)
                     playerHealth.TempHp = playerHealth.LentHp;
+                DarwinsHeal.Play();
             }
 
             UpdateHp.Invoke((PlayerHealth)health);
@@ -83,11 +110,13 @@ namespace DarwinsDescent
             //health.TakeDamage(DamageAmount);
             if (DamageAmount >= playerHealth.CurHealth)
             {
+                StopDarwinNearDeath();
                 //SetPipDisplay(playerHealth.TempHp,State.temp, state.Dmg) // SetPipDisplay(amount,typeFrom, TypeTp)
                 playerHealth.TempHp = 0;
                 playerHealth.RealHp = 0;
                 UpdateHp.Invoke((PlayerHealth)health);
                 animator.SetBool(playerSMF.DeadHash, true);
+                OnDeathSound.Play();
                 return;
             }
 
@@ -97,6 +126,7 @@ namespace DarwinsDescent
                 playerHealth.TempHp -= DamageAmount;
                 UpdateHp.Invoke((PlayerHealth)health);
                 //SetPipDisplay(playerHealth.TempHp,State.temp, state.Dmg)
+                TakeDamageSound.Play();
                 return;
             }
             DamageAmount -= playerHealth.TempHp;
@@ -107,6 +137,7 @@ namespace DarwinsDescent
             animator.SetTrigger(playerSMF.HurtHash);
 
             curHealth = playerHealth.CurHealth;
+            TakeDamageSound.Play();
             UpdateHp.Invoke(playerHealth);
             // Do we want to do dmg direction for enemies? I'm not sure we do
             //DamageDirection = transform.position + (Vector3)centreOffset - damager.transform.position;
@@ -133,6 +164,18 @@ namespace DarwinsDescent
             playerHealth.LentHp -= PipSection.Allocated;
             playerHealth.RealHp += PipSection.Allocated;
             PipSection.Allocated = 0;
+        }
+
+        public void PlayDarwinNearDeath()
+        {
+            DarwinsBreathing.Play();
+            DarwinsHeartbeat.Play();
+        }
+
+        public void StopDarwinNearDeath()
+        {
+            DarwinsBreathing.Stop();
+            DarwinsHeartbeat.Stop();
         }
     }
 }

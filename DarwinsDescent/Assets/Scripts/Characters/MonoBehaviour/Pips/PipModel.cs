@@ -54,6 +54,21 @@ namespace DarwinsDescent
                     break;
                 case PartName.Arms:
                     PlayerCharacter.animator.SetBool("MeleeAttack_Upgraded", ArmPipUp.AttackUpgrade[this.Allocated]);
+                    switch (this.Allocated)
+                    {
+                        case 0:
+                            PlayerCharacter.CurrentAttackSound = PlayerCharacter.BaseAttackSound;
+                            PlayerCharacter.CurrentWeaponSound = PlayerCharacter.BaseWeaponSound;
+                            break;
+                        case 1:
+                            PlayerCharacter.CurrentAttackSound = PlayerCharacter.UpgradedAttackSound;
+                            PlayerCharacter.CurrentWeaponSound = PlayerCharacter.UpgradedWeaponSound;
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                    }
                     break;
                 case PartName.Chest:
                     break;

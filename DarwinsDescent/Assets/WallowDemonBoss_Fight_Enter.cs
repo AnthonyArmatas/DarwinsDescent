@@ -7,6 +7,7 @@ public class WallowDemonBoss_Fight_Enter : StateMachineBehaviour
 {
     public PlayerCharacter playerCharacter;
     public BossBulbatoeHandler bossBulbatoeHandler;
+    public AudioSource battleMuisic;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -15,8 +16,12 @@ public class WallowDemonBoss_Fight_Enter : StateMachineBehaviour
         {
             playerCharacter = GameObject.Find("Darwin").GetComponent<PlayerCharacter>();
             bossBulbatoeHandler = GameObject.Find("BossBulbatoeSpawnPoints").GetComponent<BossBulbatoeHandler>();
+            battleMuisic = GameObject.Find("WallowBoss_Music").GetComponent<AudioSource>();
         }
-
+        if (!battleMuisic.isPlaying)
+        {
+            battleMuisic.Play();
+        }
         playerCharacter.movementDisabled = false;
         bossBulbatoeHandler.Fightstarted = true;
         animator.SetBool("InFight", true);

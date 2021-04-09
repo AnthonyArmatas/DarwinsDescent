@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 0534277a1fc21f545a831431d5938163
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Chalk-y
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: b31e28a336e2bfc41ac6451dd9769c6c, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

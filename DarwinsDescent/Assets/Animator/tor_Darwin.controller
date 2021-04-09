@@ -919,6 +919,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad64be9bea60f8142a425966c7dbfbd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Attack_Darwin_Sound: {fileID: 0}
+  Attack_Weapon_Sound: {fileID: 0}
 --- !u!1102 &3756310803789814340
 AnimatorState:
   serializedVersion: 5
@@ -1044,6 +1046,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad64be9bea60f8142a425966c7dbfbd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Attack_Darwin_Sound: {fileID: 0}
+  Attack_Weapon_Sound: {fileID: 0}
 --- !u!1102 &6692828106604521866
 AnimatorState:
   serializedVersion: 5

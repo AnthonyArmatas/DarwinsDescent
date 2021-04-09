@@ -15,6 +15,6 @@ namespace DarwinsDescent
         public int RespawnParaHash => Animator.StringToHash("Respawn");
         public int HurtHash => Animator.StringToHash("Hurt");
         public int DeadHash => Animator.StringToHash("Dead");
-        public int BaseAttackHash => Animator.StringToHash("BaseAttack");
+        public int BaseAttackHash => Animator.StringToHash("MeleeAttack");
     }
 }

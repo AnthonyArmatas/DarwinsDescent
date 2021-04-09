@@ -76,7 +76,7 @@ namespace DarwinsDescent
 
                 if (TimeToAttack >= AttackTime)
                 {
-                    animator.SetBool("BaseAttack", true);
+                    animator.SetBool("MeleeAttack", true);
                     HasTelegraphed = false;
                     TimeToAttack = 0;
                     animator.SetBool("Prepare_Attack", false);

@@ -25,6 +25,8 @@ namespace DarwinsDescent
         public EnemySMF SMF = new EnemySMF();
         // TODO: Maybe move to sub class but then need to make methods virtual and override them,
         public BoxCollider2D meleeAtkBCollider;
+        public AudioSource InRangeAlert;
+
 
         void Awake()
         {
@@ -174,7 +176,6 @@ namespace DarwinsDescent
             }
         }
 
-        // TODO: Still need to decouple the transform point of the ai and the enemies transform
         public void CheckPlayerInRange()
         {
             float playerDistance = 0f;
@@ -193,6 +194,15 @@ namespace DarwinsDescent
 
                 if(playerDistance < distanceToFollow)
                 {
+                    // Play as soon as the player comes in range
+                    if(distanceToFollow == StartingDetectionRange)
+                    {
+                        if(InRangeAlert != null)
+                        {
+                            InRangeAlert.Play();
+                        }
+                    }
+
                     // TODO: still using ai finder for raycast, figure out why
                     // I think a solution would be to make a child Gameobject and throw all of the AI things in there.
                     Transform lookingPoint = this.rigidbody2D.transform;
